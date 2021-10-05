@@ -26,6 +26,7 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    Label ammoLabel = new Label();
 
     public static void main(String[] args) {
         launch(args);
@@ -45,12 +46,15 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         monstersMove();
         GridPane ui = new GridPane();
-        ui.setPrefWidth(200);
+        ui.setPrefWidth(180);
         ui.setPadding(new Insets(10));
-
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
-
+        ui.add(new Label("Ammo: "), 0, 1);
+        ui.add(ammoLabel, 1, 1);
+        ui.add(new Label("Inventory: "), 0, 2);
+        ui.add(new Label("Guns: "), 0, 3);
+        ui.add(new Label("Artifacts: "), 0, 5);
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
@@ -109,5 +113,6 @@ public class Main extends Application {
 
     public void refreshFX(){
         healthLabel.setText("" + map.getPlayer().getHealth());
+        ammoLabel.setText(map.getPlayer().getAmmo() + "/" + map.getPlayer().getMaxAmmo());
     }
 }
