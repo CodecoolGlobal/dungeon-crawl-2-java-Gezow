@@ -44,7 +44,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         monstersMove();
         GridPane ui = new GridPane();
         ui.setPrefWidth(180);
@@ -97,7 +97,7 @@ public class Main extends Application {
         }
     }
 
-    private void refresh() {
+    public void refresh() {
         int playerX = map.getPlayer().getX();
         int playerY = map.getPlayer().getY();
         context.setFill(Color.BLACK);
