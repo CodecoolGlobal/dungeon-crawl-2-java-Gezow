@@ -10,6 +10,7 @@ import java.util.Objects;
 public abstract class Actor implements Drawable {
     private Cell cell;
     private int health = 10;
+    private int meleeDamage = 1;
 
     public Actor(Cell cell) {
         this.cell = cell;
@@ -23,6 +24,14 @@ public abstract class Actor implements Drawable {
             nextCell.setActor(this);
             cell = nextCell;
         }
+    }
+
+    public int getMeleeDamage() {
+        return meleeDamage;
+    }
+
+    public void setMeleeDamage(int meleeDamage) {
+        this.meleeDamage = meleeDamage;
     }
 
     public int getHealth() {
