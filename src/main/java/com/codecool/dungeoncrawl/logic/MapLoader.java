@@ -1,13 +1,19 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 
 import java.io.InputStream;
+import java.lang.reflect.AccessibleObject;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.Scanner;
 
 public class MapLoader {
+    private static LinkedList<Actor> monsters;
     public static GameMap loadMap() {
+        monsters = new LinkedList<>();
         InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
@@ -33,7 +39,8 @@ public class MapLoader {
                             break;
                         case 's':
                             cell.setType(CellType.FLOOR);
-                            new Skeleton(cell);
+                            Skeleton skel = new Skeleton(cell);
+                            monsters.add(skel);
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
@@ -48,4 +55,7 @@ public class MapLoader {
         return map;
     }
 
+    public static LinkedList<Actor> getMonsters() {
+        return monsters;
+    }
 }
