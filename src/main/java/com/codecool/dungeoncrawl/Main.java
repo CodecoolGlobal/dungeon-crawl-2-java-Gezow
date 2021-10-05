@@ -4,6 +4,8 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -16,6 +18,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.LinkedList;
+
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
@@ -23,20 +27,35 @@ public class Main extends Application {
             9 * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    Label ammoLabel = new Label();
 
     public static void main(String[] args) {
         launch(args);
     }
 
+
+    public void monstersMove(){
+        LinkedList<Actor> monsters = MapLoader.getMonsters();
+        Player player = map.getPlayer();
+        MyRunnable monsterMove = new MyRunnable(monsters, player, this);
+        Thread thread = new Thread(monsterMove);
+        thread.start();
+
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+        monstersMove();
         GridPane ui = new GridPane();
-        ui.setPrefWidth(200);
+        ui.setPrefWidth(180);
         ui.setPadding(new Insets(10));
-
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
-
+        ui.add(new Label("Ammo: "), 0, 1);
+        ui.add(ammoLabel, 1, 1);
+        ui.add(new Label("Inventory: "), 0, 2);
+        ui.add(new Label("Guns: "), 0, 3);
+        ui.add(new Label("Artifacts: "), 0, 5);
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
@@ -49,6 +68,8 @@ public class Main extends Application {
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
+
+        refreshFX();
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
@@ -56,18 +77,22 @@ public class Main extends Application {
             case UP:
                 map.getPlayer().move(0, -1);
                 refresh();
+                refreshFX();
                 break;
             case DOWN:
                 map.getPlayer().move(0, 1);
                 refresh();
+                refreshFX();
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
                 refresh();
+                refreshFX();
                 break;
             case RIGHT:
                 map.getPlayer().move(1,0);
                 refresh();
+                refreshFX();
                 break;
         }
     }
@@ -92,6 +117,10 @@ public class Main extends Application {
                 }
             }
         }
+    }
+
+    public void refreshFX(){
         healthLabel.setText("" + map.getPlayer().getHealth());
+        ammoLabel.setText(map.getPlayer().getAmmo() + "/" + map.getPlayer().getMaxAmmo());
     }
 }
