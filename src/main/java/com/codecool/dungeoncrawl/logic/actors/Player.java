@@ -19,7 +19,6 @@ public class Player extends Actor {
         super(cell, 10, 1);
         ammo = 10;
         maxAmmo = 50;
-        guns.put("pistol", new Pistol());
     }
 
     public String getTileName() {
@@ -47,7 +46,12 @@ public class Player extends Actor {
     }
 
     public void setAmmo(int ammo) {
-        this.ammo = ammo;
+        this.ammo = Math.min(ammo, maxAmmo);
+    }
+
+    @Override
+    public void setHealth(int health){
+        this.health = Math.min(health, maxHealth);
     }
 
     public int getMaxAmmo() {
