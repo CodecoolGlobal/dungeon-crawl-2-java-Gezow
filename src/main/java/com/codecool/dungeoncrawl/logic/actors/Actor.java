@@ -59,4 +59,20 @@ public abstract class Actor implements Drawable {
     public int getY() {
         return cell.getY();
     }
+
+    public boolean canAttackPlayer(){
+        for (Direction direction : Direction.values()) {
+            try {
+                if (Objects.equals(this.getCell().getNeighbor(direction.getX(), direction.getY()).getActor().getTileName(), "player")) {
+                    return true;
+                }
+            }catch (NullPointerException ignored){
+            }
+        }
+        return false;
+    }
+
+    public void attack(Actor target){
+        target.setHealth(target.getHealth()-this.meleeDamage);
+    }
 }
