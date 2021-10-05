@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -33,8 +34,9 @@ public class Main extends Application {
 
     public void monstersMove(){
         LinkedList<Actor> monsters = MapLoader.getMonsters();
-        MyRunnable monstermove = new MyRunnable(monsters, this);
-        Thread thread = new Thread(monstermove);
+        Player player = map.getPlayer();
+        MyRunnable monsterMove = new MyRunnable(monsters, player, this);
+        Thread thread = new Thread(monsterMove);
         thread.start();
 
     }
