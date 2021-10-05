@@ -1,8 +1,6 @@
 package com.codecool.dungeoncrawl;
 
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.application.Application;
@@ -26,6 +24,7 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    AudioFilePlayer audioFilePlayer = new AudioFilePlayer();
     Label ammoLabel = new Label();
 
     public static void main(String[] args) {
@@ -42,8 +41,16 @@ public class Main extends Application {
 
     }
 
+    public void musicPlayer(){
+        MusicPlayer musicPlayer = new MusicPlayer(audioFilePlayer);
+        Thread thread1 = new Thread(musicPlayer);
+        thread1.start();
+    }
+
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+        musicPlayer();
         monstersMove();
         GridPane ui = new GridPane();
         ui.setPrefWidth(180);
@@ -95,7 +102,6 @@ public class Main extends Application {
                 break;
         }
     }
-
     public void refresh() {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
