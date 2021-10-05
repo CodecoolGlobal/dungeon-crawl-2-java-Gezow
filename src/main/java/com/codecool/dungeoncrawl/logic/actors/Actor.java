@@ -9,12 +9,14 @@ import java.util.Objects;
 
 public abstract class Actor implements Drawable {
     private Cell cell;
-    private int health = 10;
-    private int meleeDamage = 1;
+    private int health;
+    private int meleeDamage;
 
-    public Actor(Cell cell) {
+    public Actor(Cell cell, int health, int meleeDamage) {
         this.cell = cell;
         this.cell.setActor(this);
+        this.health = health;
+        this.meleeDamage = meleeDamage;
     }
 
     public void move(int dx, int dy) {
