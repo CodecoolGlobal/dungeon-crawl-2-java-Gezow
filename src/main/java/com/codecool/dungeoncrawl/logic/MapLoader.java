@@ -35,10 +35,10 @@ public class MapLoader {
                         case '.':
                             cell.setType(CellType.FLOOR);
                             break;
-                        case 's':
+                        case 'w':
                             cell.setType(CellType.FLOOR);
-                            Walker skel = new Walker(cell);
-                            monsters.add(skel);
+                            Walker walker = new Walker(cell);
+                            monsters.add(walker);
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
