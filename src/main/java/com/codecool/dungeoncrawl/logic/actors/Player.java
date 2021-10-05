@@ -8,13 +8,15 @@ import com.codecool.dungeoncrawl.logic.items.guns.Pistol;
 import java.util.HashMap;
 
 public class Player extends Actor {
+
     private final int maxHealth = 50;
     private int ammo;
     private int maxAmmo;
     private HashMap<String, Gun> guns = new HashMap<>();
     private HashMap<String, Collectible> collectibles = new HashMap<>();
+  
     public Player(Cell cell) {
-        super(cell);
+        super(cell, 10, 1);
         ammo = 10;
         maxAmmo = 50;
     }

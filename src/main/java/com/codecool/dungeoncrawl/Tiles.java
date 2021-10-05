@@ -26,8 +26,10 @@ public class Tiles {
         tileMap.put("empty", new Tile(0, 0));
         tileMap.put("wall", new Tile(10, 17));
         tileMap.put("floor", new Tile(2, 0));
-        tileMap.put("player", new Tile(27, 0));
-        tileMap.put("skeleton", new Tile(29, 6));
+        tileMap.put("player", new Tile(27, 3));
+        tileMap.put("walker", new Tile(28, 6));
+        tileMap.put("runner", new Tile(27, 6));
+        tileMap.put("bulky", new Tile(30, 6));
         tileMap.put("medkit10", new Tile(12, 26));
         tileMap.put("medkit50", new Tile(11, 26));
         tileMap.put("ammo", new Tile(12, 31));
