@@ -1,8 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.actors.Actor;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Walker;
+import com.codecool.dungeoncrawl.logic.actors.*;
 
 import java.io.InputStream;
 import java.util.LinkedList;
@@ -39,6 +37,16 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             Walker walker = new Walker(cell);
                             monsters.add(walker);
+                            break;
+                        case 'r':
+                            cell.setType(CellType.FLOOR);
+                            Runner runner = new Runner(cell);
+                            monsters.add(runner);
+                            break;
+                        case 'b':
+                            cell.setType(CellType.FLOOR);
+                            Bulky bulky = new Bulky(cell);
+                            monsters.add(bulky);
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
