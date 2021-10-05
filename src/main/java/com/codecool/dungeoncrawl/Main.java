@@ -27,6 +27,7 @@ public class Main extends Application {
             9 * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    AudioFilePlayer audioFilePlayer = new AudioFilePlayer();
     Label ammoLabel = new Label();
 
     public static void main(String[] args) {
@@ -43,8 +44,16 @@ public class Main extends Application {
 
     }
 
+    public void musicPlayer(){
+        MusicPlayer musicPlayer = new MusicPlayer(audioFilePlayer);
+        Thread thread1 = new Thread(musicPlayer);
+        thread1.start();
+    }
+
+
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
+        musicPlayer();
         monstersMove();
         GridPane ui = new GridPane();
         ui.setPrefWidth(180);
