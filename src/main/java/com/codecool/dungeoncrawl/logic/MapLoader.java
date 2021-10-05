@@ -2,12 +2,10 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.actors.Walker;
 
 import java.io.InputStream;
-import java.lang.reflect.AccessibleObject;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Scanner;
 
 public class MapLoader {
@@ -39,7 +37,7 @@ public class MapLoader {
                             break;
                         case 's':
                             cell.setType(CellType.FLOOR);
-                            Skeleton skel = new Skeleton(cell);
+                            Walker skel = new Walker(cell);
                             monsters.add(skel);
                             break;
                         case '@':
