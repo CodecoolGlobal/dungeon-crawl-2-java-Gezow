@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public abstract class Actor implements Drawable {
     private Cell cell;
-    private int health = 10;
+    protected int health = 10;
 
     public Actor(Cell cell) {
         this.cell = cell;

@@ -44,12 +44,12 @@ public class Player extends Actor {
     }
 
     public void setAmmo(int ammo) {
-        if ( ammo > maxAmmo){
-            this.ammo = maxAmmo;
-        }
-        else{
-            this.ammo = ammo;
-        }
+        this.ammo = Math.min(ammo, maxAmmo);
+    }
+
+    @Override
+    public void setHealth(int health){
+        this.health = Math.min(health, maxHealth);
     }
 
     public int getMaxAmmo() {
