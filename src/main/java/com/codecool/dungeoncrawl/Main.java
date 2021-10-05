@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -34,8 +35,9 @@ public class Main extends Application {
 
     public void monstersMove(){
         LinkedList<Actor> monsters = MapLoader.getMonsters();
-        MyRunnable monstermove = new MyRunnable(monsters, this);
-        Thread thread = new Thread(monstermove);
+        Player player = map.getPlayer();
+        MyRunnable monsterMove = new MyRunnable(monsters, player, this);
+        Thread thread = new Thread(monsterMove);
         thread.start();
 
     }
@@ -65,6 +67,8 @@ public class Main extends Application {
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
+
+        refreshFX();
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
@@ -72,18 +76,22 @@ public class Main extends Application {
             case UP:
                 map.getPlayer().move(0, -1);
                 refresh();
+                refreshFX();
                 break;
             case DOWN:
                 map.getPlayer().move(0, 1);
                 refresh();
+                refreshFX();
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
                 refresh();
+                refreshFX();
                 break;
             case RIGHT:
                 map.getPlayer().move(1,0);
                 refresh();
+                refreshFX();
                 break;
         }
     }
@@ -101,6 +109,9 @@ public class Main extends Application {
                 }
             }
         }
+    }
+
+    public void refreshFX(){
         healthLabel.setText("" + map.getPlayer().getHealth());
         ammoLabel.setText(map.getPlayer().getAmmo() + "/" + map.getPlayer().getMaxAmmo());
     }
