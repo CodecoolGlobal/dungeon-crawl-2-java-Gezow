@@ -28,6 +28,19 @@ public class Tiles {
         tileMap.put("floor", new Tile(2, 0));
         tileMap.put("player", new Tile(27, 0));
         tileMap.put("skeleton", new Tile(29, 6));
+        tileMap.put("medkit10", new Tile(12, 26));
+        tileMap.put("medkit50", new Tile(11, 26));
+        tileMap.put("ammo", new Tile(12, 31));
+        tileMap.put("key", new Tile(18,23));
+        tileMap.put("crystal", new Tile(18, 22));
+        tileMap.put("rocket0", new Tile(15, 23));
+        tileMap.put("rocket1", new Tile(15, 22));
+        tileMap.put("rocket2", new Tile(15, 21));
+        tileMap.put("rocket3", new Tile(15, 20));
+        tileMap.put("pistol", new Tile(6, 31));
+        tileMap.put("shotgun", new Tile(7, 31));
+        tileMap.put("automaticrifle", new Tile(8, 31));
+        tileMap.put("bigfuckinggun", new Tile(11, 31));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {
