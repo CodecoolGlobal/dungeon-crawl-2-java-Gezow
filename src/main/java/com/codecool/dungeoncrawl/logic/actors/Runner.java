@@ -4,11 +4,8 @@ import com.codecool.dungeoncrawl.logic.Cell;
 
 public class Runner extends Actor {
 
-    private int health = 5;
-    private int meleeDamage = 1;
-
     public Runner(Cell cell) {
-        super(cell);
+        super(cell, 5, 2);
     }
 
     @Override

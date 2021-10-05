@@ -4,11 +4,8 @@ import com.codecool.dungeoncrawl.logic.Cell;
 
 public class Bulky extends Actor {
 
-    private int health = 30;
-    private int meleeDamage = 5;
-
     public Bulky(Cell cell) {
-        super(cell);
+        super(cell, 30, 5);
     }
 
     @Override
