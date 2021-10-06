@@ -41,6 +41,14 @@ public class Main extends Application {
 
     }
 
+    public void soundEffects(String item){
+        switch (item){
+            case "bfg":
+                audioFilePlayer.play("src/main/resources/automaticrifle.wav");
+                break;
+        }
+    }
+
     public void musicPlayer(){
         MusicPlayer musicPlayer = new MusicPlayer(audioFilePlayer);
         Thread thread1 = new Thread(musicPlayer);
