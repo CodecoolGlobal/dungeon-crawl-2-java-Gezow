@@ -9,7 +9,7 @@ import com.codecool.dungeoncrawl.logic.items.guns.Pistol;
 import java.util.HashMap;
 import java.util.LinkedList;
 public class Player extends Actor {
-    private final int maxHealth = 50;
+    private int maxHealth = 50;
     private Inventory inventory;
     private LinkedList<Bullet> bullets = new LinkedList<>();
 
@@ -48,5 +48,13 @@ public class Player extends Actor {
 
     public void setBullets(LinkedList<Bullet> bullets) {
         this.bullets = bullets;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
     }
 }
