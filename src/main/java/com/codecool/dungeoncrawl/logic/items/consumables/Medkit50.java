@@ -10,6 +10,6 @@ public class Medkit50 extends Consumable {
 
     @Override
     public String getTileName() {
-        return "Medkit50";
+        return "medkit50";
     }
 }

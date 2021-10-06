@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Direction;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -24,8 +25,10 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
-    AudioFilePlayer audioFilePlayer = new AudioFilePlayer();
     Label ammoLabel = new Label();
+    Label gunLabel = new Label();
+    Label itemLabel = new Label();
+    AudioFilePlayer audioFilePlayer = new AudioFilePlayer();
 
     public static void main(String[] args) {
         launch(args);
@@ -39,6 +42,14 @@ public class Main extends Application {
         Thread thread = new Thread(monsterMove);
         thread.start();
 
+    }
+
+    public void soundEffects(String item){
+        switch (item){
+            case "bfg":
+                audioFilePlayer.play("src/main/resources/automaticrifle.wav");
+                break;
+        }
     }
 
     public void musicPlayer(){
@@ -61,7 +72,9 @@ public class Main extends Application {
         ui.add(ammoLabel, 1, 1);
         ui.add(new Label("Inventory: "), 0, 2);
         ui.add(new Label("Guns: "), 0, 3);
-        ui.add(new Label("Artifacts: "), 0, 5);
+        ui.add(gunLabel, 1, 3);
+        ui.add(new Label("Artifacts: "), 0, 4);
+        ui.add(itemLabel, 1, 4);
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
@@ -100,6 +113,32 @@ public class Main extends Application {
                 refresh();
                 refreshFX();
                 break;
+            case E:
+                if(map.getPlayer().getCell().getItem() != null){
+                    map.getPlayer().getCell().getItem().pickUp(map.getPlayer());
+                    refresh();
+                    refreshFX();
+                }
+            case W:
+                map.getPlayer().shoot(Direction.NORTH);
+                refresh();
+                refreshFX();
+                break;
+            case S:
+                map.getPlayer().shoot(Direction.SOUTH);
+                refresh();
+                refreshFX();
+                break;
+            case A:
+                map.getPlayer().shoot(Direction.WEST);
+                refresh();
+                refreshFX();
+                break;
+            case D:
+                map.getPlayer().shoot(Direction.EAST);
+                refresh();
+                refreshFX();
+                break;
         }
     }
     public void refresh() {
@@ -110,7 +149,11 @@ public class Main extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
-                } else {
+                }
+                else if (cell.getItem() != null){
+                    Tiles.drawTile(context, cell.getItem(), x, y);
+                }
+                else {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
@@ -119,6 +162,16 @@ public class Main extends Application {
 
     public void refreshFX(){
         healthLabel.setText("" + map.getPlayer().getHealth());
-        ammoLabel.setText(map.getPlayer().getAmmo() + "/" + map.getPlayer().getMaxAmmo());
+        ammoLabel.setText(map.getPlayer().getInventory().getAmmo() + "/" + map.getPlayer().getInventory().getMaxAmmo());
+        StringBuilder guns = new StringBuilder();
+        for(String gun: map.getPlayer().getInventory().getGuns().keySet()){
+            guns.append(gun).append(", ");
+        }
+        gunLabel.setText(guns.toString());
+        StringBuilder items = new StringBuilder();
+        for(String item: map.getPlayer().getInventory().getCollectibles().keySet()){
+            items.append(item).append(", ");
+        }
+        itemLabel.setText(items.toString());
     }
 }
