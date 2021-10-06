@@ -119,6 +119,6 @@ public class Main extends Application {
 
     public void refreshFX(){
         healthLabel.setText("" + map.getPlayer().getHealth());
-        ammoLabel.setText(map.getPlayer().getAmmo() + "/" + map.getPlayer().getMaxAmmo());
+        ammoLabel.setText(map.getPlayer().getInventory().getAmmo() + "/" + map.getPlayer().getInventory().getMaxAmmo());
     }
 }

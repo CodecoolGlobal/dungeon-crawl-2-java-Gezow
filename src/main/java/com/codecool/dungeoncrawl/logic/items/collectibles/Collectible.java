@@ -9,8 +9,8 @@ public abstract class Collectible extends Item {
 
     @Override
     public void pickUp(Player player){
-        player.getCollectibles().put(this.getTileName(), this);
-        counter = player.getCollectibles().size();
+        player.getInventory().getCollectibles().put(this.getTileName(), this);
+        counter = player.getInventory().getCollectibles().size();
     }
 
     public Collectible(Cell cell) {

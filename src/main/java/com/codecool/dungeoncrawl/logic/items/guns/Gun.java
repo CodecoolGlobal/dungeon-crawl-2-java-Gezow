@@ -11,7 +11,7 @@ public abstract class Gun extends Item {
 
     @Override
     public void pickUp(Player player) {
-        player.getGuns().put(this.getTileName(), this);
+        player.getInventory().getGuns().put(this.getTileName(), this);
     }
 
     public void shoot(){}
