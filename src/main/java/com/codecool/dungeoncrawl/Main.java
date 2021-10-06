@@ -90,22 +90,22 @@ public class Main extends Application {
     private void onKeyReleased(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                map.getPlayer().move(0, -1);
+                map.getPlayer().move(Direction.NORTH.getX(), Direction.NORTH.getY());
                 refresh();
                 refreshFX();
                 break;
             case DOWN:
-                map.getPlayer().move(0, 1);
+                map.getPlayer().move(Direction.SOUTH.getX(), Direction.SOUTH.getY());
                 refresh();
                 refreshFX();
                 break;
             case LEFT:
-                map.getPlayer().move(-1, 0);
+                map.getPlayer().move(Direction.WEST.getX(), Direction.WEST.getY());
                 refresh();
                 refreshFX();
                 break;
             case RIGHT:
-                map.getPlayer().move(1,0);
+                map.getPlayer().move(Direction.EAST.getX(), Direction.EAST.getY());
                 refresh();
                 refreshFX();
                 break;
