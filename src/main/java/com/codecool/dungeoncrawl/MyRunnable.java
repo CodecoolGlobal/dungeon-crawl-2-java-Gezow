@@ -38,7 +38,7 @@ public class MyRunnable implements Runnable {
             }
             main.refresh();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
