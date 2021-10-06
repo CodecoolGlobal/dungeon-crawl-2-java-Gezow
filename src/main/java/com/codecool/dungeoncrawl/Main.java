@@ -140,11 +140,6 @@ public class Main extends Application {
                 refreshFX();
                 break;
         }
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
     public void refresh() {
         context.setFill(Color.BLACK);
@@ -154,6 +149,9 @@ public class Main extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
+                }
+                else if (cell.getBullet() != null){
+                    Tiles.drawTile(context, cell.getBullet(), x, y);
                 }
                 else if (cell.getItem() != null){
                     Tiles.drawTile(context, cell.getItem(), x, y);
