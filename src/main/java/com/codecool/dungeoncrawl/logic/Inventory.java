@@ -16,8 +16,6 @@ public class Inventory {
     public Inventory(int ammo, int maxAmmo){
         this.ammo = ammo;
         this.maxAmmo = maxAmmo;
-        activeGun = new Pistol(null);
-        guns.put("pistol", activeGun);
     }
 
     public int getAmmo() {
