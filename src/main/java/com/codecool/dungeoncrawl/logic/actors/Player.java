@@ -36,7 +36,7 @@ public class Player extends Actor {
     }
 
     public void shoot(Direction direction) {
-        Bullet bullet = new Bullet(this.getCell(), direction, 5);
+        inventory.getActiveGun().shoot(this.getCell(), direction);
         // TODO: 05/10/2021 change damage when change weapons
     }
 }
