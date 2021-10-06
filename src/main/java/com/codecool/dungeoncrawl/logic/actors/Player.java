@@ -6,7 +6,7 @@ import com.codecool.dungeoncrawl.logic.items.guns.Gun;
 import com.codecool.dungeoncrawl.logic.items.guns.Pistol;
 
 import java.util.HashMap;
-
+import java.util.LinkedList;
 public class Player extends Actor {
 
     private final int maxHealth = 50;
@@ -14,7 +14,8 @@ public class Player extends Actor {
     private int maxAmmo;
     private HashMap<String, Gun> guns = new HashMap<>();
     private HashMap<String, Collectible> collectibles = new HashMap<>();
-  
+    private LinkedList<Bullet> bullets = new LinkedList<>();
+
     public Player(Cell cell) {
         super(cell, 10, 1);
         ammo = 10;
@@ -60,5 +61,19 @@ public class Player extends Actor {
 
     public void setMaxAmmo(int maxAmmo) {
         this.maxAmmo = maxAmmo;
+    }
+
+    public void shoot(Direction direction){
+        Bullet bullet = new Bullet(this.getCell(), direction, 5);
+        bullets.add(bullet);
+        // TODO: 05/10/2021 change damage when change weapons
+    }
+
+    public LinkedList<Bullet> getBullets() {
+        return bullets;
+    }
+
+    public void setBullets(LinkedList<Bullet> bullets) {
+        this.bullets = bullets;
     }
 }
