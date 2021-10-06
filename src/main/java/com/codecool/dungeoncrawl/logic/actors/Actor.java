@@ -19,6 +19,10 @@ public abstract class Actor implements Drawable {
         this.meleeDamage = meleeDamage;
     }
 
+    public Actor() {
+
+    }
+
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
         if(Objects.equals(nextCell.getTileName(), CellType.FLOOR.getTileName()) && nextCell.getActor() == null) {
