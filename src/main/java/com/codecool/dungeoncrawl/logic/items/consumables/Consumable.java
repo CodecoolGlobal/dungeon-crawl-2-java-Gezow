@@ -20,5 +20,6 @@ public abstract class Consumable extends Item {
         else{
             player.setHealth(player.getHealth() + this.value);
         }
+        this.getCell().setItem(null);
     }
 }

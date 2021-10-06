@@ -11,6 +11,7 @@ public abstract class Collectible extends Item {
     public void pickUp(Player player){
         player.getInventory().getCollectibles().put(this.getTileName(), this);
         counter = player.getInventory().getCollectibles().size();
+        this.getCell().setItem(null);
     }
 
     public Collectible(Cell cell) {
