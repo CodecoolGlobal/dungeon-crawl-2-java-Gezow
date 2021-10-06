@@ -22,9 +22,7 @@ public class Bullet extends Actor {
         Cell nextCell = cell.getNeighbor(dx, dy);
         Actor target = nextCell.getActor();
         if (nextCell.hasActor()) {
-            if (Objects.equals(this.cell.getActor().getTileName(), "bullet")) {
-                this.cell.setActor(null);
-            }
+            deleteBulletTrace();
             target.setHealth(target.getHealth() - damage);
             this.setAlive(false);
             if (target.getHealth() <= 0) {
@@ -33,15 +31,20 @@ public class Bullet extends Actor {
             }
         } else if (Objects.equals(nextCell.getTileName(), CellType.WALL.getTileName())) {
             this.setAlive(false);
-            if (Objects.equals(this.cell.getActor().getTileName(), "bullet")) {
-                this.cell.setActor(null);
-            }
+            deleteBulletTrace();
         } else if (!Objects.equals(nextCell.getTileName(), CellType.WALL.getTileName()) && target == null) {
-            if (Objects.equals(this.cell.getActor().getTileName(), "bullet")) {
-                this.cell.setActor(null);
-            }
+            deleteBulletTrace();
             nextCell.setActor(this);
             cell = nextCell;
+        }
+    }
+
+    private void deleteBulletTrace() {
+        try {
+            if (Objects.equals(this.cell.getActor().getTileName(), "bullet")) {
+                this.cell.setActor(null);
+            }
+        } catch (NullPointerException ignored) {
         }
     }
 

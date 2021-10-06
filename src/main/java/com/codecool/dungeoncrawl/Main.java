@@ -130,6 +130,11 @@ public class Main extends Application {
                 refreshFX();
                 break;
         }
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
     public void refresh() {
         context.setFill(Color.BLACK);
