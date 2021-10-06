@@ -38,7 +38,7 @@ public class Main extends Application {
     }
 
 
-    public void monstersMove(){
+    public void monstersMove() {
         LinkedList<Actor> monsters = MapLoader.getMonsters();
         Player player = map.getPlayer();
         MyRunnable monsterMove = new MyRunnable(monsters, player, this);
@@ -47,15 +47,15 @@ public class Main extends Application {
 
     }
 
-    public void soundEffects(String item){
-        switch (item){
+    public void soundEffects(String item) {
+        switch (item) {
             case "bfg":
                 audioFilePlayer.play("src/main/resources/automaticrifle.wav");
                 break;
         }
     }
 
-    public void musicPlayer(){
+    public void musicPlayer() {
         MusicPlayer musicPlayer = new MusicPlayer(audioFilePlayer);
         Thread thread1 = new Thread(musicPlayer);
         thread1.start();
@@ -117,7 +117,7 @@ public class Main extends Application {
                 refreshFX();
                 break;
             case E:
-                if(map.getPlayer().getCell().getItem() != null){
+                if (map.getPlayer().getCell().getItem() != null) {
                     map.getPlayer().getCell().getItem().pickUp(map.getPlayer());
                     refresh();
                     refreshFX();
@@ -144,48 +144,43 @@ public class Main extends Application {
                 break;
         }
     }
+
     public void refresh() {
         int playerX = map.getPlayer().getX();
         int playerY = map.getPlayer().getY();
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = playerX-4; x < playerX+5; x++) {
-            for (int y = playerY-4; y < playerY+5; y++) {
+        for (int x = playerX - 4; x < playerX + 5; x++) {
+            for (int y = playerY - 4; y < playerY + 5; y++) {
                 Cell cell;
                 try {
                     cell = map.getCell(x, y);
-                }catch (IndexOutOfBoundsException IOBcamera){
+                } catch (IndexOutOfBoundsException IOBcamera) {
                     cell = new Cell(CellType.EMPTY);
                 }
                 if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), x-playerX+4, y-playerY+3);
+                    Tiles.drawTile(context, cell.getActor(), x - playerX + 4, y - playerY + 3);
+                } else if (cell.getBullet() != null) {
+                    Tiles.drawTile(context, cell.getBullet(), x - playerX + 4, y - playerY + 3);
+                } else if (cell.getItem() != null) {
+                    Tiles.drawTile(context, cell.getItem(), x - playerX + 4, y - playerY + 3);
                 } else {
-                    Tiles.drawTile(context, cell, x-playerX+4, y-playerY+3);
-                    Tiles.drawTile(context, cell.getActor(), x, y);
-                }
-                else if (cell.getBullet() != null){
-                    Tiles.drawTile(context, cell.getBullet(), x, y);
-                }
-                else if (cell.getItem() != null){
-                    Tiles.drawTile(context, cell.getItem(), x, y);
-                }
-                else {
-                    Tiles.drawTile(context, cell, x, y);
+                    Tiles.drawTile(context, cell, x - playerX + 4, y - playerY + 3);
                 }
             }
         }
     }
 
-    public void refreshFX(){
+    public void refreshFX() {
         healthLabel.setText("" + map.getPlayer().getHealth());
         ammoLabel.setText(map.getPlayer().getInventory().getAmmo() + "/" + map.getPlayer().getInventory().getMaxAmmo());
         StringBuilder guns = new StringBuilder();
-        for(String gun: map.getPlayer().getInventory().getGuns().keySet()){
+        for (String gun : map.getPlayer().getInventory().getGuns().keySet()) {
             guns.append(gun).append(", ");
         }
         gunLabel.setText(guns.toString());
         StringBuilder items = new StringBuilder();
-        for(String item: map.getPlayer().getInventory().getCollectibles().keySet()){
+        for (String item : map.getPlayer().getInventory().getCollectibles().keySet()) {
             items.append(item).append(", ");
         }
         itemLabel.setText(items.toString());
