@@ -79,7 +79,7 @@ public class Main extends Application {
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         refresh();
-        scene.setOnKeyPressed(this::onKeyPressed);
+        scene.setOnKeyReleased(this::onKeyReleased);
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
@@ -87,7 +87,7 @@ public class Main extends Application {
         refreshFX();
     }
 
-    private void onKeyPressed(KeyEvent keyEvent) {
+    private void onKeyReleased(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
@@ -129,6 +129,10 @@ public class Main extends Application {
                 refresh();
                 refreshFX();
                 break;
+        }
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ignored) {
         }
     }
     public void refresh() {
