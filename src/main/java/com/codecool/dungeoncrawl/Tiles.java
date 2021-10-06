@@ -43,6 +43,7 @@ public class Tiles {
         tileMap.put("shotgun", new Tile(7, 31));
         tileMap.put("automaticrifle", new Tile(8, 31));
         tileMap.put("bigfuckinggun", new Tile(11, 31));
+        tileMap.put("bullet", new Tile(27, 21));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {
