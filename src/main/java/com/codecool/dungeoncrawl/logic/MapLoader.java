@@ -95,6 +95,10 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             Rocket rocket = new Rocket(cell);
                             break;
+                        case 'S':
+                            cell.setType(CellType.FLOOR);
+                            Shield shield = new Shield(cell);
+                            break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }

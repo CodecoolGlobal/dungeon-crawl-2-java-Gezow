@@ -44,6 +44,7 @@ public class Tiles {
         tileMap.put("automaticrifle", new Tile(8, 31));
         tileMap.put("bfg", new Tile(11, 31));
         tileMap.put("bullet", new Tile(27, 21));
+        tileMap.put("shield", new Tile(23, 2));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {
