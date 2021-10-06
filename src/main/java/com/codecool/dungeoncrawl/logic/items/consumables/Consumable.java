@@ -17,6 +17,9 @@ public abstract class Consumable extends Item {
         if(this instanceof Ammo){
             player.getInventory().setAmmo(player.getInventory().getAmmo() + this.value);
         }
+        else if (this instanceof Shield){
+            player.setMaxHealth(player.getMaxHealth() + this.value);
+        }
         else{
             player.setHealth(player.getHealth() + this.value);
         }
