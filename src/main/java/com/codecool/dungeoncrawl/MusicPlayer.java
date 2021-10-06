@@ -10,7 +10,7 @@ public class MusicPlayer implements Runnable{
     @Override
     public void run() {
         while(true) {
-            audioFilePlayer.play("/home/troll/TroLL_Codes/OOP/third_week/dungeon-crawl-1-java-Gezow/src/main/resources/Doom.wav");
+            audioFilePlayer.play("src/main/resources/Doom.wav");
         }
     }
 }
