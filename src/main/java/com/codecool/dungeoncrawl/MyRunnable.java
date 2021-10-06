@@ -21,7 +21,7 @@ public class MyRunnable implements Runnable {
     @Override
     public void run() {
         while (true) {
-            LinkedList<Bullet> bullets = player.getBullets();
+            LinkedList<Bullet> bullets = player.getInventory().getActiveGun().getBullets();
             bullets.removeIf(bullet -> !bullet.isAlive());
             for (Bullet bullet : bullets) {
                 bullet.move(bullet.getDirection().getX(), bullet.getDirection().getY());

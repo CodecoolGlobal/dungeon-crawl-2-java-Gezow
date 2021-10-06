@@ -11,7 +11,6 @@ import java.util.LinkedList;
 public class Player extends Actor {
     private final int maxHealth = 50;
     private Inventory inventory;
-    private LinkedList<Bullet> bullets = new LinkedList<>();
 
 
     public Player(Cell cell) {
@@ -24,7 +23,7 @@ public class Player extends Actor {
     }
 
     @Override
-    public void setHealth(int health){
+    public void setHealth(int health) {
         this.health = Math.min(health, maxHealth);
     }
 
@@ -36,17 +35,8 @@ public class Player extends Actor {
         this.inventory = inventory;
     }
 
-    public void shoot(Direction direction){
+    public void shoot(Direction direction) {
         Bullet bullet = new Bullet(this.getCell(), direction, 5);
-        bullets.add(bullet);
         // TODO: 05/10/2021 change damage when change weapons
-    }
-
-    public LinkedList<Bullet> getBullets() {
-        return bullets;
-    }
-
-    public void setBullets(LinkedList<Bullet> bullets) {
-        this.bullets = bullets;
     }
 }
