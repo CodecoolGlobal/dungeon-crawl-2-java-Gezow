@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Direction;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -39,6 +40,14 @@ public class Main extends Application {
         Thread thread = new Thread(monsterMove);
         thread.start();
 
+    }
+
+    public void soundEffects(String item){
+        switch (item){
+            case "bfg":
+                audioFilePlayer.play("src/main/resources/automaticrifle.wav");
+                break;
+        }
     }
 
     public void musicPlayer(){
@@ -97,6 +106,26 @@ public class Main extends Application {
                 break;
             case RIGHT:
                 map.getPlayer().move(1,0);
+                refresh();
+                refreshFX();
+                break;
+            case W:
+                map.getPlayer().shoot(Direction.NORTH);
+                refresh();
+                refreshFX();
+                break;
+            case S:
+                map.getPlayer().shoot(Direction.SOUTH);
+                refresh();
+                refreshFX();
+                break;
+            case A:
+                map.getPlayer().shoot(Direction.WEST);
+                refresh();
+                refreshFX();
+                break;
+            case D:
+                map.getPlayer().shoot(Direction.EAST);
                 refresh();
                 refreshFX();
                 break;

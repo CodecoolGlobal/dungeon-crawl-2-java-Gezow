@@ -63,4 +63,7 @@ public class Cell implements Drawable {
             item.setCell(this);
         }
     }
+    public boolean hasActor(){
+        return actor != null;
+    }
 }
