@@ -4,10 +4,10 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
 
-import java.util.LinkedList;
 import java.util.Objects;
 
 public abstract class Actor implements Drawable {
+    private boolean alive = true;
     private Cell cell;
     protected int health;
     private int meleeDamage;
@@ -74,5 +74,13 @@ public abstract class Actor implements Drawable {
 
     public void attack(Actor target){
         target.setHealth(target.getHealth()-this.meleeDamage);
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 }
