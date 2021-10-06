@@ -22,8 +22,10 @@ public class Bullet extends Actor {
         Cell nextCell = cell.getNeighbor(dx, dy);
         Actor target = nextCell.getActor();
         if (nextCell.hasActor()) {
+            if (Objects.equals(this.cell.getActor().getTileName(), "bullet")) {
+                this.cell.setActor(null);
+            }
             target.setHealth(target.getHealth() - damage);
-            cell.setActor(null);
             this.setAlive(false);
             if (target.getHealth() <= 0) {
                 target.setAlive(false);
