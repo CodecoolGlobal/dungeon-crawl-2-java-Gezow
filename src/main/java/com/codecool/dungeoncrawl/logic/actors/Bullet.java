@@ -22,8 +22,8 @@ public class Bullet extends Actor {
         Cell nextCell = cell.getNeighbor(dx, dy);
         Actor target = nextCell.getActor();
         if (nextCell.hasActor()) {
+            cell.setBullet(null);
             target.setHealth(target.getHealth() - damage);
-            cell.setActor(null);
             this.setAlive(false);
             if (target.getHealth() <= 0) {
                 target.setAlive(false);
@@ -31,14 +31,10 @@ public class Bullet extends Actor {
             }
         } else if (Objects.equals(nextCell.getTileName(), CellType.WALL.getTileName())) {
             this.setAlive(false);
-            if (Objects.equals(this.cell.getActor().getTileName(), "bullet")) {
-                this.cell.setActor(null);
-            }
+            cell.setBullet(null);
         } else if (!Objects.equals(nextCell.getTileName(), CellType.WALL.getTileName()) && target == null) {
-            if (Objects.equals(this.cell.getActor().getTileName(), "bullet")) {
-                this.cell.setActor(null);
-            }
-            nextCell.setActor(this);
+            cell.setBullet(null);
+            nextCell.setBullet(this);
             cell = nextCell;
         }
     }
