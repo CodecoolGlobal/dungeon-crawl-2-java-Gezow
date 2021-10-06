@@ -9,7 +9,7 @@ import com.codecool.dungeoncrawl.logic.items.guns.Pistol;
 import java.util.HashMap;
 import java.util.LinkedList;
 public class Player extends Actor {
-    private final int maxHealth = 50;
+    private int maxHealth = 50;
     private Inventory inventory;
 
 
@@ -38,5 +38,13 @@ public class Player extends Actor {
     public void shoot(Direction direction) {
         inventory.getActiveGun().shoot(this.getCell(), direction);
         // TODO: 05/10/2021 change damage when change weapons
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
     }
 }
