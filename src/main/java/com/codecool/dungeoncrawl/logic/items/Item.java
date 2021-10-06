@@ -8,7 +8,7 @@ public abstract class Item implements Drawable {
     private Cell cell;
 
     public Item(Cell cell){
-        this.cell = cell;
+        cell.setItem(this);
     }
 
     public void pickUp(Player player){
