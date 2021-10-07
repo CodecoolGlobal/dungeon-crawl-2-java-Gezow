@@ -74,10 +74,8 @@ public class Main extends Application {
         GridPane ui = new GridPane();
         ui.setPrefWidth(180);
         ui.setPadding(new Insets(10));
-        ui.add(new Label("Health: "), 0, 0);
-        ui.add(healthLabel, 1, 0);
-        ui.add(new Label("Ammo: "), 0, 1);
-        ui.add(ammoLabel, 1, 1);
+        ui.add(healthLabel, 0, 0);
+        ui.add(ammoLabel, 0, 1);
         ui.add(new Label("Inventory: "), 0, 2);
         ui.add(new Label("Guns: "), 0, 3);
         ui.add(gunCanvas,0 , 4);
@@ -184,8 +182,8 @@ public class Main extends Application {
     }
 
     public void refreshFX(){
-        healthLabel.setText("" + map.getPlayer().getHealth());
-        ammoLabel.setText(map.getPlayer().getInventory().getAmmo() + "/" + map.getPlayer().getInventory().getMaxAmmo());
+        healthLabel.setText("Health: " + map.getPlayer().getHealth() + "/" + map.getPlayer().getMaxHealth());
+        ammoLabel.setText("Ammo: " + map.getPlayer().getInventory().getAmmo() + "/" + map.getPlayer().getInventory().getMaxAmmo());
         for(int i = 0; i < map.getPlayer().getInventory().getGuns().size(); i++){
             Gun gun = map.getPlayer().getInventory().getGuns().get(map.getPlayer().getInventory().getGuns().keySet().toArray()[i]);
             Tiles.drawTile(gunContext, gun, i, 0);
