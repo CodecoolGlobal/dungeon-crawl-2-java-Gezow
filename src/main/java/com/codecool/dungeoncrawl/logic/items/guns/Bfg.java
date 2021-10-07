@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic.items.guns;
 
 import com.codecool.dungeoncrawl.AudioFilePlayer;
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.Settings;
 import com.codecool.dungeoncrawl.logic.actors.Direction;
 
 public class Bfg extends Gun{
@@ -18,7 +19,7 @@ public class Bfg extends Gun{
     @Override
     public void shoot(Cell cell, Direction direction) {
         for(Direction value: Direction.values()){
-            super.shoot(cell, value, 20);
+            super.shoot(cell, value, Settings.BFG_DAMAGE.getValue());
         }
     }
 
