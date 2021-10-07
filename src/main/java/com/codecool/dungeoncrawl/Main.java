@@ -49,7 +49,7 @@ public class Main extends Application {
 
     public void monstersMove(LinkedList<Actor> monsters){
         Player player = map.getPlayer();
-        AutomaticMovement monsterMove = new AutomaticMovement(monsters, player, this);
+        AutomaticMovement monsterMove = new AutomaticMovement(monsters, player, this, audioFilePlayer);
         Thread thread = new Thread(monsterMove);
         thread.start();
 
@@ -210,7 +210,7 @@ public class Main extends Application {
         map.getPlayer().move(x, y);
         Cell nextCell = map.getPlayer().getCell().getNeighbor(x, y);
         Inventory inventory = map.getPlayer().getInventory();
-        if (nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().containsKey("key")){
+        if (nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().contains("key")){
             if(currentMap.equals("/map.txt")){
                 currentMap="/map2.txt";
                 map = MapLoader.loadMap(currentMap);
@@ -218,7 +218,7 @@ public class Main extends Application {
                 monstersMove(MapLoader.getMonsters());
             }
         }
-        else if(nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().containsKey("crystal")){
+        else if(nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().contains("crystal")){
             if(currentMap.equals("/map2.txt")){
                 currentMap="/map3.txt";
                 map = MapLoader.loadMap(currentMap);

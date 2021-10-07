@@ -11,11 +11,13 @@ public class AutomaticMovement implements Runnable {
     private LinkedList<Actor> monsters;
     private final Player player;
     private final Main main;
+    private final AudioFilePlayer audioFilePlayer;
 
-    public AutomaticMovement(LinkedList<Actor> monsters, Player player, Main main) {
+    public AutomaticMovement(LinkedList<Actor> monsters, Player player, Main main, AudioFilePlayer audioFilePlayer) {
         this.monsters = monsters;
         this.player = player;
         this.main = main;
+        this.audioFilePlayer = audioFilePlayer;
     }
 
     @Override
@@ -39,5 +41,7 @@ public class AutomaticMovement implements Runnable {
             }
 
         }
+        audioFilePlayer.play("src/main/resources/monsterkill.wav");
+
     }
 }
