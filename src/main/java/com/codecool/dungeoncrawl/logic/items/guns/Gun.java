@@ -15,4 +15,6 @@ public abstract class Gun extends Item {
     }
 
     public void shoot(){}
+
+    public void sound(){}
 }
