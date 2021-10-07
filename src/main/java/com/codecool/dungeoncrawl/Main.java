@@ -16,18 +16,16 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.stage.Stage;
 
-import java.io.InputStream;
 import java.util.LinkedList;
 
 public class Main extends Application {
     String currentMap = "/map.txt";
     GameMap map = MapLoader.loadMap(currentMap);
     Canvas canvas = new Canvas(
-            9 * Tiles.TILE_WIDTH,
-            9 * Tiles.TILE_WIDTH);
+            Settings.CANVAS_WIDTH.getValue() * Tiles.TILE_WIDTH,
+            Settings.CANVAS_HEIGHT.getValue() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label ammoLabel = new Label();
@@ -111,28 +109,18 @@ public class Main extends Application {
             gunCounter ++;
             bulletMove(map.getPlayer());
         }
-        int x;
-        int y;
         switch (keyEvent.getCode()) {
             case UP:
-                x = Direction.NORTH.getX();
-                y = Direction.NORTH.getY();
-                moveAction(x, y);
+                movePlayer(Direction.NORTH);
                 break;
             case DOWN:
-                x = Direction.SOUTH.getX();
-                y = Direction.SOUTH.getY();
-                moveAction(x, y);
+                movePlayer(Direction.SOUTH);
                 break;
             case LEFT:
-                x = Direction.WEST.getX();
-                y = Direction.WEST.getY();
-                moveAction(x, y);
+                movePlayer(Direction.WEST);
                 break;
             case RIGHT:
-                x = Direction.EAST.getX();
-                y = Direction.EAST.getY();
-                moveAction(x, y);
+                movePlayer(Direction.EAST);
                 break;
             case E:
                 if(map.getPlayer().getCell().getItem() != null){
@@ -140,20 +128,16 @@ public class Main extends Application {
                                     }
                 break;
             case W:
-                soundEffect(map.getPlayer().getInventory().getActiveGun());
-                map.getPlayer().shoot(Direction.NORTH);
+                playerShoot(Direction.NORTH);
                 break;
             case S:
-                soundEffect(map.getPlayer().getInventory().getActiveGun());
-                map.getPlayer().shoot(Direction.SOUTH);
+                playerShoot(Direction.SOUTH);
                 break;
             case A:
-                soundEffect(map.getPlayer().getInventory().getActiveGun());
-                map.getPlayer().shoot(Direction.WEST);
+                playerShoot(Direction.WEST);
                 break;
             case D:
-                soundEffect(map.getPlayer().getInventory().getActiveGun());
-                map.getPlayer().shoot(Direction.EAST);
+                playerShoot(Direction.EAST);
                 break;
             case M:
                 mapCheck();
@@ -168,6 +152,20 @@ public class Main extends Application {
         refresh();
         refreshFX();
     }
+
+    private void playerShoot(Direction direction) {
+        soundEffect(map.getPlayer().getInventory().getActiveGun());
+        map.getPlayer().shoot(direction);
+    }
+
+    private void movePlayer(Direction direction) {
+        int x;
+        int y;
+        x = direction.getX();
+        y = direction.getY();
+        moveAction(x, y);
+    }
+
     public void refresh() {
         int playerX = map.getPlayer().getX();
         int playerY = map.getPlayer().getY();
@@ -182,13 +180,13 @@ public class Main extends Application {
                     cell = new Cell(CellType.EMPTY);
                 }
                 if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), x - playerX + 4, y - playerY + 3);
+                    Tiles.drawTile(context, cell.getActor(), x - playerX + Settings.LINE_OF_SIGHT.getValue(), y - playerY + Settings.LINE_OF_SIGHT.getValue());
                 } else if (cell.getBullet() != null) {
-                    Tiles.drawTile(context, cell.getBullet(), x - playerX + 4, y - playerY + 3);
+                    Tiles.drawTile(context, cell.getBullet(), x - playerX + Settings.LINE_OF_SIGHT.getValue(), y - playerY + Settings.LINE_OF_SIGHT.getValue());
                 } else if (cell.getItem() != null) {
-                    Tiles.drawTile(context, cell.getItem(), x - playerX + 4, y - playerY + 3);
+                    Tiles.drawTile(context, cell.getItem(), x - playerX + Settings.LINE_OF_SIGHT.getValue(), y - playerY + Settings.LINE_OF_SIGHT.getValue());
                 } else {
-                    Tiles.drawTile(context, cell, x - playerX + 4, y - playerY + 3);
+                    Tiles.drawTile(context, cell, x - playerX + Settings.LINE_OF_SIGHT.getValue(), y - playerY + Settings.LINE_OF_SIGHT.getValue());
                 }
             }
         }

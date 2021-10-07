@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic.items.guns;
 
 import com.codecool.dungeoncrawl.AudioFilePlayer;
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.Settings;
 import com.codecool.dungeoncrawl.logic.actors.Direction;
 
 public class AutomaticRifle extends Gun{
@@ -17,7 +18,7 @@ public class AutomaticRifle extends Gun{
 
     @Override
     public void shoot(Cell cell, Direction direction) {
-        super.shoot(cell, direction, 8);
+        super.shoot(cell, direction, Settings.A_RIFLE_DAMAGE.getValue());
         switch (direction){
             case EAST:
             case WEST:
