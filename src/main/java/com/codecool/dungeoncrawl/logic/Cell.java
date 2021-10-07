@@ -9,9 +9,9 @@ public class Cell implements Drawable {
     private Item item;
     private Actor actor;
     private Bullet bullet;
-    private final GameMap gameMap;
-    private final int x;
-    private final int y;
+    private GameMap gameMap;
+    private int x;
+    private int y;
 
     Cell(GameMap gameMap, int x, int y, CellType type) {
         this.gameMap = gameMap;
