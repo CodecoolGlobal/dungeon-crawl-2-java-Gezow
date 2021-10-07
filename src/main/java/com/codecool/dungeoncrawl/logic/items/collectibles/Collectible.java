@@ -6,10 +6,12 @@ import com.codecool.dungeoncrawl.logic.items.Item;
 
 public abstract class Collectible extends Item {
     protected int counter = 0;
+    protected static int rocketParts = 0;
 
     @Override
     public void pickUp(Player player){
-        player.getInventory().getCollectibles().add(this);
+        if(this instanceof Rocket) player.getInventory().getRockets().add((Rocket) this);
+        else player.getInventory().getCollectibles().add(this);
         counter = player.getInventory().getCollectibles().size();
         this.getCell().setItem(null);
     }
