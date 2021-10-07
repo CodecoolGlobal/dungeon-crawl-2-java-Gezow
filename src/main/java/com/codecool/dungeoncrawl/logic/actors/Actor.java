@@ -23,6 +23,11 @@ public abstract class Actor implements Drawable {
 
     }
 
+    public boolean canMove(int dx, int dy) {
+        Cell nextCell = cell.getNeighbor(dx, dy);
+        return Objects.equals(nextCell.getTileName(), CellType.FLOOR.getTileName()) && nextCell.getActor() == null;
+    }
+
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
         if(Objects.equals(nextCell.getTileName(), CellType.FLOOR.getTileName()) && nextCell.getActor() == null) {
