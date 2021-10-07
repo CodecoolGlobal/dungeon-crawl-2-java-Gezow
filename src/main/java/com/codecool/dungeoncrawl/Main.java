@@ -157,8 +157,12 @@ public class Main extends Application {
     }
 
     private void playerShoot(Direction direction) {
-        soundEffect(map.getPlayer().getInventory().getActiveGun());
-        map.getPlayer().shoot(direction);
+        int ammo = map.getPlayer().getInventory().getAmmo();
+        if (ammo > 0) {
+            soundEffect(map.getPlayer().getInventory().getActiveGun());
+            map.getPlayer().shoot(direction);
+            map.getPlayer().getInventory().setAmmo(ammo-1);
+        }
     }
 
     private void movePlayer(Direction direction) {
