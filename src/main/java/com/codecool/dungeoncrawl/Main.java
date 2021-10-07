@@ -1,9 +1,6 @@
 package com.codecool.dungeoncrawl;
 
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Direction;
 import com.codecool.dungeoncrawl.logic.actors.Player;
@@ -18,6 +15,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.stage.Stage;
 
 import java.io.InputStream;
@@ -41,8 +39,7 @@ public class Main extends Application {
     }
 
 
-    public void monstersMove(){
-        LinkedList<Actor> monsters = MapLoader.getMonsters();
+    public void monstersMove(LinkedList<Actor> monsters){
         Player player = map.getPlayer();
         AutomaticMovement monsterMove = new AutomaticMovement(monsters, player, this);
         Thread thread = new Thread(monsterMove);
@@ -66,7 +63,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         musicPlayer();
-        monstersMove();
+        monstersMove(MapLoader.getMonsters());
         GridPane ui = new GridPane();
         ui.setPrefWidth(180);
         ui.setPadding(new Insets(10));
@@ -188,26 +185,35 @@ public class Main extends Application {
     public void moveAction (int x, int y){
         map.getPlayer().move(x, y);
         Cell nextCell = map.getPlayer().getCell().getNeighbor(x, y);
+        Inventory inventory = map.getPlayer().getInventory();
         if (nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().containsKey("key")){
             if(currentMap.equals("/map.txt")){
                 currentMap="/map2.txt";
                 map = MapLoader.loadMap(currentMap);
+                map.getPlayer().setInventory(inventory);
+                monstersMove(MapLoader.getMonsters());
             }
         }
         else if(nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().containsKey("crystal")){
             if(currentMap.equals("/map2.txt")){
                 currentMap="/map3.txt";
                 map = MapLoader.loadMap(currentMap);
+                map.getPlayer().setInventory(inventory);
+                monstersMove(MapLoader.getMonsters());
             }
         }
         else if(nextCell.getTileName().equals("portal")){
             if (currentMap.equals("/map.txt")){
                 currentMap="/mapTrap.txt";
                 map = MapLoader.loadMap(currentMap);
+                map.getPlayer().setInventory(inventory);
+                monstersMove(MapLoader.getMonsters());
             }
             else if (currentMap.equals("/mapTrap.txt")){
                 currentMap="/map2.txt";
                 map = MapLoader.loadMap(currentMap);
+                map.getPlayer().setInventory(inventory);
+                monstersMove(MapLoader.getMonsters());
             }
         }
         refresh();
