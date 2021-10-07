@@ -40,6 +40,11 @@ public class Bullet extends Actor {
     }
 
     @Override
+    public void autoMove(int frag, Player player) {
+        super.move(this.getDirection().getX(), this.getDirection().getY());
+    }
+
+    @Override
     public String getTileName() {
         return "bullet";
     }

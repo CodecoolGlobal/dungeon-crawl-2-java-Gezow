@@ -23,6 +23,11 @@ public class Player extends Actor {
     }
 
     @Override
+    public void autoMove(int frag, Player player) {
+
+    }
+
+    @Override
     public void setHealth(int health) {
         this.health = Math.min(health, maxHealth);
     }
