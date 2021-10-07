@@ -1,6 +1,9 @@
 package com.codecool.dungeoncrawl;
 
-import com.codecool.dungeoncrawl.logic.*;
+import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
+import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Direction;
 import com.codecool.dungeoncrawl.logic.actors.Player;
@@ -24,8 +27,8 @@ public class Main extends Application {
     String currentMap = "/map.txt";
     GameMap map = MapLoader.loadMap(currentMap);
     Canvas canvas = new Canvas(
-            map.getWidth() * Tiles.TILE_WIDTH,
-            map.getHeight() * Tiles.TILE_WIDTH);
+            9 * Tiles.TILE_WIDTH,
+            9 * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label ammoLabel = new Label();
@@ -119,8 +122,7 @@ public class Main extends Application {
             case E:
                 if(map.getPlayer().getCell().getItem() != null){
                     map.getPlayer().getCell().getItem().pickUp(map.getPlayer());
-                    break;
-                }
+                                    }
                 break;
             case W:
                 soundEffect(map.getPlayer().getInventory().getActiveGun());
@@ -143,22 +145,26 @@ public class Main extends Application {
         refreshFX();
     }
     public void refresh() {
+        int playerX = map.getPlayer().getX();
+        int playerY = map.getPlayer().getY();
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Cell cell = map.getCell(x, y);
+        for (int x = playerX - 4; x < playerX + 5; x++) {
+            for (int y = playerY - 4; y < playerY + 5; y++) {
+                Cell cell;
+                try {
+                    cell = map.getCell(x, y);
+                } catch (IndexOutOfBoundsException IOBcamera) {
+                    cell = new Cell(CellType.EMPTY);
+                }
                 if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), x, y);
-                }
-                else if (cell.getBullet() != null){
-                    Tiles.drawTile(context, cell.getBullet(), x, y);
-                }
-                else if (cell.getItem() != null){
-                    Tiles.drawTile(context, cell.getItem(), x, y);
-                }
-                else {
-                    Tiles.drawTile(context, cell, x, y);
+                    Tiles.drawTile(context, cell.getActor(), x - playerX + 4, y - playerY + 3);
+                } else if (cell.getBullet() != null) {
+                    Tiles.drawTile(context, cell.getBullet(), x - playerX + 4, y - playerY + 3);
+                } else if (cell.getItem() != null) {
+                    Tiles.drawTile(context, cell.getItem(), x - playerX + 4, y - playerY + 3);
+                } else {
+                    Tiles.drawTile(context, cell, x - playerX + 4, y - playerY + 3);
                 }
             }
         }
