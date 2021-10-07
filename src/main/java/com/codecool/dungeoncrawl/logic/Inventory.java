@@ -47,6 +47,8 @@ public class Inventory {
     }
 
     public void setActiveGun(Gun gun){
+        if(activeGun != null) activeGun.setActive(false);
         activeGun = gun;
+        activeGun.setActive(true);
     }
 }
