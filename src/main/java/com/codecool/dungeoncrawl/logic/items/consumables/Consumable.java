@@ -15,10 +15,14 @@ public abstract class Consumable extends Item {
     @Override
     public void pickUp(Player player) {
         if(this instanceof Ammo){
-            player.setAmmo(player.getAmmo() + this.value);
+            player.getInventory().setAmmo(player.getInventory().getAmmo() + this.value);
+        }
+        else if (this instanceof Shield){
+            player.setMaxHealth(player.getMaxHealth() + this.value);
         }
         else{
             player.setHealth(player.getHealth() + this.value);
         }
+        this.getCell().setItem(null);
     }
 }
