@@ -5,6 +5,8 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Direction;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.collectibles.Collectible;
+import com.codecool.dungeoncrawl.logic.items.collectibles.Crystal;
+import com.codecool.dungeoncrawl.logic.items.collectibles.Key;
 import com.codecool.dungeoncrawl.logic.items.guns.Gun;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -20,6 +22,7 @@ import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.stage.Stage;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Main extends Application {
@@ -41,6 +44,7 @@ public class Main extends Application {
     GraphicsContext itemContext = itemCanvas.getGraphicsContext2D();
     AudioFilePlayer audioFilePlayer = new AudioFilePlayer();
     AutomaticMovement monsterMove;
+    MusicPlayer musicPlayer;
     int gunCounter = 0;
 
     public static void main(String[] args) {
@@ -209,40 +213,29 @@ public class Main extends Application {
 
     public void moveAction (int x, int y){
         map.getPlayer().move(x, y);
+        ArrayList<Collectible> items = map.getPlayer().getInventory().getCollectibles();
         Cell nextCell = map.getPlayer().getCell().getNeighbor(x, y);
         Inventory inventory = map.getPlayer().getInventory();
-        if (nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().contains("key")){
-            if(currentMap.equals("/map.txt")){
-                currentMap="/map2.txt";
-                monsterMove.setMap(false);
-                map = MapLoader.loadMap(currentMap);
-                map.getPlayer().setInventory(inventory);
-                monstersMove(MapLoader.getMonsters());
+        if(currentMap.equals("/map.txt")){
+            if (nextCell.getTileName().equals("door") && hasKey(items)){
+                setupNewMap("/map2.txt",inventory);
+            }
+            else if (nextCell.getTileName().equals("portal")){
+                musicPlayer.setMap(false);
+                setupNewMap("/mapTrap.txt", inventory);
             }
         }
-        else if(nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().contains("crystal")){
-            if(currentMap.equals("/map2.txt")){
-                currentMap="/map3.txt";
-                monsterMove.setMap(false);
-                map = MapLoader.loadMap(currentMap);
-                map.getPlayer().setInventory(inventory);
-                monstersMove(MapLoader.getMonsters());
+        else if(currentMap.equals("/map2.txt")){
+            if(nextCell.getTileName().equals("door")){
+                int counter = crystalCounter(items);
+                if (counter == 3){
+                    setupNewMap("/map3.txt", inventory);
+                }
             }
         }
-        else if(nextCell.getTileName().equals("portal")){
-            if (currentMap.equals("/map.txt")){
-                currentMap="/mapTrap.txt";
-                monsterMove.setMap(false);
-                map = MapLoader.loadMap(currentMap);
-                map.getPlayer().setInventory(inventory);
-                monstersMove(MapLoader.getMonsters());
-            }
-            else if (currentMap.equals("/mapTrap.txt")){
-                currentMap="/map2.txt";
-                monsterMove.setMap(false);
-                map = MapLoader.loadMap(currentMap);
-                map.getPlayer().setInventory(inventory);
-                monstersMove(MapLoader.getMonsters());
+        else if(currentMap.equals("/mapTrap.txt")){
+            if (nextCell.getTileName().equals("door")) {
+                setupNewMap("/map2.txt", inventory);
             }
         }
         refresh();
@@ -263,5 +256,34 @@ public class Main extends Application {
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
+    }
+
+    private void setupNewMap(String newMap, Inventory inventory){
+        currentMap=newMap;
+        map = MapLoader.loadMap(currentMap);
+        map.getPlayer().setInventory(inventory);
+        monsterMove.setMap(false);
+        monstersMove(MapLoader.getMonsters());
+    }
+
+    private boolean hasKey(ArrayList items){
+        for (Object item: items){
+            if (item instanceof Key){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int crystalCounter(ArrayList items){
+        int count = 0;
+        for (Object item: items){
+            if (item instanceof Crystal){
+                System.out.println(((Crystal) item).getTileName());
+                count++;
+                System.out.println(count);
+            }
+        }
+        return count;
     }
 }
