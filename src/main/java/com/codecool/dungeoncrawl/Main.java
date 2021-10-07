@@ -40,6 +40,7 @@ public class Main extends Application {
             4 * Tiles.TILE_WIDTH);
     GraphicsContext itemContext = itemCanvas.getGraphicsContext2D();
     AudioFilePlayer audioFilePlayer = new AudioFilePlayer();
+    AutomaticMovement monsterMove;
     int gunCounter = 0;
 
     public static void main(String[] args) {
@@ -49,9 +50,10 @@ public class Main extends Application {
 
     public void monstersMove(LinkedList<Actor> monsters){
         Player player = map.getPlayer();
-        AutomaticMovement monsterMove = new AutomaticMovement(monsters, player, this, audioFilePlayer);
+        monsterMove = new AutomaticMovement(monsters, player, this, audioFilePlayer);
         Thread thread = new Thread(monsterMove);
         thread.start();
+
 
     }
 
@@ -106,7 +108,6 @@ public class Main extends Application {
 
     private void onKeyReleased(KeyEvent keyEvent) {
         if (map.getPlayer().getInventory().getActiveGun() != null && gunCounter == 0){
-            System.out.println("béla");
             gunCounter ++;
             bulletMove(map.getPlayer());
         }
@@ -213,6 +214,7 @@ public class Main extends Application {
         if (nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().contains("key")){
             if(currentMap.equals("/map.txt")){
                 currentMap="/map2.txt";
+                monsterMove.setMap(false);
                 map = MapLoader.loadMap(currentMap);
                 map.getPlayer().setInventory(inventory);
                 monstersMove(MapLoader.getMonsters());
@@ -221,6 +223,7 @@ public class Main extends Application {
         else if(nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().contains("crystal")){
             if(currentMap.equals("/map2.txt")){
                 currentMap="/map3.txt";
+                monsterMove.setMap(false);
                 map = MapLoader.loadMap(currentMap);
                 map.getPlayer().setInventory(inventory);
                 monstersMove(MapLoader.getMonsters());
@@ -229,12 +232,14 @@ public class Main extends Application {
         else if(nextCell.getTileName().equals("portal")){
             if (currentMap.equals("/map.txt")){
                 currentMap="/mapTrap.txt";
+                monsterMove.setMap(false);
                 map = MapLoader.loadMap(currentMap);
                 map.getPlayer().setInventory(inventory);
                 monstersMove(MapLoader.getMonsters());
             }
             else if (currentMap.equals("/mapTrap.txt")){
                 currentMap="/map2.txt";
+                monsterMove.setMap(false);
                 map = MapLoader.loadMap(currentMap);
                 map.getPlayer().setInventory(inventory);
                 monstersMove(MapLoader.getMonsters());

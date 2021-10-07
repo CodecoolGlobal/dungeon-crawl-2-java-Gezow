@@ -12,18 +12,20 @@ public class AutomaticMovement implements Runnable {
     private final Player player;
     private final Main main;
     private final AudioFilePlayer audioFilePlayer;
+    private boolean map;
 
     public AutomaticMovement(LinkedList<Actor> monsters, Player player, Main main, AudioFilePlayer audioFilePlayer) {
         this.monsters = monsters;
         this.player = player;
         this.main = main;
         this.audioFilePlayer = audioFilePlayer;
+        this.map = true;
     }
 
     @Override
     public void run() {
         int frag = 1;
-        while (monsters.size() > 0) {
+        while (monsters.size() > 0 && map) {
             monsters.removeIf(monster -> !monster.isAlive());
                 for (Actor monster : monsters) {
                     if (monster.canAttackPlayer()) {
@@ -32,6 +34,9 @@ public class AutomaticMovement implements Runnable {
                         monster.autoMove(frag, player);
                     }
             }
+                if (monsters.size() <= 0){
+                    map = false;
+                }
             main.refresh();
             frag ++;
             try {
@@ -41,7 +46,15 @@ public class AutomaticMovement implements Runnable {
             }
 
         }
-        audioFilePlayer.play("src/main/resources/monsterkill.wav");
+        if (monsters.size() <= 0) {
+            audioFilePlayer.play("src/main/resources/monsterkill.wav");
+        }
+        audioFilePlayer.play("src/main/resources/levelComplete.wav");
 
+
+    }
+
+    public void setMap(boolean map) {
+        this.map = map;
     }
 }
