@@ -112,6 +112,11 @@ public class Main extends Application {
             gunCounter ++;
             bulletMove(map.getPlayer());
         }
+        if (map.getPlayer().getHealth() <= 0){
+            map.getPlayer().setAlive(false);
+            refreshFX();
+            return;
+        }
         switch (keyEvent.getCode()) {
             case UP:
                 movePlayer(Direction.NORTH);
@@ -141,9 +146,6 @@ public class Main extends Application {
                 break;
             case D:
                 playerShoot(Direction.EAST);
-                break;
-            case M:
-                mapCheck();
                 break;
             case Q:
                 map.getPlayer().changeGun(-1);

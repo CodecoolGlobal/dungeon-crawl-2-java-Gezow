@@ -7,7 +7,7 @@ import com.codecool.dungeoncrawl.logic.Settings;
 
 import java.util.Objects;
 
-public class Player extends Actor{
+public class Player extends Actor {
     private int maxHealth = Settings.PLAYER_MAX_HEALTH.getValue();
     private Inventory inventory;
 
@@ -18,12 +18,15 @@ public class Player extends Actor{
     }
 
     public String getTileName() {
-        return "player";
+        if (this.isAlive()) {
+            return "player";
+        } else {
+            return "deadplayer";
+        }
     }
 
     @Override
     public void autoMove(int frag, Player player) {
-
     }
 
     @Override
@@ -39,9 +42,9 @@ public class Player extends Actor{
         this.inventory = inventory;
     }
 
-    public void changeGun(int direction){
-        for(int i = 0; i < inventory.getGuns().size(); i++){
-            if (inventory.getGuns().get(inventory.getGuns().keySet().toArray()[i]).isActive()){
+    public void changeGun(int direction) {
+        for (int i = 0; i < inventory.getGuns().size(); i++) {
+            if (inventory.getGuns().get(inventory.getGuns().keySet().toArray()[i]).isActive()) {
                 inventory.setActiveGun(inventory.getGuns().get(inventory.getGuns().keySet().toArray()[i + direction]));
             }
         }
@@ -62,7 +65,7 @@ public class Player extends Actor{
     @Override
     public void move(int dx, int dy) {
         Cell nextCell = getCell().getNeighbor(dx, dy);
-        if(Objects.equals(nextCell.getTileName(), CellType.FLOOR.getTileName()) && nextCell.getActor() == null) {
+        if (Objects.equals(nextCell.getTileName(), CellType.FLOOR.getTileName()) && nextCell.getActor() == null) {
             this.getCell().setActor(null);
             nextCell.setActor(this);
             this.setCell(nextCell);
@@ -78,4 +81,5 @@ public class Player extends Actor{
     public void setCell(Cell cell) {
         super.setCell(cell);
     }
+
 }
