@@ -1,15 +1,15 @@
 package com.codecool.dungeoncrawl.logic.items.consumables;
 
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.items.Item;
 
-public class Medkit50 extends Consumable {
-    public Medkit50(Cell cell) {
+public class Shield extends Consumable{
+
+    public Shield(Cell cell) {
         super(cell, 50);
     }
 
     @Override
     public String getTileName() {
-        return "medkit50";
+        return "shield";
     }
 }

@@ -1,6 +1,9 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.*;
+import com.codecool.dungeoncrawl.logic.items.collectibles.*;
+import com.codecool.dungeoncrawl.logic.items.consumables.*;
+import com.codecool.dungeoncrawl.logic.items.guns.*;
 
 import java.io.InputStream;
 import java.util.LinkedList;
@@ -51,6 +54,59 @@ public class MapLoader {
                         case '@':
                             cell.setType(CellType.FLOOR);
                             map.setPlayer(new Player(cell));
+                            break;
+                        case 'm':
+                            cell.setType(CellType.FLOOR);
+                            Medkit10 medkit10 = new Medkit10(cell);
+                            break;
+                        case 'M':
+                            cell.setType(CellType.FLOOR);
+                            Medkit50 medkit50 = new Medkit50(cell);
+                            break;
+                        case 'A':
+                            cell.setType(CellType.FLOOR);
+                            Ammo ammo = new Ammo(cell);
+                            break;
+                        case 'p':
+                            cell.setType(CellType.FLOOR);
+                            Pistol pistol = new Pistol(cell);
+                            break;
+                        case 's':
+                            cell.setType(CellType.FLOOR);
+                            Shotgun shotgun = new Shotgun(cell);
+                            break;
+                        case 'a':
+                            cell.setType(CellType.FLOOR);
+                            AutomaticRifle automaticRifle = new AutomaticRifle(cell);
+                            break;
+                        case 'B':
+                            cell.setType(CellType.FLOOR);
+                            Bfg bfg = new Bfg(cell);
+                            break;
+                        case 'k':
+                            cell.setType(CellType.FLOOR);
+                            Key key = new Key(cell);
+                            break;
+                        case 'c':
+                            cell.setType(CellType.FLOOR);
+                            Crystal crystal = new Crystal(cell);
+                            break;
+                        case 'R':
+                            cell.setType(CellType.FLOOR);
+                            Rocket rocket = new Rocket(cell);
+                            break;
+                        case 'S':
+                            cell.setType(CellType.FLOOR);
+                            Shield shield = new Shield(cell);
+                            break;
+                        case 'd':
+                            cell.setType(CellType.DOOR);
+                            break;
+                        case 'P':
+                            cell.setType(CellType.PORTAL);
+                            break;
+                        case 'F':
+                            cell.setType(CellType.FLAME);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
