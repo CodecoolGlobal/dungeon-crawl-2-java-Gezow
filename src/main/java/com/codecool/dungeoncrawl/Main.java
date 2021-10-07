@@ -95,51 +95,36 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(Direction.NORTH.getX(), Direction.NORTH.getY());
-                refresh();
-                refreshFX();
                 break;
             case DOWN:
                 map.getPlayer().move(Direction.SOUTH.getX(), Direction.SOUTH.getY());
-                refresh();
-                refreshFX();
                 break;
             case LEFT:
                 map.getPlayer().move(Direction.WEST.getX(), Direction.WEST.getY());
-                refresh();
-                refreshFX();
                 break;
             case RIGHT:
                 map.getPlayer().move(Direction.EAST.getX(), Direction.EAST.getY());
-                refresh();
-                refreshFX();
                 break;
             case E:
                 if(map.getPlayer().getCell().getItem() != null){
                     map.getPlayer().getCell().getItem().pickUp(map.getPlayer());
-                    refresh();
-                    refreshFX();
+                    break;
                 }
             case W:
                 map.getPlayer().shoot(Direction.NORTH);
-                refresh();
-                refreshFX();
                 break;
             case S:
                 map.getPlayer().shoot(Direction.SOUTH);
-                refresh();
-                refreshFX();
                 break;
             case A:
                 map.getPlayer().shoot(Direction.WEST);
-                refresh();
-                refreshFX();
                 break;
             case D:
                 map.getPlayer().shoot(Direction.EAST);
-                refresh();
-                refreshFX();
                 break;
         }
+        refresh();
+        refreshFX();
     }
     public void refresh() {
         context.setFill(Color.BLACK);
