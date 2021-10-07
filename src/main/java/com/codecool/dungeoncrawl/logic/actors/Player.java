@@ -9,9 +9,8 @@ import com.codecool.dungeoncrawl.logic.items.guns.Pistol;
 import java.util.HashMap;
 import java.util.LinkedList;
 public class Player extends Actor {
-    private final int maxHealth = 50;
+    private int maxHealth = 50;
     private Inventory inventory;
-    private LinkedList<Bullet> bullets = new LinkedList<>();
 
 
     public Player(Cell cell) {
@@ -24,7 +23,12 @@ public class Player extends Actor {
     }
 
     @Override
-    public void setHealth(int health){
+    public void autoMove(int frag, Player player) {
+
+    }
+
+    @Override
+    public void setHealth(int health) {
         this.health = Math.min(health, maxHealth);
     }
 
@@ -36,17 +40,16 @@ public class Player extends Actor {
         this.inventory = inventory;
     }
 
-    public void shoot(Direction direction){
-        Bullet bullet = new Bullet(this.getCell(), direction, 5);
-        bullets.add(bullet);
+    public void shoot(Direction direction) {
+        inventory.getActiveGun().shoot(this.getCell(), direction);
         // TODO: 05/10/2021 change damage when change weapons
     }
 
-    public LinkedList<Bullet> getBullets() {
-        return bullets;
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
-    public void setBullets(LinkedList<Bullet> bullets) {
-        this.bullets = bullets;
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
     }
 }

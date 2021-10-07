@@ -8,8 +8,9 @@ import java.util.HashMap;
 public class Inventory {
     private int ammo;
     private int maxAmmo;
-    private HashMap<String, Gun> guns = new HashMap<>();
-    private HashMap<String, Collectible> collectibles = new HashMap<>();
+    private Gun activeGun;
+    private final HashMap<String, Gun> guns = new HashMap<>();
+    private final HashMap<String, Collectible> collectibles = new HashMap<>();
 
     public Inventory(int ammo, int maxAmmo){
         this.ammo = ammo;
@@ -38,5 +39,13 @@ public class Inventory {
 
     public HashMap<String, Collectible> getCollectibles() {
         return collectibles;
+    }
+
+    public Gun getActiveGun(){
+        return activeGun;
+    }
+
+    public void setActiveGun(Gun gun){
+        activeGun = gun;
     }
 }

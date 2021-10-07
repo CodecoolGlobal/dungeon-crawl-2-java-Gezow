@@ -7,12 +7,12 @@ import com.codecool.dungeoncrawl.logic.actors.Player;
 
 import java.util.LinkedList;
 
-public class MyRunnable implements Runnable {
+public class AutomaticMovement implements Runnable {
     private LinkedList<Actor> monsters;
-    private Player player;
-    private Main main;
+    private final Player player;
+    private final Main main;
 
-    public MyRunnable(LinkedList<Actor> monsters, Player player, Main main) {
+    public AutomaticMovement(LinkedList<Actor> monsters, Player player, Main main) {
         this.monsters = monsters;
         this.player = player;
         this.main = main;
@@ -20,11 +20,14 @@ public class MyRunnable implements Runnable {
 
     @Override
     public void run() {
+        int frag = 1;
         while (true) {
-            LinkedList<Bullet> bullets = player.getBullets();
-            bullets.removeIf(bullet -> !bullet.isAlive());
-            for (Bullet bullet : bullets) {
-                bullet.move(bullet.getDirection().getX(), bullet.getDirection().getY());
+            if(player.getInventory().getActiveGun() != null) {
+                LinkedList<Bullet> bullets = player.getInventory().getActiveGun().getBullets();
+                bullets.removeIf(bullet -> !bullet.isAlive());
+                for (Bullet bullet : bullets) {
+                    bullet.move(bullet.getDirection().getX(), bullet.getDirection().getY());
+                }
             }
             monsters.removeIf(monster -> !monster.isAlive());
             if (monsters.size() > 0) {
@@ -32,11 +35,12 @@ public class MyRunnable implements Runnable {
                     if (monster.canAttackPlayer()) {
                         monster.attack(player);
                     } else {
-                        monster.move(Direction.getRandom().getX(), Direction.getRandom().getY());
+                        monster.autoMove(frag, player);
                     }
                 }
             }
             main.refresh();
+            frag ++;
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {

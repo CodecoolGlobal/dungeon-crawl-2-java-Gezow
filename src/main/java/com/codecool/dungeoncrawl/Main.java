@@ -7,6 +7,7 @@ import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Direction;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.items.guns.Gun;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -38,24 +39,22 @@ public class Main extends Application {
     }
 
 
-    public void monstersMove() {
+    public void monstersMove(){
         LinkedList<Actor> monsters = MapLoader.getMonsters();
         Player player = map.getPlayer();
-        MyRunnable monsterMove = new MyRunnable(monsters, player, this);
+        AutomaticMovement monsterMove = new AutomaticMovement(monsters, player, this);
         Thread thread = new Thread(monsterMove);
         thread.start();
 
     }
 
-    public void soundEffects(String item) {
-        switch (item) {
-            case "bfg":
-                audioFilePlayer.play("src/main/resources/automaticrifle.wav");
-                break;
-        }
+    public void soundEffect(Gun gun){
+        SoundEffects soundEffects = new SoundEffects(gun);
+        Thread thread2 = new Thread(soundEffects);
+        thread2.start();
     }
 
-    public void musicPlayer() {
+    public void musicPlayer(){
         MusicPlayer musicPlayer = new MusicPlayer(audioFilePlayer);
         Thread thread1 = new Thread(musicPlayer);
         thread1.start();
@@ -63,7 +62,7 @@ public class Main extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         musicPlayer();
         monstersMove();
         GridPane ui = new GridPane();
@@ -98,53 +97,41 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(Direction.NORTH.getX(), Direction.NORTH.getY());
-                refresh();
-                refreshFX();
                 break;
             case DOWN:
                 map.getPlayer().move(Direction.SOUTH.getX(), Direction.SOUTH.getY());
-                refresh();
-                refreshFX();
                 break;
             case LEFT:
                 map.getPlayer().move(Direction.WEST.getX(), Direction.WEST.getY());
-                refresh();
-                refreshFX();
                 break;
             case RIGHT:
                 map.getPlayer().move(Direction.EAST.getX(), Direction.EAST.getY());
-                refresh();
-                refreshFX();
                 break;
             case E:
-                if (map.getPlayer().getCell().getItem() != null) {
+                if(map.getPlayer().getCell().getItem() != null){
                     map.getPlayer().getCell().getItem().pickUp(map.getPlayer());
-                    refresh();
-                    refreshFX();
-                }
+                                    }
+                break;
             case W:
+                soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.NORTH);
-                refresh();
-                refreshFX();
                 break;
             case S:
+                soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.SOUTH);
-                refresh();
-                refreshFX();
                 break;
             case A:
+                soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.WEST);
-                refresh();
-                refreshFX();
                 break;
             case D:
+                soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.EAST);
-                refresh();
-                refreshFX();
                 break;
         }
+        refresh();
+        refreshFX();
     }
-
     public void refresh() {
         int playerX = map.getPlayer().getX();
         int playerY = map.getPlayer().getY();
@@ -171,16 +158,16 @@ public class Main extends Application {
         }
     }
 
-    public void refreshFX() {
+    public void refreshFX(){
         healthLabel.setText("" + map.getPlayer().getHealth());
         ammoLabel.setText(map.getPlayer().getInventory().getAmmo() + "/" + map.getPlayer().getInventory().getMaxAmmo());
         StringBuilder guns = new StringBuilder();
-        for (String gun : map.getPlayer().getInventory().getGuns().keySet()) {
+        for(String gun: map.getPlayer().getInventory().getGuns().keySet()){
             guns.append(gun).append(", ");
         }
         gunLabel.setText(guns.toString());
         StringBuilder items = new StringBuilder();
-        for (String item : map.getPlayer().getInventory().getCollectibles().keySet()) {
+        for(String item: map.getPlayer().getInventory().getCollectibles().keySet()){
             items.append(item).append(", ");
         }
         itemLabel.setText(items.toString());
