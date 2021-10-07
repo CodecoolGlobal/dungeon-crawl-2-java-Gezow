@@ -17,10 +17,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.InputStream;
 import java.util.LinkedList;
 
 public class Main extends Application {
-    GameMap map = MapLoader.loadMap();
+    String currentMap = "/map.txt";
+    GameMap map = MapLoader.loadMap(currentMap);
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -91,26 +93,28 @@ public class Main extends Application {
     }
 
     private void onKeyReleased(KeyEvent keyEvent) {
+        int x;
+        int y;
         switch (keyEvent.getCode()) {
             case UP:
-                map.getPlayer().move(Direction.NORTH.getX(), Direction.NORTH.getY());
-                refresh();
-                refreshFX();
+                x = Direction.NORTH.getX();
+                y = Direction.NORTH.getY();
+                moveAction(x, y);
                 break;
             case DOWN:
-                map.getPlayer().move(Direction.SOUTH.getX(), Direction.SOUTH.getY());
-                refresh();
-                refreshFX();
+                x = Direction.SOUTH.getX();
+                y = Direction.SOUTH.getY();
+                moveAction(x, y);
                 break;
             case LEFT:
-                map.getPlayer().move(Direction.WEST.getX(), Direction.WEST.getY());
-                refresh();
-                refreshFX();
+                x = Direction.WEST.getX();
+                y = Direction.WEST.getY();
+                moveAction(x, y);
                 break;
             case RIGHT:
-                map.getPlayer().move(Direction.EAST.getX(), Direction.EAST.getY());
-                refresh();
-                refreshFX();
+                x = Direction.EAST.getX();
+                y = Direction.EAST.getY();
+                moveAction(x, y);
                 break;
             case E:
                 if(map.getPlayer().getCell().getItem() != null){
@@ -180,5 +184,26 @@ public class Main extends Application {
             items.append(item).append(", ");
         }
         itemLabel.setText(items.toString());
+    }
+
+    public String getCurrentMap() {
+        return currentMap;
+    }
+
+    public void setCurrentMap(String currentMap) {
+        this.currentMap = currentMap;
+    }
+
+    public void moveAction (int x, int y){
+        map.getPlayer().move(x, y);
+        Cell nextCell = map.getPlayer().getCell().getNeighbor(x, y);
+        if ( nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().containsKey("key")){
+            if(currentMap.equals("/map.txt")){
+                currentMap="/map2.txt";
+                map = MapLoader.loadMap(currentMap);
+            }
+        }
+        refresh();
+        refreshFX();
     }
 }

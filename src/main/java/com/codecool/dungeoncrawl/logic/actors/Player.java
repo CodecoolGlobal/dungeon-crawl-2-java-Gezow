@@ -3,15 +3,10 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Inventory;
-import com.codecool.dungeoncrawl.logic.items.collectibles.Collectible;
-import com.codecool.dungeoncrawl.logic.items.guns.Gun;
-import com.codecool.dungeoncrawl.logic.items.guns.Pistol;
 
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Objects;
 
-public class Player extends Actor {
+public class Player extends Actor{
     private int maxHealth = 50;
     private Inventory inventory;
 
@@ -58,13 +53,7 @@ public class Player extends Actor {
             this.getCell().setActor(null);
             nextCell.setActor(this);
             this.setCell(nextCell);
-        }else if(nextCell.getTileName().equals("door") && this.inventory.getCollectibles().containsKey("key")){
-            System.out.println("átléphetsz");
-
-        }else if(nextCell.getTileName().equals("door") && this.inventory.getCollectibles().containsKey("crystal")){
-            System.out.println("átléphetsz");
         }
-
     }
 
     @Override
