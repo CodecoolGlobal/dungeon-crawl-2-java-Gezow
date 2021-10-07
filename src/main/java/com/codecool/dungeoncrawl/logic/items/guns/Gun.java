@@ -46,4 +46,5 @@ public abstract class Gun extends Item {
         isActive = active;
     }
 
+    public void sound(){}
 }
