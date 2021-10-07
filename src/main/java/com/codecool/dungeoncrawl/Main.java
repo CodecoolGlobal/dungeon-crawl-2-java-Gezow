@@ -38,7 +38,7 @@ public class Main extends Application {
     public void monstersMove(){
         LinkedList<Actor> monsters = MapLoader.getMonsters();
         Player player = map.getPlayer();
-        MyRunnable monsterMove = new MyRunnable(monsters, player, this);
+        AutomaticMovement monsterMove = new AutomaticMovement(monsters, player, this);
         Thread thread = new Thread(monsterMove);
         thread.start();
 
