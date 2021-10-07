@@ -50,7 +50,6 @@ public class AutomaticMovement implements Runnable {
         if (monsters.size() <= 0) {
             audioFilePlayer.play("src/main/resources/monsterkill.wav");
         }
-        audioFilePlayer.play("src/main/resources/levelComplete.wav");
 
 
     }
