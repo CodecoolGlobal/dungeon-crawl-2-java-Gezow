@@ -9,7 +9,7 @@ public abstract class Collectible extends Item {
 
     @Override
     public void pickUp(Player player){
-        player.getInventory().getCollectibles().put(this.getTileName(), this);
+        player.getInventory().getCollectibles().add(this);
         counter = player.getInventory().getCollectibles().size();
         this.getCell().setItem(null);
     }
