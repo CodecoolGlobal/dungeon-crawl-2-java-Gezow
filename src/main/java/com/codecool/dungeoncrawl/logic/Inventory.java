@@ -24,7 +24,7 @@ public class Inventory {
     }
 
     public void setAmmo(int ammo) {
-        this.ammo = ammo;
+        this.ammo = Math.min(ammo, maxAmmo);
     }
 
     public int getMaxAmmo() {
