@@ -7,12 +7,12 @@ import com.codecool.dungeoncrawl.logic.actors.Player;
 
 import java.util.LinkedList;
 
-public class MyRunnable implements Runnable {
+public class AutomaticMovement implements Runnable {
     private LinkedList<Actor> monsters;
     private Player player;
     private Main main;
 
-    public MyRunnable(LinkedList<Actor> monsters, Player player, Main main) {
+    public AutomaticMovement(LinkedList<Actor> monsters, Player player, Main main) {
         this.monsters = monsters;
         this.player = player;
         this.main = main;
