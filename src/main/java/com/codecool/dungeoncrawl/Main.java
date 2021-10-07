@@ -119,6 +119,7 @@ public class Main extends Application {
                     refresh();
                     refreshFX();
                 }
+                break;
             case W:
                 map.getPlayer().shoot(Direction.NORTH);
                 refresh();
