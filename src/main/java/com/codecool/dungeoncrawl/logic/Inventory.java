@@ -1,6 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.items.collectibles.Collectible;
+import com.codecool.dungeoncrawl.logic.items.collectibles.*;
 import com.codecool.dungeoncrawl.logic.items.guns.Gun;
 
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ public class Inventory {
     private Gun activeGun;
     private final HashMap<String, Gun> guns = new HashMap<>();
     private final ArrayList<Collectible> collectibles = new ArrayList<>();
+    private final ArrayList<Rocket> rockets = new ArrayList<>();
 
     public Inventory(int ammo, int maxAmmo){
         this.ammo = ammo;
@@ -50,5 +51,9 @@ public class Inventory {
         if(activeGun != null) activeGun.setActive(false);
         activeGun = gun;
         activeGun.setActive(true);
+    }
+
+    public ArrayList<Rocket> getRockets() {
+        return rockets;
     }
 }
