@@ -262,8 +262,12 @@ public class Main extends Application {
 
     private void setupNewMap(String newMap, Inventory inventory){
         currentMap=newMap;
+        int health = map.getPlayer().getHealth();
+        int maxHealth = map.getPlayer().getMaxHealth();
         map = MapLoader.loadMap(currentMap);
         map.getPlayer().setInventory(inventory);
+        map.getPlayer().setMaxHealth(maxHealth);
+        map.getPlayer().setHealth(health);
         monsterMove.setMap(false);
         monstersMove(MapLoader.getMonsters());
     }
