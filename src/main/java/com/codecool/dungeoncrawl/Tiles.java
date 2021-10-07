@@ -40,9 +40,13 @@ public class Tiles {
         tileMap.put("rocket2", new Tile(15, 21));
         tileMap.put("rocket3", new Tile(15, 20));
         tileMap.put("pistol", new Tile(6, 31));
+        tileMap.put("pistol-active", new Tile(6, 30));
         tileMap.put("shotgun", new Tile(7, 31));
+        tileMap.put("shotgun-active", new Tile(7, 30));
         tileMap.put("automaticrifle", new Tile(8, 31));
+        tileMap.put("automaticrifle-active", new Tile(8, 30));
         tileMap.put("bfg", new Tile(11, 31));
+        tileMap.put("bfg-active", new Tile(11, 30));
         tileMap.put("bullet", new Tile(27, 21));
         tileMap.put("shield", new Tile(2, 23));
         tileMap.put("door", new Tile(4,9));

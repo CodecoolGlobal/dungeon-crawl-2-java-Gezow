@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.items.collectibles.Collectible;
 import com.codecool.dungeoncrawl.logic.items.guns.Gun;
 import com.codecool.dungeoncrawl.logic.items.guns.Pistol;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Inventory {
@@ -11,7 +12,7 @@ public class Inventory {
     private int maxAmmo;
     private Gun activeGun;
     private final HashMap<String, Gun> guns = new HashMap<>();
-    private final HashMap<String, Collectible> collectibles = new HashMap<>();
+    private final ArrayList<Collectible> collectibles = new ArrayList<>();
 
     public Inventory(int ammo, int maxAmmo){
         this.ammo = ammo;
@@ -38,7 +39,7 @@ public class Inventory {
         return guns;
     }
 
-    public HashMap<String, Collectible> getCollectibles() {
+    public ArrayList<Collectible> getCollectibles() {
         return collectibles;
     }
 

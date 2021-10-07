@@ -45,4 +45,5 @@ public abstract class Gun extends Item {
     public void setActive(boolean active) {
         isActive = active;
     }
+
 }

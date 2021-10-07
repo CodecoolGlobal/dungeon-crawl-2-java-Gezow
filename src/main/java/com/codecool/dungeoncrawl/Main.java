@@ -4,6 +4,8 @@ import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Direction;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.items.collectibles.Collectible;
+import com.codecool.dungeoncrawl.logic.items.guns.Gun;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -26,8 +28,14 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label ammoLabel = new Label();
-    Label gunLabel = new Label();
-    Label itemLabel = new Label();
+    Canvas gunCanvas = new Canvas(
+            4 * Tiles.TILE_WIDTH,
+            Tiles.TILE_WIDTH);
+    GraphicsContext gunContext = gunCanvas.getGraphicsContext2D();
+    Canvas itemCanvas = new Canvas(
+            4 * Tiles.TILE_WIDTH,
+            4 * Tiles.TILE_WIDTH);
+    GraphicsContext itemContext = itemCanvas.getGraphicsContext2D();
     AudioFilePlayer audioFilePlayer = new AudioFilePlayer();
 
     public static void main(String[] args) {
@@ -44,12 +52,10 @@ public class Main extends Application {
 
     }
 
-    public void soundEffects(String item){
-        switch (item){
-            case "bfg":
-                audioFilePlayer.play("src/main/resources/automaticrifle.wav");
-                break;
-        }
+    public void soundEffect(Gun gun){
+        SoundEffects soundEffects = new SoundEffects(gun);
+        Thread thread2 = new Thread(soundEffects);
+        thread2.start();
     }
 
     public void musicPlayer(){
@@ -72,9 +78,9 @@ public class Main extends Application {
         ui.add(ammoLabel, 1, 1);
         ui.add(new Label("Inventory: "), 0, 2);
         ui.add(new Label("Guns: "), 0, 3);
-        ui.add(gunLabel, 1, 3);
-        ui.add(new Label("Artifacts: "), 0, 4);
-        ui.add(itemLabel, 1, 4);
+        ui.add(gunCanvas,0 , 4);
+        ui.add(new Label("Artifacts: "), 0, 5);
+        ui.add(itemCanvas, 0, 6);
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
@@ -119,22 +125,27 @@ public class Main extends Application {
                     refresh();
                     refreshFX();
                 }
+                break;
             case W:
+                soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.NORTH);
                 refresh();
                 refreshFX();
                 break;
             case S:
+                soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.SOUTH);
                 refresh();
                 refreshFX();
                 break;
             case A:
+                soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.WEST);
                 refresh();
                 refreshFX();
                 break;
             case D:
+                soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.EAST);
                 refresh();
                 refreshFX();
@@ -166,15 +177,13 @@ public class Main extends Application {
     public void refreshFX(){
         healthLabel.setText("" + map.getPlayer().getHealth());
         ammoLabel.setText(map.getPlayer().getInventory().getAmmo() + "/" + map.getPlayer().getInventory().getMaxAmmo());
-        StringBuilder guns = new StringBuilder();
-        for(String gun: map.getPlayer().getInventory().getGuns().keySet()){
-            guns.append(gun).append(", ");
+        for(int i = 0; i < map.getPlayer().getInventory().getGuns().size(); i++){
+            Gun gun = map.getPlayer().getInventory().getGuns().get(map.getPlayer().getInventory().getGuns().keySet().toArray()[i]);
+            Tiles.drawTile(gunContext, gun, i, 0);
         }
-        gunLabel.setText(guns.toString());
-        StringBuilder items = new StringBuilder();
-        for(String item: map.getPlayer().getInventory().getCollectibles().keySet()){
-            items.append(item).append(", ");
+        for(int i = 0; i < map.getPlayer().getInventory().getCollectibles().size(); i++){
+            Collectible item = map.getPlayer().getInventory().getCollectibles().get(i);
+            Tiles.drawTile(itemContext, item, i, 0);
         }
-        itemLabel.setText(items.toString());
     }
 }
