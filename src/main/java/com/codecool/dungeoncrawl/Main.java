@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Direction;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.items.guns.Gun;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -44,12 +45,10 @@ public class Main extends Application {
 
     }
 
-    public void soundEffects(String item){
-        switch (item){
-            case "bfg":
-                audioFilePlayer.play("src/main/resources/automaticrifle.wav");
-                break;
-        }
+    public void soundEffect(Gun gun){
+        SoundEffects soundEffects = new SoundEffects(gun);
+        Thread thread2 = new Thread(soundEffects);
+        thread2.start();
     }
 
     public void musicPlayer(){
@@ -110,16 +109,21 @@ public class Main extends Application {
                     map.getPlayer().getCell().getItem().pickUp(map.getPlayer());
                     break;
                 }
+                break;
             case W:
+                soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.NORTH);
                 break;
             case S:
+                soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.SOUTH);
                 break;
             case A:
+                soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.WEST);
                 break;
             case D:
+                soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.EAST);
                 break;
         }
