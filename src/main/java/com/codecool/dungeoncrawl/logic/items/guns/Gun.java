@@ -35,4 +35,6 @@ public abstract class Gun extends Item {
     public void setBullets(LinkedList<Bullet> bullets) {
         this.bullets = bullets;
     }
+
+    public void sound(){}
 }

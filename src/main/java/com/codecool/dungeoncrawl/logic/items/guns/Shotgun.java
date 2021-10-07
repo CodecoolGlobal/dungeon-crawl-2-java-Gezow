@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic.items.guns;
 
+import com.codecool.dungeoncrawl.AudioFilePlayer;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.actors.Direction;
 
@@ -34,5 +35,10 @@ public class Shotgun extends Gun{
                 super.shoot(cell, Direction.NORTHWEST, 10);
                 break;
         }
+    }
+
+    public void sound(){
+        AudioFilePlayer audioFilePlayer = new AudioFilePlayer();
+        audioFilePlayer.play("src/main/resources/shotgun.wav");
     }
 }
