@@ -48,6 +48,8 @@ public class Tiles {
         tileMap.put("door", new Tile(4,9));
         tileMap.put("portal", new Tile(1,9));
         tileMap.put("flame", new Tile(14,10));
+        tileMap.put("fire", new Tile(15,10));
+        tileMap.put("hellcrystal", new Tile(6,2));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {

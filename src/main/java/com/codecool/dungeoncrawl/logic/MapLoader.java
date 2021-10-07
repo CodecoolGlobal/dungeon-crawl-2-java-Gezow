@@ -108,6 +108,12 @@ public class MapLoader {
                         case 'F':
                             cell.setType(CellType.FLAME);
                             break;
+                        case 'f':
+                            cell.setType(CellType.FIRE);
+                            break;
+                        case 'C':
+                            cell.setType(CellType.HELLCRYSTAL);
+                            break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }

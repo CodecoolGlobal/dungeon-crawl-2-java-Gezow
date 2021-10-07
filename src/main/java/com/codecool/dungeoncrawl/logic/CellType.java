@@ -6,7 +6,9 @@ public enum CellType {
     WALL("wall"),
     FLAME("flame"),
     DOOR("door"),
-    PORTAL("portal");
+    PORTAL("portal"),
+    FIRE("fire"),
+    HELLCRYSTAL("hellcrystal");
 
     private final String tileName;
 
