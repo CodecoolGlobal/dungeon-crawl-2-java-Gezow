@@ -35,7 +35,7 @@ public class Bullet extends Actor {
         Objects.equals(nextCell.getTileName(), CellType.HELLCRYSTAL.getTileName())) {
             this.setAlive(false);
             cell.setBullet(null);
-        } else{
+        } else if (!Objects.equals(nextCell.getTileName(), CellType.WALL.getTileName()) && target == null){
             cell.setBullet(null);
             nextCell.setBullet(this);
             cell = nextCell;

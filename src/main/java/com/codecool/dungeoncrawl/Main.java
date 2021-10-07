@@ -137,6 +137,9 @@ public class Main extends Application {
                 soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.EAST);
                 break;
+            case M:
+                mapCheck();
+                break;
         }
         refresh();
         refreshFX();
@@ -218,5 +221,21 @@ public class Main extends Application {
         }
         refresh();
         refreshFX();
+    }
+
+    private void mapCheck() {
+        context.setFill(Color.BLACK);
+        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        for (int x = 0; x < map.getWidth(); x++) {
+            for (int y = 0; y < map.getHeight(); y++) {
+                Cell cell = map.getCell(x, y);
+                if (cell.getActor() != null) {
+                    Tiles.drawTile(context, cell.getActor(), x, y);
+                } else {
+                    Tiles.drawTile(context, cell, x, y);
+                }
+            }
+        }
+        healthLabel.setText("" + map.getPlayer().getHealth());
     }
 }
