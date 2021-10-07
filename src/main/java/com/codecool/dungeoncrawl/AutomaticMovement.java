@@ -9,8 +9,8 @@ import java.util.LinkedList;
 
 public class AutomaticMovement implements Runnable {
     private LinkedList<Actor> monsters;
-    private Player player;
-    private Main main;
+    private final Player player;
+    private final Main main;
 
     public AutomaticMovement(LinkedList<Actor> monsters, Player player, Main main) {
         this.monsters = monsters;
