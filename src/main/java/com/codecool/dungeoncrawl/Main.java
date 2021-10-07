@@ -186,19 +186,27 @@ public class Main extends Application {
         itemLabel.setText(items.toString());
     }
 
-    public String getCurrentMap() {
-        return currentMap;
-    }
-
-    public void setCurrentMap(String currentMap) {
-        this.currentMap = currentMap;
-    }
-
     public void moveAction (int x, int y){
         map.getPlayer().move(x, y);
         Cell nextCell = map.getPlayer().getCell().getNeighbor(x, y);
-        if ( nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().containsKey("key")){
+        if (nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().containsKey("key")){
             if(currentMap.equals("/map.txt")){
+                currentMap="/map2.txt";
+                map = MapLoader.loadMap(currentMap);
+            }
+        }
+        else if(nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().containsKey("crystal")){
+            if(currentMap.equals("/map2.txt")){
+                currentMap="/map3.txt";
+                map = MapLoader.loadMap(currentMap);
+            }
+        }
+        else if(nextCell.getTileName().equals("portal")){
+            if (currentMap.equals("/map.txt")){
+                currentMap="/mapTrap.txt";
+                map = MapLoader.loadMap(currentMap);
+            }
+            else if (currentMap.equals("/mapTrap.txt")){
                 currentMap="/map2.txt";
                 map = MapLoader.loadMap(currentMap);
             }
