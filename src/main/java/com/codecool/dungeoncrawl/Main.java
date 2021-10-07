@@ -147,6 +147,12 @@ public class Main extends Application {
             case M:
                 mapCheck();
                 break;
+            case Q:
+                map.getPlayer().changeGun(-1);
+                break;
+            case R:
+                map.getPlayer().changeGun(1);
+                break;
         }
         refresh();
         refreshFX();

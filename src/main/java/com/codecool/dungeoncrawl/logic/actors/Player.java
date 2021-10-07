@@ -38,9 +38,16 @@ public class Player extends Actor{
         this.inventory = inventory;
     }
 
+    public void changeGun(int direction){
+        for(int i = 0; i < inventory.getGuns().size(); i++){
+            if (inventory.getGuns().get(inventory.getGuns().keySet().toArray()[i]).isActive()){
+                inventory.setActiveGun(inventory.getGuns().get(inventory.getGuns().keySet().toArray()[i + direction]));
+            }
+        }
+    }
+
     public void shoot(Direction direction) {
         inventory.getActiveGun().shoot(this.getCell(), direction);
-        // TODO: 05/10/2021 change damage when change weapons
     }
 
     public int getMaxHealth() {
