@@ -20,6 +20,7 @@ public class AutomaticMovement implements Runnable {
 
     @Override
     public void run() {
+        int frag = 1;
         while (true) {
             LinkedList<Bullet> bullets = player.getBullets();
             bullets.removeIf(bullet -> !bullet.isAlive());
@@ -32,11 +33,12 @@ public class AutomaticMovement implements Runnable {
                     if (monster.canAttackPlayer()) {
                         monster.attack(player);
                     } else {
-                        monster.move(Direction.getRandom().getX(), Direction.getRandom().getY());
+                        monster.autoMove(frag, player);
                     }
                 }
             }
             main.refresh();
+            frag ++;
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
