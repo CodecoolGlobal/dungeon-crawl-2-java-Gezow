@@ -35,7 +35,7 @@ public enum Settings {
     A_RIFLE_DAMAGE(8), // 8
     BFG_DAMAGE(20), // 20
 
-    AMMO_PACK(5), // 5
+    AMMO_PACK(10), // 10
     HEALTH_PACK_SMALL(10), // 10
     HEALTH_PACK_BIG(50), // 50
     SHIELD(50), // 50
