@@ -10,7 +10,8 @@ public class Bfg extends Gun{
 
     @Override
     public String getTileName() {
-        return "bfg";
+        if(isActive) return "bfg-active";
+        else return "bfg";
     }
 
     @Override
