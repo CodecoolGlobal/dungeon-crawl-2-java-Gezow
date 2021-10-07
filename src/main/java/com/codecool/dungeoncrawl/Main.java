@@ -4,7 +4,7 @@ import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Direction;
 import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.items.collectibles.Collectible;
+import com.codecool.dungeoncrawl.logic.items.collectibles.*;
 import com.codecool.dungeoncrawl.logic.items.collectibles.Crystal;
 import com.codecool.dungeoncrawl.logic.items.collectibles.Key;
 import com.codecool.dungeoncrawl.logic.items.guns.Gun;
@@ -38,8 +38,12 @@ public class Main extends Application {
     GraphicsContext gunContext = gunCanvas.getGraphicsContext2D();
     Canvas itemCanvas = new Canvas(
             4 * Tiles.TILE_WIDTH,
-            4 * Tiles.TILE_WIDTH);
+            Tiles.TILE_WIDTH);
     GraphicsContext itemContext = itemCanvas.getGraphicsContext2D();
+    Canvas rocketCanvas = new Canvas(
+            4 * Tiles.TILE_WIDTH,
+            Tiles.TILE_WIDTH);
+    GraphicsContext rocketContext = rocketCanvas.getGraphicsContext2D();
     AudioFilePlayer audioFilePlayer = new AudioFilePlayer();
     AutomaticMovement monsterMove;
     int gunCounter = 0;
@@ -91,6 +95,9 @@ public class Main extends Application {
         ui.add(gunCanvas,0 , 4);
         ui.add(new Label("Artifacts: "), 0, 5);
         ui.add(itemCanvas, 0, 6);
+        ui.add(new Label("Rockets: "), 0, 7);
+        ui.add(rocketCanvas, 0, 8);
+
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
@@ -210,7 +217,11 @@ public class Main extends Application {
         }
         for(int i = 0; i < map.getPlayer().getInventory().getCollectibles().size(); i++){
             Collectible item = map.getPlayer().getInventory().getCollectibles().get(i);
-            Tiles.drawTile(itemContext, item, i, 0);
+            if(!(item instanceof Rocket)) Tiles.drawTile(itemContext, item, i, 0);
+        }
+        for(int i = 0; i < map.getPlayer().getInventory().getRockets().size(); i++){
+           Rocket rocket = map.getPlayer().getInventory().getRockets().get(i);
+           Tiles.drawTile(rocketContext, rocket, i, 0);
         }
     }
 
