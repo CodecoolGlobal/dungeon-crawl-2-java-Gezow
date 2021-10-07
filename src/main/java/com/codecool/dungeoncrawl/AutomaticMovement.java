@@ -21,23 +21,14 @@ public class AutomaticMovement implements Runnable {
     @Override
     public void run() {
         int frag = 1;
-        while (true) {
-            if(player.getInventory().getActiveGun() != null) {
-                LinkedList<Bullet> bullets = player.getInventory().getActiveGun().getBullets();
-                bullets.removeIf(bullet -> !bullet.isAlive());
-                for (Bullet bullet : bullets) {
-                    bullet.move(bullet.getDirection().getX(), bullet.getDirection().getY());
-                }
-            }
+        while (monsters.size() > 0) {
             monsters.removeIf(monster -> !monster.isAlive());
-            if (monsters.size() > 0) {
                 for (Actor monster : monsters) {
                     if (monster.canAttackPlayer()) {
                         monster.attack(player);
                     } else {
                         monster.autoMove(frag, player);
                     }
-                }
             }
             main.refresh();
             frag ++;

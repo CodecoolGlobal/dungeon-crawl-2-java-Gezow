@@ -33,6 +33,7 @@ public class Main extends Application {
     Label gunLabel = new Label();
     Label itemLabel = new Label();
     AudioFilePlayer audioFilePlayer = new AudioFilePlayer();
+    int gunCounter = 0;
 
     public static void main(String[] args) {
         launch(args);
@@ -57,6 +58,12 @@ public class Main extends Application {
         MusicPlayer musicPlayer = new MusicPlayer(audioFilePlayer);
         Thread thread1 = new Thread(musicPlayer);
         thread1.start();
+    }
+
+    public void bulletMove(Player player){
+        BulletMove bulletMove = new BulletMove(player,this);
+        Thread thread3 = new Thread(bulletMove);
+        thread3.start();
     }
 
 
@@ -93,6 +100,11 @@ public class Main extends Application {
     }
 
     private void onKeyReleased(KeyEvent keyEvent) {
+        if (map.getPlayer().getInventory().getActiveGun() != null && gunCounter == 0){
+            System.out.println("béla");
+            gunCounter ++;
+            bulletMove(map.getPlayer());
+        }
         int x;
         int y;
         switch (keyEvent.getCode()) {
