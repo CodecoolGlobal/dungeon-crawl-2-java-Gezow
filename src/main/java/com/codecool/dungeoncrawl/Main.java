@@ -93,28 +93,18 @@ public class Main extends Application {
     }
 
     private void onKeyReleased(KeyEvent keyEvent) {
-        int x;
-        int y;
         switch (keyEvent.getCode()) {
             case UP:
-                x = Direction.NORTH.getX();
-                y = Direction.NORTH.getY();
-                moveAction(x, y);
+                movePlayer(Direction.NORTH);
                 break;
             case DOWN:
-                x = Direction.SOUTH.getX();
-                y = Direction.SOUTH.getY();
-                moveAction(x, y);
+                movePlayer(Direction.SOUTH);
                 break;
             case LEFT:
-                x = Direction.WEST.getX();
-                y = Direction.WEST.getY();
-                moveAction(x, y);
+                movePlayer(Direction.WEST);
                 break;
             case RIGHT:
-                x = Direction.EAST.getX();
-                y = Direction.EAST.getY();
-                moveAction(x, y);
+                movePlayer(Direction.EAST);
                 break;
             case E:
                 if(map.getPlayer().getCell().getItem() != null){
@@ -122,20 +112,16 @@ public class Main extends Application {
                                     }
                 break;
             case W:
-                soundEffect(map.getPlayer().getInventory().getActiveGun());
-                map.getPlayer().shoot(Direction.NORTH);
+                playerShoot(Direction.NORTH);
                 break;
             case S:
-                soundEffect(map.getPlayer().getInventory().getActiveGun());
-                map.getPlayer().shoot(Direction.SOUTH);
+                playerShoot(Direction.SOUTH);
                 break;
             case A:
-                soundEffect(map.getPlayer().getInventory().getActiveGun());
-                map.getPlayer().shoot(Direction.WEST);
+                playerShoot(Direction.WEST);
                 break;
             case D:
-                soundEffect(map.getPlayer().getInventory().getActiveGun());
-                map.getPlayer().shoot(Direction.EAST);
+                playerShoot(Direction.EAST);
                 break;
             case M:
                 mapCheck();
@@ -144,6 +130,20 @@ public class Main extends Application {
         refresh();
         refreshFX();
     }
+
+    private void playerShoot(Direction direction) {
+        soundEffect(map.getPlayer().getInventory().getActiveGun());
+        map.getPlayer().shoot(direction);
+    }
+
+    private void movePlayer(Direction direction) {
+        int x;
+        int y;
+        x = direction.getX();
+        y = direction.getY();
+        moveAction(x, y);
+    }
+
     public void refresh() {
         int playerX = map.getPlayer().getX();
         int playerY = map.getPlayer().getY();
