@@ -11,7 +11,8 @@ public class AutomaticRifle extends Gun{
 
     @Override
     public String getTileName() {
-        return "automaticrifle";
+        if(isActive) return "automaticrifle-active";
+        else return "automaticrifle";
     }
 
     @Override

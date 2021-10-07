@@ -10,12 +10,17 @@ public class Cell implements Drawable {
     private Actor actor;
     private Bullet bullet;
     private GameMap gameMap;
-    private int x, y;
+    private int x;
+    private int y;
 
     Cell(GameMap gameMap, int x, int y, CellType type) {
         this.gameMap = gameMap;
         this.x = x;
         this.y = y;
+        this.type = type;
+    }
+
+    public Cell(CellType type){
         this.type = type;
     }
 

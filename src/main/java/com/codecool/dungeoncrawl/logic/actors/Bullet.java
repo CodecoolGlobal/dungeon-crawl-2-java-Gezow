@@ -29,14 +29,22 @@ public class Bullet extends Actor {
                 target.setAlive(false);
                 nextCell.setActor(null);
             }
-        } else if (Objects.equals(nextCell.getTileName(), CellType.WALL.getTileName())) {
+        } else if (Objects.equals(nextCell.getTileName(), CellType.WALL.getTileName()) ||
+        Objects.equals(nextCell.getTileName(), CellType.FIRE.getTileName()) ||
+                Objects.equals(nextCell.getTileName(), CellType.FLAME.getTileName()) ||
+        Objects.equals(nextCell.getTileName(), CellType.HELLCRYSTAL.getTileName())) {
             this.setAlive(false);
             cell.setBullet(null);
-        } else if (!Objects.equals(nextCell.getTileName(), CellType.WALL.getTileName()) && target == null) {
+        } else if (!Objects.equals(nextCell.getTileName(), CellType.WALL.getTileName()) && target == null){
             cell.setBullet(null);
             nextCell.setBullet(this);
             cell = nextCell;
         }
+    }
+
+    @Override
+    public void autoMove(int frag, Player player) {
+        super.move(this.getDirection().getX(), this.getDirection().getY());
     }
 
     @Override

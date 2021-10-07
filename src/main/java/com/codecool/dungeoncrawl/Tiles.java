@@ -8,15 +8,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Tiles {
-    public static int TILE_WIDTH = 32;
+    public static int TILE_WIDTH = 128;
 
-    private static Image tileset = new Image("/tiles.png", 543 * 2, 543 * 2, true, false);
-    private static Map<String, Tile> tileMap = new HashMap<>();
+    private static final Image tileset = new Image("/tiles.png", 543 * 8, 543 * 8, true, false);
+    private static final Map<String, Tile> tileMap = new HashMap<>();
     public static class Tile {
         public final int x, y, w, h;
         Tile(int i, int j) {
-            x = i * (TILE_WIDTH + 2);
-            y = j * (TILE_WIDTH + 2);
+            x = i * (TILE_WIDTH + 8);
+            y = j * (TILE_WIDTH + 8);
             w = TILE_WIDTH;
             h = TILE_WIDTH;
         }
@@ -52,6 +52,8 @@ public class Tiles {
         tileMap.put("door", new Tile(4,9));
         tileMap.put("portal", new Tile(1,9));
         tileMap.put("flame", new Tile(14,10));
+        tileMap.put("fire", new Tile(15,10));
+        tileMap.put("hellcrystal", new Tile(6,2));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {

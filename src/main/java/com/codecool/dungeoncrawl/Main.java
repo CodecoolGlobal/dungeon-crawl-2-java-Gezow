@@ -16,15 +16,18 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.stage.Stage;
 
+import java.io.InputStream;
 import java.util.LinkedList;
 
 public class Main extends Application {
-    GameMap map = MapLoader.loadMap();
+    String currentMap = "/map.txt";
+    GameMap map = MapLoader.loadMap(currentMap);
     Canvas canvas = new Canvas(
-            map.getWidth() * Tiles.TILE_WIDTH,
-            map.getHeight() * Tiles.TILE_WIDTH);
+            9 * Tiles.TILE_WIDTH,
+            9 * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label ammoLabel = new Label();
@@ -43,10 +46,9 @@ public class Main extends Application {
     }
 
 
-    public void monstersMove(){
-        LinkedList<Actor> monsters = MapLoader.getMonsters();
+    public void monstersMove(LinkedList<Actor> monsters){
         Player player = map.getPlayer();
-        MyRunnable monsterMove = new MyRunnable(monsters, player, this);
+        AutomaticMovement monsterMove = new AutomaticMovement(monsters, player, this);
         Thread thread = new Thread(monsterMove);
         thread.start();
 
@@ -66,9 +68,9 @@ public class Main extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         musicPlayer();
-        monstersMove();
+        monstersMove(MapLoader.getMonsters());
         GridPane ui = new GridPane();
         ui.setPrefWidth(180);
         ui.setPadding(new Insets(10));
@@ -96,77 +98,84 @@ public class Main extends Application {
     }
 
     private void onKeyReleased(KeyEvent keyEvent) {
+        int x;
+        int y;
         switch (keyEvent.getCode()) {
             case UP:
-                map.getPlayer().move(Direction.NORTH.getX(), Direction.NORTH.getY());
-                refresh();
-                refreshFX();
+                x = Direction.NORTH.getX();
+                y = Direction.NORTH.getY();
+                moveAction(x, y);
                 break;
             case DOWN:
-                map.getPlayer().move(Direction.SOUTH.getX(), Direction.SOUTH.getY());
-                refresh();
-                refreshFX();
+                x = Direction.SOUTH.getX();
+                y = Direction.SOUTH.getY();
+                moveAction(x, y);
                 break;
             case LEFT:
-                map.getPlayer().move(Direction.WEST.getX(), Direction.WEST.getY());
-                refresh();
-                refreshFX();
+                x = Direction.WEST.getX();
+                y = Direction.WEST.getY();
+                moveAction(x, y);
                 break;
             case RIGHT:
-                map.getPlayer().move(Direction.EAST.getX(), Direction.EAST.getY());
-                refresh();
-                refreshFX();
+                x = Direction.EAST.getX();
+                y = Direction.EAST.getY();
+                moveAction(x, y);
                 break;
             case E:
                 if(map.getPlayer().getCell().getItem() != null){
                     map.getPlayer().getCell().getItem().pickUp(map.getPlayer());
-                    refresh();
-                    refreshFX();
-                }
+                                    }
                 break;
             case W:
                 soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.NORTH);
-                refresh();
-                refreshFX();
                 break;
             case S:
                 soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.SOUTH);
-                refresh();
-                refreshFX();
                 break;
             case A:
                 soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.WEST);
-                refresh();
-                refreshFX();
                 break;
             case D:
                 soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.EAST);
-                refresh();
-                refreshFX();
+                break;
+            case M:
+                mapCheck();
+                break;
+            case Q:
+                map.getPlayer().changeGun(-1);
+                break;
+            case R:
+                map.getPlayer().changeGun(1);
                 break;
         }
+        refresh();
+        refreshFX();
     }
     public void refresh() {
+        int playerX = map.getPlayer().getX();
+        int playerY = map.getPlayer().getY();
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Cell cell = map.getCell(x, y);
+        for (int x = playerX - 4; x < playerX + 5; x++) {
+            for (int y = playerY - 4; y < playerY + 5; y++) {
+                Cell cell;
+                try {
+                    cell = map.getCell(x, y);
+                } catch (IndexOutOfBoundsException IOBcamera) {
+                    cell = new Cell(CellType.EMPTY);
+                }
                 if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), x, y);
-                }
-                else if (cell.getBullet() != null){
-                    Tiles.drawTile(context, cell.getBullet(), x, y);
-                }
-                else if (cell.getItem() != null){
-                    Tiles.drawTile(context, cell.getItem(), x, y);
-                }
-                else {
-                    Tiles.drawTile(context, cell, x, y);
+                    Tiles.drawTile(context, cell.getActor(), x - playerX + 4, y - playerY + 3);
+                } else if (cell.getBullet() != null) {
+                    Tiles.drawTile(context, cell.getBullet(), x - playerX + 4, y - playerY + 3);
+                } else if (cell.getItem() != null) {
+                    Tiles.drawTile(context, cell.getItem(), x - playerX + 4, y - playerY + 3);
+                } else {
+                    Tiles.drawTile(context, cell, x - playerX + 4, y - playerY + 3);
                 }
             }
         }
@@ -183,5 +192,59 @@ public class Main extends Application {
             Collectible item = map.getPlayer().getInventory().getCollectibles().get(i);
             Tiles.drawTile(itemContext, item, i, 0);
         }
+    }
+
+    public void moveAction (int x, int y){
+        map.getPlayer().move(x, y);
+        Cell nextCell = map.getPlayer().getCell().getNeighbor(x, y);
+        Inventory inventory = map.getPlayer().getInventory();
+        if (nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().containsKey("key")){
+            if(currentMap.equals("/map.txt")){
+                currentMap="/map2.txt";
+                map = MapLoader.loadMap(currentMap);
+                map.getPlayer().setInventory(inventory);
+                monstersMove(MapLoader.getMonsters());
+            }
+        }
+        else if(nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().containsKey("crystal")){
+            if(currentMap.equals("/map2.txt")){
+                currentMap="/map3.txt";
+                map = MapLoader.loadMap(currentMap);
+                map.getPlayer().setInventory(inventory);
+                monstersMove(MapLoader.getMonsters());
+            }
+        }
+        else if(nextCell.getTileName().equals("portal")){
+            if (currentMap.equals("/map.txt")){
+                currentMap="/mapTrap.txt";
+                map = MapLoader.loadMap(currentMap);
+                map.getPlayer().setInventory(inventory);
+                monstersMove(MapLoader.getMonsters());
+            }
+            else if (currentMap.equals("/mapTrap.txt")){
+                currentMap="/map2.txt";
+                map = MapLoader.loadMap(currentMap);
+                map.getPlayer().setInventory(inventory);
+                monstersMove(MapLoader.getMonsters());
+            }
+        }
+        refresh();
+        refreshFX();
+    }
+
+    private void mapCheck() {
+        context.setFill(Color.BLACK);
+        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        for (int x = 0; x < map.getWidth(); x++) {
+            for (int y = 0; y < map.getHeight(); y++) {
+                Cell cell = map.getCell(x, y);
+                if (cell.getActor() != null) {
+                    Tiles.drawTile(context, cell.getActor(), x, y);
+                } else {
+                    Tiles.drawTile(context, cell, x, y);
+                }
+            }
+        }
+        healthLabel.setText("" + map.getPlayer().getHealth());
     }
 }

@@ -11,7 +11,8 @@ public class Pistol extends Gun{
 
     @Override
     public String getTileName() {
-        return "pistol";
+        if(isActive) return "pistol-active";
+        else return "pistol";
     }
 
     @Override

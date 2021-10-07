@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.items.collectibles.Collectible;
 import com.codecool.dungeoncrawl.logic.items.guns.Gun;
-import com.codecool.dungeoncrawl.logic.items.guns.Pistol;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +47,8 @@ public class Inventory {
     }
 
     public void setActiveGun(Gun gun){
+        if(activeGun != null) activeGun.setActive(false);
         activeGun = gun;
+        activeGun.setActive(true);
     }
 }
