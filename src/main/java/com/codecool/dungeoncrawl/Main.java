@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Direction;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.items.collectibles.Collectible;
 import com.codecool.dungeoncrawl.logic.items.guns.Gun;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -28,9 +29,17 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label ammoLabel = new Label();
-    Label gunLabel = new Label();
-    Label itemLabel = new Label();
+    Canvas gunCanvas = new Canvas(
+            4 * Tiles.TILE_WIDTH,
+            Tiles.TILE_WIDTH);
+    GraphicsContext gunContext = gunCanvas.getGraphicsContext2D();
+    Canvas itemCanvas = new Canvas(
+            4 * Tiles.TILE_WIDTH,
+            4 * Tiles.TILE_WIDTH);
+    GraphicsContext itemContext = itemCanvas.getGraphicsContext2D();
     AudioFilePlayer audioFilePlayer = new AudioFilePlayer();
+    AutomaticMovement monsterMove;
+    int gunCounter = 0;
 
     public static void main(String[] args) {
         launch(args);
@@ -39,9 +48,10 @@ public class Main extends Application {
 
     public void monstersMove(LinkedList<Actor> monsters){
         Player player = map.getPlayer();
-        AutomaticMovement monsterMove = new AutomaticMovement(monsters, player, this);
+        monsterMove = new AutomaticMovement(monsters, player, this, audioFilePlayer);
         Thread thread = new Thread(monsterMove);
         thread.start();
+
 
     }
 
@@ -57,6 +67,12 @@ public class Main extends Application {
         thread1.start();
     }
 
+    public void bulletMove(Player player){
+        BulletMove bulletMove = new BulletMove(player,this);
+        Thread thread3 = new Thread(bulletMove);
+        thread3.start();
+    }
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -65,15 +81,13 @@ public class Main extends Application {
         GridPane ui = new GridPane();
         ui.setPrefWidth(180);
         ui.setPadding(new Insets(10));
-        ui.add(new Label("Health: "), 0, 0);
-        ui.add(healthLabel, 1, 0);
-        ui.add(new Label("Ammo: "), 0, 1);
-        ui.add(ammoLabel, 1, 1);
+        ui.add(healthLabel, 0, 0);
+        ui.add(ammoLabel, 0, 1);
         ui.add(new Label("Inventory: "), 0, 2);
         ui.add(new Label("Guns: "), 0, 3);
-        ui.add(gunLabel, 1, 3);
-        ui.add(new Label("Artifacts: "), 0, 4);
-        ui.add(itemLabel, 1, 4);
+        ui.add(gunCanvas,0 , 4);
+        ui.add(new Label("Artifacts: "), 0, 5);
+        ui.add(itemCanvas, 0, 6);
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
@@ -91,6 +105,10 @@ public class Main extends Application {
     }
 
     private void onKeyReleased(KeyEvent keyEvent) {
+        if (map.getPlayer().getInventory().getActiveGun() != null && gunCounter == 0){
+            gunCounter ++;
+            bulletMove(map.getPlayer());
+        }
         switch (keyEvent.getCode()) {
             case UP:
                 movePlayer(Direction.NORTH);
@@ -123,6 +141,12 @@ public class Main extends Application {
                 break;
             case M:
                 mapCheck();
+                break;
+            case Q:
+                map.getPlayer().changeGun(-1);
+                break;
+            case R:
+                map.getPlayer().changeGun(1);
                 break;
         }
         refresh();
@@ -169,35 +193,35 @@ public class Main extends Application {
     }
 
     public void refreshFX(){
-        healthLabel.setText("" + map.getPlayer().getHealth());
-        ammoLabel.setText(map.getPlayer().getInventory().getAmmo() + "/" + map.getPlayer().getInventory().getMaxAmmo());
-        StringBuilder guns = new StringBuilder();
-        for(String gun: map.getPlayer().getInventory().getGuns().keySet()){
-            guns.append(gun).append(", ");
+        healthLabel.setText("Health: " + map.getPlayer().getHealth() + "/" + map.getPlayer().getMaxHealth());
+        ammoLabel.setText("Ammo: " + map.getPlayer().getInventory().getAmmo() + "/" + map.getPlayer().getInventory().getMaxAmmo());
+        for(int i = 0; i < map.getPlayer().getInventory().getGuns().size(); i++){
+            Gun gun = map.getPlayer().getInventory().getGuns().get(map.getPlayer().getInventory().getGuns().keySet().toArray()[i]);
+            Tiles.drawTile(gunContext, gun, i, 0);
         }
-        gunLabel.setText(guns.toString());
-        StringBuilder items = new StringBuilder();
-        for(String item: map.getPlayer().getInventory().getCollectibles().keySet()){
-            items.append(item).append(", ");
+        for(int i = 0; i < map.getPlayer().getInventory().getCollectibles().size(); i++){
+            Collectible item = map.getPlayer().getInventory().getCollectibles().get(i);
+            Tiles.drawTile(itemContext, item, i, 0);
         }
-        itemLabel.setText(items.toString());
     }
 
     public void moveAction (int x, int y){
         map.getPlayer().move(x, y);
         Cell nextCell = map.getPlayer().getCell().getNeighbor(x, y);
         Inventory inventory = map.getPlayer().getInventory();
-        if (nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().containsKey("key")){
+        if (nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().contains("key")){
             if(currentMap.equals("/map.txt")){
                 currentMap="/map2.txt";
+                monsterMove.setMap(false);
                 map = MapLoader.loadMap(currentMap);
                 map.getPlayer().setInventory(inventory);
                 monstersMove(MapLoader.getMonsters());
             }
         }
-        else if(nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().containsKey("crystal")){
+        else if(nextCell.getTileName().equals("door") && map.getPlayer().getInventory().getCollectibles().contains("crystal")){
             if(currentMap.equals("/map2.txt")){
                 currentMap="/map3.txt";
+                monsterMove.setMap(false);
                 map = MapLoader.loadMap(currentMap);
                 map.getPlayer().setInventory(inventory);
                 monstersMove(MapLoader.getMonsters());
@@ -206,12 +230,14 @@ public class Main extends Application {
         else if(nextCell.getTileName().equals("portal")){
             if (currentMap.equals("/map.txt")){
                 currentMap="/mapTrap.txt";
+                monsterMove.setMap(false);
                 map = MapLoader.loadMap(currentMap);
                 map.getPlayer().setInventory(inventory);
                 monstersMove(MapLoader.getMonsters());
             }
             else if (currentMap.equals("/mapTrap.txt")){
                 currentMap="/map2.txt";
+                monsterMove.setMap(false);
                 map = MapLoader.loadMap(currentMap);
                 map.getPlayer().setInventory(inventory);
                 monstersMove(MapLoader.getMonsters());

@@ -12,34 +12,32 @@ public class AutomaticMovement implements Runnable {
     private LinkedList<Actor> monsters;
     private final Player player;
     private final Main main;
+    private final AudioFilePlayer audioFilePlayer;
+    private boolean map;
 
-    public AutomaticMovement(LinkedList<Actor> monsters, Player player, Main main) {
+    public AutomaticMovement(LinkedList<Actor> monsters, Player player, Main main, AudioFilePlayer audioFilePlayer) {
         this.monsters = monsters;
         this.player = player;
         this.main = main;
+        this.audioFilePlayer = audioFilePlayer;
+        this.map = true;
     }
 
     @Override
     public void run() {
         int frag = 1;
-        while (true) {
-            if(player.getInventory().getActiveGun() != null) {
-                LinkedList<Bullet> bullets = player.getInventory().getActiveGun().getBullets();
-                bullets.removeIf(bullet -> !bullet.isAlive());
-                for (Bullet bullet : bullets) {
-                    bullet.move(bullet.getDirection().getX(), bullet.getDirection().getY());
-                }
-            }
+        while (monsters.size() > 0 && map) {
             monsters.removeIf(monster -> !monster.isAlive());
-            if (monsters.size() > 0) {
                 for (Actor monster : monsters) {
                     if (monster.canAttackPlayer()) {
                         monster.attack(player);
                     } else {
                         monster.autoMove(frag, player);
                     }
-                }
             }
+                if (monsters.size() <= 0){
+                    map = false;
+                }
             main.refresh();
             frag ++;
             try {
@@ -49,5 +47,15 @@ public class AutomaticMovement implements Runnable {
             }
 
         }
+        if (monsters.size() <= 0) {
+            audioFilePlayer.play("src/main/resources/monsterkill.wav");
+        }
+        audioFilePlayer.play("src/main/resources/levelComplete.wav");
+
+
+    }
+
+    public void setMap(boolean map) {
+        this.map = map;
     }
 }
