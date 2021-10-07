@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.items.collectibles.Collectible;
 import com.codecool.dungeoncrawl.logic.items.guns.Gun;
-import com.codecool.dungeoncrawl.logic.items.guns.Pistol;
 
 import java.util.HashMap;
 

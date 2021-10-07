@@ -41,7 +41,7 @@ public class Main extends Application {
     public void monstersMove(){
         LinkedList<Actor> monsters = MapLoader.getMonsters();
         Player player = map.getPlayer();
-        MyRunnable monsterMove = new MyRunnable(monsters, player, this);
+        AutomaticMovement monsterMove = new AutomaticMovement(monsters, player, this);
         Thread thread = new Thread(monsterMove);
         thread.start();
 
@@ -61,7 +61,7 @@ public class Main extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         musicPlayer();
         monstersMove();
         GridPane ui = new GridPane();
@@ -119,35 +119,28 @@ public class Main extends Application {
             case E:
                 if(map.getPlayer().getCell().getItem() != null){
                     map.getPlayer().getCell().getItem().pickUp(map.getPlayer());
-                    refresh();
-                    refreshFX();
+                    break;
                 }
                 break;
             case W:
                 soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.NORTH);
-                refresh();
-                refreshFX();
                 break;
             case S:
                 soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.SOUTH);
-                refresh();
-                refreshFX();
                 break;
             case A:
                 soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.WEST);
-                refresh();
-                refreshFX();
                 break;
             case D:
                 soundEffect(map.getPlayer().getInventory().getActiveGun());
                 map.getPlayer().shoot(Direction.EAST);
-                refresh();
-                refreshFX();
                 break;
         }
+        refresh();
+        refreshFX();
     }
     public void refresh() {
         context.setFill(Color.BLACK);
