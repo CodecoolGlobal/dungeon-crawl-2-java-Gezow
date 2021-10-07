@@ -1,7 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 public class MusicPlayer implements Runnable{
-    private AudioFilePlayer audioFilePlayer;
+    private final AudioFilePlayer audioFilePlayer;
     private boolean map;
 
     public MusicPlayer(AudioFilePlayer audioFilePlayer) {

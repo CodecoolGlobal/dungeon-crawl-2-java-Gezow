@@ -20,7 +20,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -43,7 +42,6 @@ public class Main extends Application {
     GraphicsContext itemContext = itemCanvas.getGraphicsContext2D();
     AudioFilePlayer audioFilePlayer = new AudioFilePlayer();
     AutomaticMovement monsterMove;
-    MusicPlayer musicPlayer;
     int gunCounter = 0;
 
     public static void main(String[] args) {
@@ -172,8 +170,6 @@ public class Main extends Application {
         int y;
         x = direction.getX();
         y = direction.getY();
-        System.out.println(x);
-        System.out.println(y);
         moveAction(x, y);
     }
 
