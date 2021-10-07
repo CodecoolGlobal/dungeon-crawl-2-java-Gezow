@@ -6,7 +6,7 @@ public enum Settings {
     CANVAS_WIDTH(9), // 9
     CANVAS_HEIGHT(9), // 9
 
-    GAME_SPEED(10), // 8 (10-20)
+    GAME_SPEED(11), // 11 (10-20)
 
     PLAYER_MAX_HEALTH(50), // 50
     PLAYER_MELEE_DAMAGE(5), // 5
@@ -19,8 +19,8 @@ public enum Settings {
 
     RUNNER_HEALTH(5), // 5
     RUNNER_DAMAGE(1), // 1
-    RUNNER_SPEED(5), // 5 (1-10)
-    RUNNER_RAGE_SPEED(8), // 8 (1-10)
+    RUNNER_SPEED(6), // 6 (1-10)
+    RUNNER_RAGE_SPEED(10), // 10 (1-10)
     RUNNER_FOLLOW_DISTANCE(5), // 5
 
     BULKY_HEALTH(30), // 30
