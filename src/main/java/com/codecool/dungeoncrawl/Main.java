@@ -150,6 +150,12 @@ public class Main extends Application {
                 refresh();
                 refreshFX();
                 break;
+            case Q:
+                map.getPlayer().changeGun(-1);
+                break;
+            case R:
+                map.getPlayer().changeGun(1);
+                break;
         }
     }
     public void refresh() {
