@@ -15,18 +15,16 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.stage.Stage;
 
-import java.io.InputStream;
 import java.util.LinkedList;
 
 public class Main extends Application {
     String currentMap = "/map.txt";
     GameMap map = MapLoader.loadMap(currentMap);
     Canvas canvas = new Canvas(
-            9 * Tiles.TILE_WIDTH,
-            9 * Tiles.TILE_WIDTH);
+            Settings.CANVAS_WIDTH.getValue() * Tiles.TILE_WIDTH,
+            Settings.CANVAS_HEIGHT.getValue() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label ammoLabel = new Label();
@@ -158,13 +156,13 @@ public class Main extends Application {
                     cell = new Cell(CellType.EMPTY);
                 }
                 if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), x - playerX + 4, y - playerY + 3);
+                    Tiles.drawTile(context, cell.getActor(), x - playerX + Settings.LINE_OF_SIGHT.getValue(), y - playerY + Settings.LINE_OF_SIGHT.getValue());
                 } else if (cell.getBullet() != null) {
-                    Tiles.drawTile(context, cell.getBullet(), x - playerX + 4, y - playerY + 3);
+                    Tiles.drawTile(context, cell.getBullet(), x - playerX + Settings.LINE_OF_SIGHT.getValue(), y - playerY + Settings.LINE_OF_SIGHT.getValue());
                 } else if (cell.getItem() != null) {
-                    Tiles.drawTile(context, cell.getItem(), x - playerX + 4, y - playerY + 3);
+                    Tiles.drawTile(context, cell.getItem(), x - playerX + Settings.LINE_OF_SIGHT.getValue(), y - playerY + Settings.LINE_OF_SIGHT.getValue());
                 } else {
-                    Tiles.drawTile(context, cell, x - playerX + 4, y - playerY + 3);
+                    Tiles.drawTile(context, cell, x - playerX + Settings.LINE_OF_SIGHT.getValue(), y - playerY + Settings.LINE_OF_SIGHT.getValue());
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.logic.Settings;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Bullet;
 import com.codecool.dungeoncrawl.logic.actors.Direction;
@@ -42,7 +43,7 @@ public class AutomaticMovement implements Runnable {
             main.refresh();
             frag ++;
             try {
-                Thread.sleep(100);
+                Thread.sleep(210 - (Settings.GAME_SPEED.getValue()* 10));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -57,11 +57,11 @@ public class MapLoader {
                             break;
                         case 'm':
                             cell.setType(CellType.FLOOR);
-                            Medkit10 medkit10 = new Medkit10(cell);
+                            HealthPackSmall healthPackSmall = new HealthPackSmall(cell);
                             break;
                         case 'M':
                             cell.setType(CellType.FLOOR);
-                            Medkit50 medkit50 = new Medkit50(cell);
+                            HealthPackBig healthPackBig = new HealthPackBig(cell);
                             break;
                         case 'A':
                             cell.setType(CellType.FLOOR);

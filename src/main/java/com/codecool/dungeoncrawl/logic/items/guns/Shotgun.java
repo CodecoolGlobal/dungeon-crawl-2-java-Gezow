@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic.items.guns;
 
 import com.codecool.dungeoncrawl.AudioFilePlayer;
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.Settings;
 import com.codecool.dungeoncrawl.logic.actors.Direction;
 
 public class Shotgun extends Gun{
@@ -16,7 +17,7 @@ public class Shotgun extends Gun{
 
     @Override
     public void shoot(Cell cell, Direction direction){
-        super.shoot(cell, direction, 10);
+        super.shoot(cell, direction, Settings.SHOTGUN_DAMAGE.getValue());
         switch (direction){
             case NORTH:
                 super.shoot(cell, Direction.NORTHEAST, 10);

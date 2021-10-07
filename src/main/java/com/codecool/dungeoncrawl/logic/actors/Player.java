@@ -3,17 +3,18 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Inventory;
+import com.codecool.dungeoncrawl.logic.Settings;
 
 import java.util.Objects;
 
 public class Player extends Actor{
-    private int maxHealth = 50;
+    private int maxHealth = Settings.PLAYER_MAX_HEALTH.getValue();
     private Inventory inventory;
 
 
     public Player(Cell cell) {
-        super(cell, 10, 1);
-        inventory = new Inventory(10, 50);
+        super(cell, Settings.PLAYER_MAX_HEALTH.getValue(), Settings.PLAYER_MELEE_DAMAGE.getValue());
+        inventory = new Inventory(Settings.PLAYER_STARTING_AMMO.getValue(), Settings.PLAYER_MAX_AMMO.getValue());
     }
 
     public String getTileName() {
