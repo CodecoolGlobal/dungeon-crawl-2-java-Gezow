@@ -11,9 +11,9 @@ import java.util.Scanner;
 
 public class MapLoader {
     private static LinkedList<Actor> monsters;
-    public static GameMap loadMap() {
+    public static GameMap loadMap(String currentMap) {
+        InputStream is = MapLoader.class.getResourceAsStream(currentMap);
         monsters = new LinkedList<>();
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
         int height = scanner.nextInt();
@@ -107,6 +107,12 @@ public class MapLoader {
                             break;
                         case 'F':
                             cell.setType(CellType.FLAME);
+                            break;
+                        case 'f':
+                            cell.setType(CellType.FIRE);
+                            break;
+                        case 'C':
+                            cell.setType(CellType.HELLCRYSTAL);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
