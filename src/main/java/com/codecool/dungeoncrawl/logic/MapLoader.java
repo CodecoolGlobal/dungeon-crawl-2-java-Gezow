@@ -1,14 +1,19 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.actors.*;
+import com.codecool.dungeoncrawl.logic.items.collectibles.*;
+import com.codecool.dungeoncrawl.logic.items.consumables.*;
+import com.codecool.dungeoncrawl.logic.items.guns.*;
 
 import java.io.InputStream;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class MapLoader {
-    public static GameMap loadMap() {
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
+    private static LinkedList<Actor> monsters;
+    public static GameMap loadMap(String currentMap) {
+        InputStream is = MapLoader.class.getResourceAsStream(currentMap);
+        monsters = new LinkedList<>();
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
         int height = scanner.nextInt();
@@ -31,13 +36,83 @@ public class MapLoader {
                         case '.':
                             cell.setType(CellType.FLOOR);
                             break;
-                        case 's':
+                        case 'w':
                             cell.setType(CellType.FLOOR);
-                            new Skeleton(cell);
+                            Walker walker = new Walker(cell);
+                            monsters.add(walker);
+                            break;
+                        case 'r':
+                            cell.setType(CellType.FLOOR);
+                            Runner runner = new Runner(cell);
+                            monsters.add(runner);
+                            break;
+                        case 'b':
+                            cell.setType(CellType.FLOOR);
+                            Bulky bulky = new Bulky(cell);
+                            monsters.add(bulky);
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell, "Player"));
+                            map.setPlayer(new Player(cell));
+                            break;
+                        case 'm':
+                            cell.setType(CellType.FLOOR);
+                            HealthPackSmall healthPackSmall = new HealthPackSmall(cell);
+                            break;
+                        case 'M':
+                            cell.setType(CellType.FLOOR);
+                            HealthPackBig healthPackBig = new HealthPackBig(cell);
+                            break;
+                        case 'A':
+                            cell.setType(CellType.FLOOR);
+                            Ammo ammo = new Ammo(cell);
+                            break;
+                        case 'p':
+                            cell.setType(CellType.FLOOR);
+                            Pistol pistol = new Pistol(cell);
+                            break;
+                        case 's':
+                            cell.setType(CellType.FLOOR);
+                            Shotgun shotgun = new Shotgun(cell);
+                            break;
+                        case 'a':
+                            cell.setType(CellType.FLOOR);
+                            AutomaticRifle automaticRifle = new AutomaticRifle(cell);
+                            break;
+                        case 'B':
+                            cell.setType(CellType.FLOOR);
+                            Bfg bfg = new Bfg(cell);
+                            break;
+                        case 'k':
+                            cell.setType(CellType.FLOOR);
+                            Key key = new Key(cell);
+                            break;
+                        case 'c':
+                            cell.setType(CellType.FLOOR);
+                            Crystal crystal = new Crystal(cell);
+                            break;
+                        case 'R':
+                            cell.setType(CellType.FLOOR);
+                            Rocket rocket = new Rocket(cell);
+                            break;
+                        case 'S':
+                            cell.setType(CellType.FLOOR);
+                            Shield shield = new Shield(cell);
+                            break;
+                        case 'd':
+                            cell.setType(CellType.DOOR);
+                            break;
+                        case 'P':
+                            cell.setType(CellType.PORTAL);
+                            break;
+                        case 'F':
+                            cell.setType(CellType.FLAME);
+                            break;
+                        case 'f':
+                            cell.setType(CellType.FIRE);
+                            break;
+                        case 'C':
+                            cell.setType(CellType.HELLCRYSTAL);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
@@ -48,4 +123,7 @@ public class MapLoader {
         return map;
     }
 
+    public static LinkedList<Actor> getMonsters() {
+        return monsters;
+    }
 }
