@@ -12,6 +12,7 @@ public abstract class Actor implements Drawable {
     private Cell cell;
     protected int health;
     private int meleeDamage;
+    private String name;
 
     public Actor(Cell cell, int health, int meleeDamage) {
         this.cell = cell;
@@ -127,5 +128,9 @@ public abstract class Actor implements Drawable {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
+    }
+
+    public String getName() {
+        return name;
     }
 }
