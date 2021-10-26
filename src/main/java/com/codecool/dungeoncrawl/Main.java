@@ -8,6 +8,9 @@ import com.codecool.dungeoncrawl.logic.items.collectibles.*;
 import com.codecool.dungeoncrawl.logic.items.collectibles.Crystal;
 import com.codecool.dungeoncrawl.logic.items.collectibles.Key;
 import com.codecool.dungeoncrawl.logic.items.guns.Gun;
+import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.google.gson.Gson;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -20,6 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -124,6 +128,12 @@ public class Main extends Application {
             return;
         }
         switch (keyEvent.getCode()) {
+            //TESTING:
+            case F5:
+                PlayerModel pm = new PlayerModel(map.getPlayer());
+                GameState gameState = new GameState("map", new Date(System.currentTimeMillis()), pm);
+                String serializedGameState = new Gson().toJson(gameState);
+                System.out.println(serializedGameState);
             case UP:
                 if (monsterMove.isRunning()){
                     movePlayer(Direction.NORTH);

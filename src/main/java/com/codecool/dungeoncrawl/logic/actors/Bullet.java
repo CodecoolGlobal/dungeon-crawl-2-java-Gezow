@@ -6,9 +6,9 @@ import com.codecool.dungeoncrawl.logic.CellType;
 import java.util.Objects;
 
 public class Bullet extends Actor {
-    private Cell cell;
-    private Direction direction;
-    private int damage;
+    private transient Cell cell;
+    private transient Direction direction;
+    private transient int damage;
 
 
     public Bullet(Cell cell, Direction direction, int damage) {

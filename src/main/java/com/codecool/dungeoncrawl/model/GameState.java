@@ -2,11 +2,12 @@ package com.codecool.dungeoncrawl.model;
 
 import com.codecool.dungeoncrawl.logic.Inventory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
-public class GameState extends BaseModel {
+public class GameState extends BaseModel{
     private Date savedAt;
     private String currentMap;
     private PlayerModel player;
@@ -16,6 +17,7 @@ public class GameState extends BaseModel {
         this.currentMap = currentMap;
         this.savedAt = savedAt;
         this.player = player;
+        this.inventory = player.getInventory();
     }
 
     public Date getSavedAt() {
@@ -34,11 +36,11 @@ public class GameState extends BaseModel {
         this.currentMap = currentMap;
     }
 
-    public PlayerModel getPlayer() {
+/*    public PlayerModel getPlayer() {
         return player;
     }
 
     public void setPlayer(PlayerModel player) {
         this.player = player;
-    }
+    }*/
 }
