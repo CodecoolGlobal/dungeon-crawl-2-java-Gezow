@@ -60,4 +60,8 @@ public class PlayerModel extends BaseModel {
     public void setY(int y) {
         this.y = y;
     }
+
+    public String getPlayerName() {
+        return "DoomGuy";
+    }
 }
