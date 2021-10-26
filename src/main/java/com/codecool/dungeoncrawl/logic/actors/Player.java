@@ -10,6 +10,7 @@ import java.util.Objects;
 public class Player extends Actor {
     private int maxHealth = Settings.PLAYER_MAX_HEALTH.getValue();
     private Inventory inventory;
+    private final String name = "DoomGuy";
 
 
     public Player(Cell cell) {
