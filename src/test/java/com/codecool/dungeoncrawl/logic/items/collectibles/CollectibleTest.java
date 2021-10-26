@@ -23,8 +23,6 @@ class CollectibleTest {
 
     @Test
     void playerPicksUpKey_returnTrue() {
-//        this.expectedCollectible = new Key(map.getCell(1,2));
-//        String expected = expectedCollectible.toString();
         Key key = new Key(map.getCell(1,2));
         expectedInventory.getCollectibles().add(key);
         String expected = expectedInventory.getCollectibles().toString();
