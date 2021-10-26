@@ -2,8 +2,6 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.Settings;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
-import com.codecool.dungeoncrawl.logic.actors.Bullet;
-import com.codecool.dungeoncrawl.logic.actors.Direction;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 
 import java.util.LinkedList;
@@ -13,38 +11,40 @@ public class AutomaticMovement implements Runnable {
     private final Player player;
     private final Main main;
     private final AudioFilePlayer audioFilePlayer;
-    private boolean map;
+    private boolean isRunning;
 
     public AutomaticMovement(LinkedList<Actor> monsters, Player player, Main main, AudioFilePlayer audioFilePlayer) {
         this.monsters = monsters;
         this.player = player;
         this.main = main;
         this.audioFilePlayer = audioFilePlayer;
-        this.map = true;
+        this.isRunning = true;
     }
 
     @Override
     public void run() {
         int frag = 1;
-        while (monsters.size() > 0 && map) {
-            monsters.removeIf(monster -> !monster.isAlive());
+        while (monsters.size() > 0) {
+            if (isRunning) {
+                monsters.removeIf(monster -> !monster.isAlive());
                 for (Actor monster : monsters) {
                     if (monster.canAttackPlayer()) {
                         monster.attack(player);
                     } else {
                         monster.autoMove(frag, player);
                     }
-            }
-                if (monsters.size() <= 0){
-                    map = false;
                 }
-            main.refresh();
-            frag ++;
-            try {
-                Thread.sleep(210 - (Settings.GAME_SPEED.getValue()* 10));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                if (monsters.size() <= 0) {
+                    isRunning = false;
+                }
+                main.refresh();
+                frag++;
             }
+                try {
+                    Thread.sleep(210 - (Settings.GAME_SPEED.getValue() * 10));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
         }
         if (monsters.size() <= 0) {
@@ -54,7 +54,11 @@ public class AutomaticMovement implements Runnable {
 
     }
 
-    public void setMap(boolean map) {
-        this.map = map;
+    public void setRunning(boolean running) {
+        this.isRunning = running;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
     }
 }

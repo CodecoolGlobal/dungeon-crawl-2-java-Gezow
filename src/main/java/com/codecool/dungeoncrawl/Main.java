@@ -59,7 +59,6 @@ public class Main extends Application {
         Thread thread = new Thread(monsterMove);
         thread.start();
 
-
     }
 
     public void soundEffect(Gun gun){
@@ -126,16 +125,24 @@ public class Main extends Application {
         }
         switch (keyEvent.getCode()) {
             case UP:
-                movePlayer(Direction.NORTH);
+                if (monsterMove.isRunning()){
+                    movePlayer(Direction.NORTH);
+                }
                 break;
             case DOWN:
-                movePlayer(Direction.SOUTH);
+                if (monsterMove.isRunning()) {
+                    movePlayer(Direction.SOUTH);
+                }
                 break;
             case LEFT:
-                movePlayer(Direction.WEST);
+                if (monsterMove.isRunning()) {
+                    movePlayer(Direction.WEST);
+                }
                 break;
             case RIGHT:
-                movePlayer(Direction.EAST);
+                if (monsterMove.isRunning()) {
+                    movePlayer(Direction.EAST);
+                }
                 break;
             case E:
                 if(map.getPlayer().getCell().getItem() != null){
@@ -159,6 +166,12 @@ public class Main extends Application {
                 break;
             case R:
                 map.getPlayer().changeGun(1);
+                break;
+            case P:
+                monsterMove.setRunning(false);
+                break;
+            case C:
+                monsterMove.setRunning(true);
                 break;
         }
         refresh();
@@ -279,7 +292,7 @@ public class Main extends Application {
         map.getPlayer().setInventory(inventory);
         map.getPlayer().setMaxHealth(maxHealth);
         map.getPlayer().setHealth(health);
-        monsterMove.setMap(false);
+        monsterMove.setRunning(false);
         monstersMove(MapLoader.getMonsters());
     }
 
