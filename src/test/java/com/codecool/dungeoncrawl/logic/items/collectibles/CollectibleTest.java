@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CollectibleTest {
     GameMap map;
     Player player;
+    Collectible expectedCollectible;
     Inventory expectedInventory;
 
     @BeforeEach
@@ -23,6 +24,8 @@ class CollectibleTest {
 
     @Test
     void playerPicksUpKey_returnTrue() {
+//        this.expectedCollectible = new Key(map.getCell(1,2));
+//        String expected = expectedCollectible.toString();
         Key key = new Key(map.getCell(1,2));
         expectedInventory.getCollectibles().add(key);
         String expected = expectedInventory.getCollectibles().toString();
@@ -58,7 +61,7 @@ class CollectibleTest {
     }
 
     @Test
-    void removeKeyFromInventory_returnTrue() {
+    void removeKeyFromCollectibles_returnTrue() {
         String expected = expectedInventory.getCollectibles().toString();
 
         Key key = new Key(map.getCell(2,3));
@@ -70,7 +73,7 @@ class CollectibleTest {
     }
 
     @Test
-    void removeCrystalFromInventory_returnTrue() {
+    void removeCrystalFromCollectibles_returnTrue() {
         String expected = expectedInventory.getCollectibles().toString();
 
         Crystal crystal = new Crystal(map.getCell(2,3));
@@ -82,7 +85,7 @@ class CollectibleTest {
     }
 
     @Test
-    void removeRocketFromInventory_returnTrue() {
+    void removeRocketFromCollectibles_returnTrue() {
         String expected = expectedInventory.getRockets().toString();
 
         Rocket rocket = new Rocket(map.getCell(2,3));
