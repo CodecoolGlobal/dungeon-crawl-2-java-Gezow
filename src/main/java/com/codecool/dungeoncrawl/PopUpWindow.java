@@ -1,16 +1,21 @@
 package com.codecool.dungeoncrawl;
 
+import com.google.gson.Gson;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+
 
 public class PopUpWindow {
 
 
-    public void display()
+    public void display(String map)
     {
         Stage popupwindow=new Stage();
 
@@ -30,7 +35,19 @@ public class PopUpWindow {
         button1.setOnAction(e -> popupwindow.close());
         button2.setOnAction(e -> {
             String test = textField.getText();
-            System.out.println(test);
+            Writer writer = null;
+            try {
+                writer = new FileWriter("src/main/resources/saves/"+test+".json");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            new Gson().toJson(map, writer);
+            try {
+                writer.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             popupwindow.close();
         });
 

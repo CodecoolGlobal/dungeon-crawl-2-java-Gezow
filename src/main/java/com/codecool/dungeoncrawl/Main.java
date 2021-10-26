@@ -188,7 +188,7 @@ public class Main extends Application {
                         GameState gameState = new GameState(map, new Date(System.currentTimeMillis()), pm);
                         String serializedGameState = new Gson().toJson(gameState);
                         System.out.println(serializedGameState);
-                        popUpWindow.display();
+                        popUpWindow.display(serializedGameState);
                     }
                 }
                 break;
