@@ -11,13 +11,11 @@ public class GameState extends BaseModel{
     private Date savedAt;
     private String currentMap;
     private PlayerModel player;
-    private Inventory inventory;
 
     public GameState(String currentMap, Date savedAt, PlayerModel player) {
         this.currentMap = currentMap;
         this.savedAt = savedAt;
         this.player = player;
-        this.inventory = player.getInventory();
     }
 
     public Date getSavedAt() {
