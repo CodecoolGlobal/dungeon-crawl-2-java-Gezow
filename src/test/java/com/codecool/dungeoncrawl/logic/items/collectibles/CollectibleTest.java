@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class CollectibleTest {
     GameMap map;
     Player player;
-    Collectible expectedCollectible;
     Inventory expectedInventory;
 
     @BeforeEach
