@@ -1,40 +1,48 @@
 package com.codecool.dungeoncrawl.model;
 
+import com.codecool.dungeoncrawl.logic.Inventory;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 
 public class PlayerModel extends BaseModel {
-    private String playerName;
     private int x;
     private int y;
-    private boolean alive;
     private int maxHealth;
     protected int health;
+    private Inventory inventory;
 
     public PlayerModel(Player player) {
-        this.playerName = player.getName();
         this.x = player.getX();
         this.y = player.getY();
 
         this.maxHealth = player.getMaxHealth();
         this.health = player.getHealth();
-        this.alive = player.isAlive();
 
+        this.inventory = player.getInventory();
     }
 
-    public String getPlayerName() {
-        return playerName;
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
     }
 
-    public int getHp() {
+    public int getHealth() {
         return health;
     }
 
-    public void setHp(int health) {
+    public void setHealth(int health) {
         this.health = health;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 
     public int getX() {
