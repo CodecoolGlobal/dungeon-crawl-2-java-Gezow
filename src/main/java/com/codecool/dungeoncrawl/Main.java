@@ -14,6 +14,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -46,6 +49,7 @@ public class Main extends Application {
     GraphicsContext rocketContext = rocketCanvas.getGraphicsContext2D();
     AudioFilePlayer audioFilePlayer = new AudioFilePlayer();
     AutomaticMovement monsterMove;
+    PopUpWindow popUpWindow = new PopUpWindow();
     int gunCounter = 0;
 
     public static void main(String[] args) {
@@ -172,6 +176,14 @@ public class Main extends Application {
                 break;
             case C:
                 monsterMove.setRunning(true);
+                break;
+            case V:
+                if (!monsterMove.isRunning()){
+                    if (keyEvent.isControlDown()){
+
+                        popUpWindow.display();
+                    }
+                }
                 break;
         }
         refresh();
