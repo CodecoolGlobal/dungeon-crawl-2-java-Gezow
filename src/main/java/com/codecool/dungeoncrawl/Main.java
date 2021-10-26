@@ -132,12 +132,6 @@ public class Main extends Application {
             return;
         }
         switch (keyEvent.getCode()) {
-            //TESTING:
-            case F5:
-                PlayerModel pm = new PlayerModel(map.getPlayer());
-                GameState gameState = new GameState(map, new Date(System.currentTimeMillis()), pm);
-                String serializedGameState = new Gson().toJson(gameState);
-                System.out.println(serializedGameState);
             case UP:
                 if (monsterMove.isRunning()){
                     movePlayer(Direction.NORTH);
@@ -190,7 +184,10 @@ public class Main extends Application {
             case V:
                 if (!monsterMove.isRunning()){
                     if (keyEvent.isControlDown()){
-
+                        PlayerModel pm = new PlayerModel(map.getPlayer());
+                        GameState gameState = new GameState(map, new Date(System.currentTimeMillis()), pm);
+                        String serializedGameState = new Gson().toJson(gameState);
+                        System.out.println(serializedGameState);
                         popUpWindow.display();
                     }
                 }
