@@ -4,22 +4,20 @@ import com.codecool.dungeoncrawl.logic.actors.Player;
 
 public class PlayerModel extends BaseModel {
     private String playerName;
-    private int hp;
     private int x;
     private int y;
-
-    public PlayerModel(String playerName, int x, int y) {
-        this.playerName = playerName;
-        this.x = x;
-        this.y = y;
-    }
+    private boolean alive;
+    private int maxHealth;
+    protected int health;
 
     public PlayerModel(Player player) {
         this.playerName = player.getName();
         this.x = player.getX();
         this.y = player.getY();
 
-        this.hp = player.getHealth();
+        this.maxHealth = player.getMaxHealth();
+        this.health = player.getHealth();
+        this.alive = player.isAlive();
 
     }
 
@@ -32,11 +30,11 @@ public class PlayerModel extends BaseModel {
     }
 
     public int getHp() {
-        return hp;
+        return health;
     }
 
-    public void setHp(int hp) {
-        this.hp = hp;
+    public void setHp(int health) {
+        this.health = health;
     }
 
     public int getX() {
