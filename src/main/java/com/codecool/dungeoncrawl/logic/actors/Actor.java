@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public abstract class Actor implements Drawable {
     private boolean alive = true;
-    private Cell cell;
+    private transient Cell cell;
     protected int health;
     private int meleeDamage;
     private String name;

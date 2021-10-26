@@ -8,8 +8,8 @@ public class Cell implements Drawable {
     private CellType type;
     private Item item;
     private Actor actor;
-    private Bullet bullet;
-    private GameMap gameMap;
+    private transient Bullet bullet;
+    private transient GameMap gameMap;
     private int x;
     private int y;
 

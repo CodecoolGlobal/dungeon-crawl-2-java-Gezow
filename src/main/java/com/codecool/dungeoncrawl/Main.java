@@ -131,7 +131,7 @@ public class Main extends Application {
             //TESTING:
             case F5:
                 PlayerModel pm = new PlayerModel(map.getPlayer());
-                GameState gameState = new GameState("map", new Date(System.currentTimeMillis()), pm);
+                GameState gameState = new GameState(map, new Date(System.currentTimeMillis()), pm);
                 String serializedGameState = new Gson().toJson(gameState);
                 System.out.println(serializedGameState);
             case UP:
