@@ -31,12 +31,12 @@ class ActorTest {
     }
 
     @Test
-    void cannotMoveOutOfMap() {
-        Player player = new Player(gameMap.getCell(2, 1));
-        player.move(1, 0);
+    void canMoveReturnsFalseIfOutOfFields() {
+        GameMap gameMap = new GameMap(3, 3, CellType.EMPTY);
+        Player player = new Player(gameMap.getCell(1, 1));
+        boolean playerCanMve = player.canMove(1, 0);
 
-        assertEquals(2, player.getX());
-        assertEquals(1, player.getY());
+        assertFalse(playerCanMve);
     }
 
     @Test
