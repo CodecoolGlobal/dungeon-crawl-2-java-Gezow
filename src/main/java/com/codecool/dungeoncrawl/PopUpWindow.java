@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -15,7 +16,7 @@ import java.io.Writer;
 public class PopUpWindow {
 
 
-    public void display(String map)
+    public void display(JsonObject map)
     {
         Stage popupwindow=new Stage();
 

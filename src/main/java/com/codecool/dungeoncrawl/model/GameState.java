@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
-public class GameState extends BaseModel{
+public class GameState extends BaseModel implements Serializable{
     private Date savedAt;
     private GameMap currentMap;
     private PlayerModel player;
