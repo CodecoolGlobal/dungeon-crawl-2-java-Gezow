@@ -22,7 +22,6 @@ public abstract class Actor implements Drawable {
     }
 
     public Actor() {
-
     }
 
     public boolean canMove(int dx, int dy) {
@@ -124,9 +123,5 @@ public abstract class Actor implements Drawable {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
-    }
-
-    public String getName() {
-        return name;
     }
 }
