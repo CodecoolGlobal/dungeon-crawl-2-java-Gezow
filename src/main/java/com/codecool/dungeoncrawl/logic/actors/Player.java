@@ -46,13 +46,28 @@ public class Player extends Actor {
     public void changeGun(int direction) {
         for (int i = 0; i < inventory.getGuns().size(); i++) {
             if (inventory.getGuns().get(inventory.getGuns().keySet().toArray()[i]).isActive()) {
-                inventory.setActiveGun(inventory.getGuns().get(inventory.getGuns().keySet().toArray()[i + direction]));
+                if(direction == 1) {
+                    if (i == inventory.getGuns().size() - 1) {
+                        inventory.setActiveGun(inventory.getGuns().get(inventory.getGuns().keySet().toArray()[0]));
+                    } else {
+                        inventory.setActiveGun(inventory.getGuns().get(inventory.getGuns().keySet().toArray()[i + direction]));
+                    }
+                }
+                else{
+                    if (i == 0){
+                        inventory.setActiveGun(inventory.getGuns().get(inventory.getGuns().keySet().toArray()[inventory.getGuns().size() - 1]));
+                    }
+                    else{
+                        inventory.setActiveGun(inventory.getGuns().get(inventory.getGuns().keySet().toArray()[i + direction]));
+                    }
+                }
             }
         }
     }
 
     public void shoot(Direction direction) {
         inventory.getActiveGun().shoot(this.getCell(), direction);
+        inventory.setAmmo(inventory.getAmmo() - 1);
     }
 
     public int getMaxHealth() {
