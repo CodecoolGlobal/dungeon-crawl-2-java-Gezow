@@ -12,7 +12,7 @@ public abstract class Gun extends Item {
     public Gun(Cell cell) {
         super(cell);
     }
-    private LinkedList<Bullet> bullets = new LinkedList<>();
+    private transient LinkedList<Bullet> bullets = new LinkedList<>();
 
     protected boolean isActive;
 

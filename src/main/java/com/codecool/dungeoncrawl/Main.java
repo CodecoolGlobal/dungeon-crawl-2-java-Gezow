@@ -8,6 +8,11 @@ import com.codecool.dungeoncrawl.logic.items.collectibles.*;
 import com.codecool.dungeoncrawl.logic.items.collectibles.Crystal;
 import com.codecool.dungeoncrawl.logic.items.collectibles.Key;
 import com.codecool.dungeoncrawl.logic.items.guns.Gun;
+import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -23,6 +28,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -117,7 +126,7 @@ public class Main extends Application {
         refreshFX();
     }
 
-    private void onKeyReleased(KeyEvent keyEvent) {
+    private void onKeyReleased(KeyEvent keyEvent){
         if (map.getPlayer().getInventory().getActiveGun() != null && gunCounter == 0){
             gunCounter ++;
             bulletMove(map.getPlayer());
@@ -128,6 +137,18 @@ public class Main extends Application {
             return;
         }
         switch (keyEvent.getCode()) {
+            //import teszt
+            case F6:
+                try {
+                    String filePath = "src/main/resources/saves/12345.json";
+                    String jsonData = new String(Files.readAllBytes(Paths.get(filePath)));
+                    System.out.println(jsonData);
+                    GameState outputGameState = new Gson().fromJson(jsonData, GameState.class);
+                    outputGameState.toString();
+                }catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
             case UP:
                 if (monsterMove.isRunning()){
                     movePlayer(Direction.NORTH);
@@ -180,8 +201,11 @@ public class Main extends Application {
             case V:
                 if (!monsterMove.isRunning()){
                     if (keyEvent.isControlDown()){
-
-                        popUpWindow.display();
+                        PlayerModel pm = new PlayerModel(map.getPlayer());
+                        GameState gameState = new GameState(map, new Date(System.currentTimeMillis()), pm);
+                        String serializedGameState = new Gson().toJson(gameState);
+                        JsonObject serializedGameStateJSON = (JsonObject) JsonParser.parseString(serializedGameState);
+                        popUpWindow.display(serializedGameStateJSON);
                     }
                 }
                 break;
