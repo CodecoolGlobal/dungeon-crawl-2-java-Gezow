@@ -52,24 +52,28 @@ public abstract class Actor implements Drawable {
         Direction randomRightDirection = rightDirections.get((int) (Math.random() * rightDirections.size()));
         int dx = randomRightDirection.getX();
         int dy = randomRightDirection.getY();
-        move(dx,dy);
+        move(dx, dy);
     }
 
     private boolean isCloserToTarget(int targetX, int targetY, int actorX, int actorY, int nextX, int nextY) {
-        if (actorX < targetX){
-            if (nextX == 1){
-                return true;
-            }
-        }else{
-            if (nextX == -1){
-                return true;
-            }
+        if (actorX < targetX && actorY < targetY) {
+            return nextX == 1 && nextY == 1;
+        } else if (actorX > targetX && actorY > targetY) {
+            return nextX == -1 && nextY == -1;
+        } else if (actorX < targetX && actorY > targetY) {
+            return nextX == 1 && nextY == -1;
+        } else if (actorX > targetX && actorY < targetY) {
+            return nextX == -1 && nextY == 1;
+        } else if (actorX < targetX) {
+            return nextX == 1 && nextY == 0;
+        } else if (actorX > targetX) {
+            return nextX == -1 && nextY == 0;
+        } else if (actorY < targetY) {
+            return nextY == 1 && nextX == 0;
+        } else if (actorY > targetY) {
+            return nextY == -1 && nextX == 0;
         }
-        if (actorY < targetY){
-            return nextY == 1;
-        }else{
-            return nextY == -1;
-        }
+        return false;
     }
 
     public abstract void autoMove(int frag, Player player);
