@@ -18,6 +18,7 @@ public class Bullet extends Actor {
         this.damage = damage;
     }
 
+    @Override
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
         Actor target = nextCell.getActor();
