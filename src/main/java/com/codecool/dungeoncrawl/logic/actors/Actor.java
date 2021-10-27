@@ -78,14 +78,6 @@ public abstract class Actor implements Drawable {
 
     public abstract void autoMove(int frag, Player player);
 
-    public int getMeleeDamage() {
-        return meleeDamage;
-    }
-
-    public void setMeleeDamage(int meleeDamage) {
-        this.meleeDamage = meleeDamage;
-    }
-
     public int getHealth() {
         return health;
     }
