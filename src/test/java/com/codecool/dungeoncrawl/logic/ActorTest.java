@@ -58,18 +58,27 @@ class ActorTest {
     }
 
     @Test
-    void enrageMovesActorCloserToTarget() {
-        int[] goodMove1 = new int[]{1, 2};
-        int[] goodMove2 = new int[]{2, 1};
-        int[] goodMove3 = new int[]{2, 2};
-
+    void enrageMovesActorCloserToTarget1() {
+        int[] goodMove = new int[]{1, 2};
         Runner runner = new Runner(gameMap.getCell(1, 1));
-        Player player = new Player(gameMap.getCell(3, 3));
+        Player player = new Player(gameMap.getCell(1, 3));
 
         runner.enrage(player.getX(),player.getY(),runner.getX(),runner.getY());
         int[] runnerCoordinate = new int[] {runner.getX(),runner.getY()};
 
-        assertTrue(Arrays.equals(runnerCoordinate, goodMove1) || Arrays.equals(runnerCoordinate, goodMove2) || Arrays.equals(runnerCoordinate, goodMove3));
+        assertArrayEquals(runnerCoordinate, goodMove);
+    }
+
+    @Test
+    void enrageMovesActorCloserToTarget2() {
+        int[] goodMove = new int[]{1, 1};
+        Runner runner = new Runner(gameMap.getCell(2, 2));
+        Player player = new Player(gameMap.getCell(0, 0));
+
+        runner.enrage(player.getX(),player.getY(),runner.getX(),runner.getY());
+        int[] runnerCoordinate = new int[] {runner.getX(),runner.getY()};
+
+        assertArrayEquals(runnerCoordinate, goodMove);
     }
 
     @Test
@@ -90,8 +99,4 @@ class ActorTest {
 
         assertEquals(player.getHealth(),loweredHealth);
     }
-
-    @Test
-    void
-
 }
