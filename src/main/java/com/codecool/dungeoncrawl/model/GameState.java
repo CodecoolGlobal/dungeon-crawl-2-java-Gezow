@@ -35,11 +35,11 @@ public class GameState extends BaseModel implements Serializable{
         this.currentMap = currentMap;
     }
 
-/*    public PlayerModel getPlayer() {
+    public PlayerModel getPlayer() {
         return player;
     }
 
     public void setPlayer(PlayerModel player) {
         this.player = player;
-    }*/
+    }
 }

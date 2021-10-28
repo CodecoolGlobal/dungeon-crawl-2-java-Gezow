@@ -78,11 +78,19 @@ public class Cell implements Drawable {
         return actor != null;
     }
 
+    public boolean hasItem(){
+        return item != null;
+    }
+
     public Bullet getBullet() {
         return bullet;
     }
 
     public void setBullet(Bullet bullet) {
         this.bullet = bullet;
+    }
+
+    public void setGameMap(GameMap gameMap) {
+        this.gameMap = gameMap;
     }
 }
