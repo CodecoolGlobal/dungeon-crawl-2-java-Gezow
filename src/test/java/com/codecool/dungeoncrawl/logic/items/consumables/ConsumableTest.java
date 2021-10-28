@@ -22,6 +22,22 @@ class ConsumableTest {
     }
 
     @Test
+    void constructorGetNoArgument_throwNullPointerException (){
+        assertThrows(NullPointerException.class, () ->{
+            Ammo ammo = new Ammo(null);
+        });
+        assertThrows(NullPointerException.class, () -> {
+            HealthPackBig healthPackBig = new HealthPackBig(null);
+        });
+        assertThrows(NullPointerException.class, () -> {
+            HealthPackSmall healthPackSmall = new HealthPackSmall(null);
+        });
+        assertThrows(NullPointerException.class, () -> {
+            Shield shield = new Shield(null);
+        });
+    }
+
+    @Test
     void playerPicksUpAmmo_returnTrue(){
         Inventory expectedInv = new Inventory(20, 50);
         Ammo ammo = new Ammo(map.getCell(2,2));
