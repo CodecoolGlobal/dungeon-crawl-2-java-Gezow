@@ -10,7 +10,7 @@ import java.util.List;
 
 public class GameState extends BaseModel implements Serializable{
     private Date savedAt;
-    private GameMap currentMap;
+    private transient GameMap currentMap;
     private PlayerModel player;
 
     public GameState(GameMap currentMap, Date savedAt, PlayerModel player) {

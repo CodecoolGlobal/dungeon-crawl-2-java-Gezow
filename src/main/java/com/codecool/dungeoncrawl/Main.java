@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Direction;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.collectibles.*;
 import com.codecool.dungeoncrawl.logic.items.collectibles.Crystal;
 import com.codecool.dungeoncrawl.logic.items.collectibles.Key;
@@ -155,6 +156,8 @@ public class Main extends Application {
                             .registerTypeAdapter(Gun.class,
                                     new PropertyBasedInterfaceMarshal())
                             .registerTypeAdapter(Actor.class,
+                                    new PropertyBasedInterfaceMarshal())
+                            .registerTypeAdapter(Item.class,
                                     new PropertyBasedInterfaceMarshal()).create();
 
                     GameState outputGameState = gson.fromJson(jsonData, GameState.class);
