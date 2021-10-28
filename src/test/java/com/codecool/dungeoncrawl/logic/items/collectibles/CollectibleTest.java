@@ -23,8 +23,6 @@ class CollectibleTest {
 
     @Test
     void playerPicksUpKey_returnTrue() {
-//        this.expectedCollectible = new Key(map.getCell(1,2));
-//        String expected = expectedCollectible.toString();
         Key key = new Key(map.getCell(1,2));
         expectedInventory.getCollectibles().add(key);
         String expected = expectedInventory.getCollectibles().toString();
@@ -91,6 +89,36 @@ class CollectibleTest {
         rocket.pickUp(player);
         player.getInventory().getRockets().remove(rocket);
         String result = player.getInventory().getRockets().toString();
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void getCrystalTileName_returnTrue() {
+        String expected = "crystal";
+
+        Crystal crystal = new Crystal(map.getCell(1,2));
+        String result = crystal.getTileName().toString();
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void getKeyTileName_returnTrue() {
+        String expected = "key";
+
+        Key key = new Key(map.getCell(1,2));
+        String result = key.getTileName().toString();
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void getRocketTileName_returnTrue() {
+        String expected = "rocket0";
+
+        Rocket rocket = new Rocket(map.getCell(1,2));
+        String result = rocket.getTileName();
 
         assertEquals(expected, result);
     }
