@@ -39,6 +39,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Main extends Application {
     String currentMap = "/map.txt";
@@ -66,6 +67,7 @@ public class Main extends Application {
     PopUpWindow popUpWindow = new PopUpWindow();
     int gunCounter = 0;
     Gson gson = generateGson();
+    FileBrowser fileBrowser = new FileBrowser(this);
 
     public static void main(String[] args) {
         launch(args);
@@ -132,7 +134,7 @@ public class Main extends Application {
         refreshFX();
     }
 
-    private Gson generateGson(){
+    public Gson generateGson(){
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Collectible.class,
                         new PropertyBasedInterfaceMarshal())
@@ -159,18 +161,8 @@ public class Main extends Application {
         }
         switch (keyEvent.getCode()) {
             case F6:
-                try {
-                    String filePath = "src/main/resources/saves/1234.json";
-                    String jsonData = new String(Files.readAllBytes(Paths.get(filePath)));
-                    System.out.println(jsonData);
+                fileBrowser.start();
 
-                    GameState gameState = gson.fromJson(jsonData, GameState.class);
-
-                    loadGame(gameState);
-
-                }catch (IOException ex) {
-                    ex.printStackTrace();
-                }
                 break;
             case UP:
                 if (monsterMove.isRunning()){
@@ -239,7 +231,7 @@ public class Main extends Application {
         refreshFX();
     }
 
-    private void loadGame(GameState gameState) {
+    public void loadGame(GameState gameState) {
         map = gameState.getCurrentMap();
 
         PlayerModel playerModel = gameState.getPlayer();
