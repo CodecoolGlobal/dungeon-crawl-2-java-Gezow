@@ -158,42 +158,15 @@ public class Main extends Application {
             return;
         }
         switch (keyEvent.getCode()) {
-            //import teszt
             case F6:
                 try {
                     String filePath = "src/main/resources/saves/1234.json";
                     String jsonData = new String(Files.readAllBytes(Paths.get(filePath)));
                     System.out.println(jsonData);
 
-                    GameState outputGameState = gson.fromJson(jsonData, GameState.class);
+                    GameState gameState = gson.fromJson(jsonData, GameState.class);
 
-                    map = outputGameState.getCurrentMap();
-
-                    PlayerModel playerModel = outputGameState.getPlayer();
-                    Player loadedPlayer = new Player(map.getCell(playerModel.getX(),playerModel.getY()));
-                    loadedPlayer.setMaxHealth(playerModel.getMaxHealth());
-                    loadedPlayer.setInventory(playerModel.getInventory());
-                    map.setPlayer(loadedPlayer);
-
-                    LinkedList<Actor> monsters = new LinkedList<>();
-                    for (Cell[] row:map.getCells()
-                         ) {
-                        for (Cell cell:row
-                             ) {
-                            cell.setGameMap(map);
-                            if (cell.hasActor()){
-                                cell.getActor().setCell(cell);
-                            }
-                            if (cell.hasItem()){
-                                cell.getItem().setCell(cell);
-                            }
-                            if (cell.getActor() != null && !Objects.equals(cell.getActor().getTileName(), "player")){
-                                monsters.add(cell.getActor());
-                            }
-                        }
-                    }
-
-                    monstersMove(monsters);
+                    loadGame(gameState);
 
                 }catch (IOException ex) {
                     ex.printStackTrace();
@@ -264,6 +237,36 @@ public class Main extends Application {
         }
         refresh();
         refreshFX();
+    }
+
+    private void loadGame(GameState gameState) {
+        map = gameState.getCurrentMap();
+
+        PlayerModel playerModel = gameState.getPlayer();
+        Player loadedPlayer = new Player(map.getCell(playerModel.getX(),playerModel.getY()));
+        loadedPlayer.setMaxHealth(playerModel.getMaxHealth());
+        loadedPlayer.setInventory(playerModel.getInventory());
+        map.setPlayer(loadedPlayer);
+
+        LinkedList<Actor> monsters = new LinkedList<>();
+        for (Cell[] row:map.getCells()
+             ) {
+            for (Cell cell:row
+                 ) {
+                cell.setGameMap(map);
+                if (cell.hasActor()){
+                    cell.getActor().setCell(cell);
+                }
+                if (cell.hasItem()){
+                    cell.getItem().setCell(cell);
+                }
+                if (cell.getActor() != null && !Objects.equals(cell.getActor().getTileName(), "player")){
+                    monsters.add(cell.getActor());
+                }
+            }
+        }
+
+        monstersMove(monsters);
     }
 
     private void playerShoot(Direction direction) {
