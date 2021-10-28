@@ -7,10 +7,13 @@ import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.collectibles.*;
 import com.codecool.dungeoncrawl.logic.items.collectibles.Crystal;
 import com.codecool.dungeoncrawl.logic.items.collectibles.Key;
+import com.codecool.dungeoncrawl.logic.items.consumables.Consumable;
 import com.codecool.dungeoncrawl.logic.items.guns.Gun;
+import com.codecool.dungeoncrawl.logic.util.PropertyBasedInterfaceMarshal;
 import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
 import javafx.application.Application;
@@ -140,11 +143,27 @@ public class Main extends Application {
             //import teszt
             case F6:
                 try {
-                    String filePath = "src/main/resources/saves/12345.json";
+                    String filePath = "src/main/resources/saves/123.json";
                     String jsonData = new String(Files.readAllBytes(Paths.get(filePath)));
                     System.out.println(jsonData);
-                    GameState outputGameState = new Gson().fromJson(jsonData, GameState.class);
-                    outputGameState.toString();
+
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(Collectible.class,
+                                    new PropertyBasedInterfaceMarshal())
+                            .registerTypeAdapter(Consumable.class,
+                                    new PropertyBasedInterfaceMarshal())
+                            .registerTypeAdapter(Gun.class,
+                                    new PropertyBasedInterfaceMarshal())
+                            .registerTypeAdapter(Actor.class,
+                                    new PropertyBasedInterfaceMarshal()).create();
+
+                    GameState outputGameState = gson.fromJson(jsonData, GameState.class);
+                    PlayerModel playerModel = outputGameState.getPlayer();
+                    Player loadedPlayer = new Player(map.getCell(playerModel.getX(),playerModel.getY()));
+                    loadedPlayer.setMaxHealth(playerModel.getHealth());
+                    loadedPlayer.setInventory(playerModel.getInventory());
+                    map.setPlayer(loadedPlayer);
+
                 }catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -201,9 +220,22 @@ public class Main extends Application {
             case V:
                 if (!monsterMove.isRunning()){
                     if (keyEvent.isControlDown()){
+
                         PlayerModel pm = new PlayerModel(map.getPlayer());
                         GameState gameState = new GameState(map, new Date(System.currentTimeMillis()), pm);
-                        String serializedGameState = new Gson().toJson(gameState);
+
+                        Gson gson = new GsonBuilder()
+                                .registerTypeAdapter(Collectible.class,
+                                        new PropertyBasedInterfaceMarshal())
+                                .registerTypeAdapter(Consumable.class,
+                                        new PropertyBasedInterfaceMarshal())
+                                .registerTypeAdapter(Gun.class,
+                                        new PropertyBasedInterfaceMarshal())
+                                .registerTypeAdapter(Actor.class,
+                                        new PropertyBasedInterfaceMarshal()).create();
+
+                        String serializedGameState = gson.toJson(gameState);
+                        System.out.println(serializedGameState);
                         JsonObject serializedGameStateJSON = (JsonObject) JsonParser.parseString(serializedGameState);
                         popUpWindow.display(serializedGameStateJSON);
                     }
