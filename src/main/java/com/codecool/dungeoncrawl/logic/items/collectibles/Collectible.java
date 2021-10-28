@@ -6,7 +6,7 @@ import com.codecool.dungeoncrawl.logic.items.Item;
 
 public abstract class Collectible extends Item {
     protected int counter = 0;
-    protected static int rocketParts = 0;
+    protected transient static int rocketParts = 0;
 
     @Override
     public void pickUp(Player player){

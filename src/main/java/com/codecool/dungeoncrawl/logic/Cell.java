@@ -8,8 +8,8 @@ public class Cell implements Drawable {
     private CellType type;
     private Item item;
     private Actor actor;
-    private Bullet bullet;
-    private GameMap gameMap;
+    private transient Bullet bullet;
+    private transient GameMap gameMap;
     private int x;
     private int y;
 
@@ -44,7 +44,11 @@ public class Cell implements Drawable {
     }
 
     public Cell getNeighbor(int dx, int dy) {
-        return gameMap.getCell(x + dx, y + dy);
+        try {
+            return gameMap.getCell(x + dx, y + dy);
+        }catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException){
+            return null;
+        }
     }
 
     @Override

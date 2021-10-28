@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public abstract class Actor implements Drawable {
     private boolean alive = true;
-    private Cell cell;
+    private transient Cell cell;
     protected int health;
     private int meleeDamage;
     private String name;
@@ -22,7 +22,6 @@ public abstract class Actor implements Drawable {
     }
 
     public Actor() {
-
     }
 
     public boolean canMove(int dx, int dy) {
@@ -52,35 +51,31 @@ public abstract class Actor implements Drawable {
         Direction randomRightDirection = rightDirections.get((int) (Math.random() * rightDirections.size()));
         int dx = randomRightDirection.getX();
         int dy = randomRightDirection.getY();
-        move(dx,dy);
+        move(dx, dy);
     }
 
     private boolean isCloserToTarget(int targetX, int targetY, int actorX, int actorY, int nextX, int nextY) {
-        if (actorX < targetX){
-            if (nextX == 1){
-                return true;
-            }
-        }else{
-            if (nextX == -1){
-                return true;
-            }
+        if (actorX < targetX && actorY < targetY) {
+            return nextX == 1 && nextY == 1;
+        } else if (actorX > targetX && actorY > targetY) {
+            return nextX == -1 && nextY == -1;
+        } else if (actorX < targetX && actorY > targetY) {
+            return nextX == 1 && nextY == -1;
+        } else if (actorX > targetX && actorY < targetY) {
+            return nextX == -1 && nextY == 1;
+        } else if (actorX < targetX) {
+            return nextX == 1 && nextY == 0;
+        } else if (actorX > targetX) {
+            return nextX == -1 && nextY == 0;
+        } else if (actorY < targetY) {
+            return nextY == 1 && nextX == 0;
+        } else if (actorY > targetY) {
+            return nextY == -1 && nextX == 0;
         }
-        if (actorY < targetY){
-            return nextY == 1;
-        }else{
-            return nextY == -1;
-        }
+        return false;
     }
 
     public abstract void autoMove(int frag, Player player);
-
-    public int getMeleeDamage() {
-        return meleeDamage;
-    }
-
-    public void setMeleeDamage(int meleeDamage) {
-        this.meleeDamage = meleeDamage;
-    }
 
     public int getHealth() {
         return health;
@@ -128,9 +123,5 @@ public abstract class Actor implements Drawable {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
-    }
-
-    public String getName() {
-        return name;
     }
 }

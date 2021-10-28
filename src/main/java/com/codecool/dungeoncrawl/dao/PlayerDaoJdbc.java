@@ -19,7 +19,7 @@ public class PlayerDaoJdbc implements PlayerDao {
             String sql = "INSERT INTO player (player_name, hp, x, y) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, player.getPlayerName());
-            statement.setInt(2, player.getHp());
+            statement.setInt(2, player.getHealth());
             statement.setInt(3, player.getX());
             statement.setInt(4, player.getY());
             statement.executeUpdate();

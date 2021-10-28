@@ -19,6 +19,7 @@ public class Pistol extends Gun{
     @Override
     public void shoot(Cell cell, Direction direction) {
         super.shoot(cell, direction, Settings.PISTOL_DAMAGE.getValue());
+
     }
 
     public void sound(){
