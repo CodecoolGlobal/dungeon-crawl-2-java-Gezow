@@ -190,16 +190,24 @@ public class Main extends Application {
                                     }
                 break;
             case W:
-                playerShoot(Direction.NORTH);
+                if (monsterMove.isRunning()) {
+                    playerShoot(Direction.NORTH);
+                }
                 break;
             case S:
-                playerShoot(Direction.SOUTH);
+                if (monsterMove.isRunning()) {
+                    playerShoot(Direction.SOUTH);
+                }
                 break;
             case A:
-                playerShoot(Direction.WEST);
+                if (monsterMove.isRunning()) {
+                    playerShoot(Direction.WEST);
+                }
                 break;
             case D:
-                playerShoot(Direction.EAST);
+                if (monsterMove.isRunning()) {
+                    playerShoot(Direction.EAST);
+                }
                 break;
             case Q:
                 map.getPlayer().changeGun(-1);

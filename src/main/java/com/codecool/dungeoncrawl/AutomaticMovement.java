@@ -34,9 +34,6 @@ public class AutomaticMovement implements Runnable {
                         monster.autoMove(frag, player);
                     }
                 }
-                if (monsters.size() <= 0) {
-                    isRunning = false;
-                }
                 main.refresh();
                 frag++;
             }
