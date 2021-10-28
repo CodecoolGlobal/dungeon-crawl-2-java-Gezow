@@ -19,4 +19,8 @@ public class MusicPlayer implements Runnable{
     public void setMap(boolean map) {
         this.map = map;
     }
+
+    public boolean isMap() {
+        return map;
+    }
 }
