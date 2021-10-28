@@ -11,6 +11,9 @@ import javafx.stage.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class PopUpWindow {
@@ -35,21 +38,22 @@ public class PopUpWindow {
 
         button1.setOnAction(e -> popupwindow.close());
         button2.setOnAction(e -> {
-            String test = textField.getText();
-            Writer writer = null;
+            String name = textField.getText();
+            String checkName = "";
             try {
-                writer = new FileWriter("src/main/resources/saves/"+test+".json");
-            } catch (IOException ex) {
-                ex.printStackTrace();
+                checkName = checkSaveGame(name);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
-
-            new Gson().toJson(map, writer);
-            try {
-                writer.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            if (!checkName.equals("")) {
+                AtomicBoolean checker = secondPopUp(name, map);
+                if (checker.get()){
+                    popupwindow.close();
+                }
+            } else {
+                createSaveGame(name, map);
+                popupwindow.close();
             }
-            popupwindow.close();
         });
 
         VBox layout= new VBox(10);
@@ -67,6 +71,69 @@ public class PopUpWindow {
 
         popupwindow.showAndWait();
 
+    }
+
+    private String checkSaveGame(String name) throws IOException {
+        String jsonData = "";
+        try {
+            String filePath = "src/main/resources/saves/" + name + ".json";
+            jsonData = new String(Files.readAllBytes(Paths.get(filePath)));
+        }catch (IOException e){
+            jsonData = "";
+        }
+        return jsonData;
+    }
+
+    private void createSaveGame(String name, JsonObject map){
+        Writer writer = null;
+        try {
+            writer = new FileWriter("src/main/resources/saves/"+name+".json");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        new Gson().toJson(map, writer);
+        try {
+            writer.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private AtomicBoolean secondPopUp(String name, JsonObject map){
+        Stage popupwindow=new Stage();
+
+        popupwindow.initModality(Modality.APPLICATION_MODAL);
+        popupwindow.setTitle("Overwrite save");
+
+
+        Label label1= new Label("Do you really want to overwrite your save game?");
+
+
+        Button button1= new Button("No");
+
+        Button button2 = new Button("Yes");
+        AtomicBoolean checker = new AtomicBoolean(false);
+        button1.setOnAction(e -> popupwindow.close());
+        button2.setOnAction(e -> {
+            createSaveGame(name, map);
+            checker.set(true);
+            popupwindow.close();
+        });
+        VBox layout= new VBox(10);
+
+
+        layout.getChildren().add(label1);
+        layout.getChildren().add(button1);
+        layout.getChildren().add(button2);
+
+        layout.setAlignment(Pos.CENTER);
+        Scene scene1= new Scene(layout, 400, 350);
+
+        popupwindow.setScene(scene1);
+
+        popupwindow.showAndWait();
+        return checker;
     }
 
 }
