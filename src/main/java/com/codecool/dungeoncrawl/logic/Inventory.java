@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class Inventory {
     private int ammo;
     private int maxAmmo;
-    private transient Gun activeGun;
+    private Gun activeGun;
     private final HashMap<String, Gun> guns = new HashMap<>();
     private final ArrayList<Collectible> collectibles = new ArrayList<>();
     private final ArrayList<Rocket> rockets = new ArrayList<>();

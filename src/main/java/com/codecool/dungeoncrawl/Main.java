@@ -38,6 +38,7 @@ import java.nio.file.Paths;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class Main extends Application {
     String currentMap = "/map.txt";
@@ -64,6 +65,7 @@ public class Main extends Application {
     AutomaticMovement monsterMove;
     PopUpWindow popUpWindow = new PopUpWindow();
     int gunCounter = 0;
+    Gson gson = generateGson();
 
     public static void main(String[] args) {
         launch(args);
@@ -130,6 +132,21 @@ public class Main extends Application {
         refreshFX();
     }
 
+    private Gson generateGson(){
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Collectible.class,
+                        new PropertyBasedInterfaceMarshal())
+                .registerTypeAdapter(Consumable.class,
+                        new PropertyBasedInterfaceMarshal())
+                .registerTypeAdapter(Gun.class,
+                        new PropertyBasedInterfaceMarshal())
+                .registerTypeAdapter(Actor.class,
+                        new PropertyBasedInterfaceMarshal())
+                .registerTypeAdapter(Item.class,
+                        new PropertyBasedInterfaceMarshal()).create();
+        return gson;
+    }
+
     private void onKeyReleased(KeyEvent keyEvent){
         if (map.getPlayer().getInventory().getActiveGun() != null && gunCounter == 0){
             gunCounter ++;
@@ -144,33 +161,44 @@ public class Main extends Application {
             //import teszt
             case F6:
                 try {
-                    String filePath = "src/main/resources/saves/123.json";
+                    String filePath = "src/main/resources/saves/1234.json";
                     String jsonData = new String(Files.readAllBytes(Paths.get(filePath)));
                     System.out.println(jsonData);
 
-                    Gson gson = new GsonBuilder()
-                            .registerTypeAdapter(Collectible.class,
-                                    new PropertyBasedInterfaceMarshal())
-                            .registerTypeAdapter(Consumable.class,
-                                    new PropertyBasedInterfaceMarshal())
-                            .registerTypeAdapter(Gun.class,
-                                    new PropertyBasedInterfaceMarshal())
-                            .registerTypeAdapter(Actor.class,
-                                    new PropertyBasedInterfaceMarshal())
-                            .registerTypeAdapter(Item.class,
-                                    new PropertyBasedInterfaceMarshal()).create();
-
                     GameState outputGameState = gson.fromJson(jsonData, GameState.class);
+
+                    map = outputGameState.getCurrentMap();
+
                     PlayerModel playerModel = outputGameState.getPlayer();
                     Player loadedPlayer = new Player(map.getCell(playerModel.getX(),playerModel.getY()));
-                    loadedPlayer.setMaxHealth(playerModel.getHealth());
+                    loadedPlayer.setMaxHealth(playerModel.getMaxHealth());
                     loadedPlayer.setInventory(playerModel.getInventory());
                     map.setPlayer(loadedPlayer);
+
+                    LinkedList<Actor> monsters = new LinkedList<>();
+                    for (Cell[] row:map.getCells()
+                         ) {
+                        for (Cell cell:row
+                             ) {
+                            cell.setGameMap(map);
+                            if (cell.hasActor()){
+                                cell.getActor().setCell(cell);
+                            }
+                            if (cell.hasItem()){
+                                cell.getItem().setCell(cell);
+                            }
+                            if (cell.getActor() != null && !Objects.equals(cell.getActor().getTileName(), "player")){
+                                monsters.add(cell.getActor());
+                            }
+                        }
+                    }
+
+                    monstersMove(monsters);
 
                 }catch (IOException ex) {
                     ex.printStackTrace();
                 }
-
+                break;
             case UP:
                 if (monsterMove.isRunning()){
                     movePlayer(Direction.NORTH);
@@ -226,17 +254,6 @@ public class Main extends Application {
 
                         PlayerModel pm = new PlayerModel(map.getPlayer());
                         GameState gameState = new GameState(map, new Date(System.currentTimeMillis()), pm);
-
-                        Gson gson = new GsonBuilder()
-                                .registerTypeAdapter(Collectible.class,
-                                        new PropertyBasedInterfaceMarshal())
-                                .registerTypeAdapter(Consumable.class,
-                                        new PropertyBasedInterfaceMarshal())
-                                .registerTypeAdapter(Gun.class,
-                                        new PropertyBasedInterfaceMarshal())
-                                .registerTypeAdapter(Actor.class,
-                                        new PropertyBasedInterfaceMarshal()).create();
-
                         String serializedGameState = gson.toJson(gameState);
                         System.out.println(serializedGameState);
                         JsonObject serializedGameStateJSON = (JsonObject) JsonParser.parseString(serializedGameState);
