@@ -95,4 +95,95 @@ class ActorTest {
 
         assertEquals(player.getHealth(),loweredHealth);
     }
+
+    @Test
+    void getTileNameOfWalker_returnTrue () {
+        String expected = "walker";
+
+        Walker walker = new Walker(gameMap.getCell(1,2));
+        String result = walker.getTileName();
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void getTileNameOfRunner_returnTrue () {
+        String expected = "runner";
+
+        Runner runner = new Runner(gameMap.getCell(1,1));
+        String result = runner.getTileName();
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void getTileNameOfBulky_returnTrue () {
+        String expected = "bulky";
+
+        Bulky bulky = new Bulky(gameMap.getCell(0,0));
+        String result = bulky.getTileName();
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void getTileNameOfActor_returnTrue () {
+        String expected = "player";
+
+        Player player = new Player(gameMap.getCell(0,0));
+        String result = player.getTileName();
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void createActorWithoutCellProvided_trhowsException(){
+        assertThrows(NullPointerException.class, () -> {
+            Player player = new Player(null);
+        });
+        assertThrows(NullPointerException.class, () -> {
+            Bulky bulky = new Bulky(null);
+        });
+        assertThrows(NullPointerException.class, () -> {
+            Runner runner = new Runner(null);
+        });
+        assertThrows(NullPointerException.class, () -> {
+            Walker walker = new Walker(null);
+        });
+    }
+
+    @Test
+    void monsterWithoutPlayerDoesNotMove_throwsException () {
+        Bulky bulky = new Bulky(gameMap.getCell(0,0));
+        Runner runner = new Runner(gameMap.getCell(1,1));
+        Walker walker = new Walker(gameMap.getCell(2,2));
+        assertThrows(NullPointerException.class, () -> {
+            bulky.autoMove(5, null);
+        });
+        assertThrows(NullPointerException.class, () -> {
+            runner.autoMove(6,null);
+        });
+    }
+
+    @Test
+    void getPlayerMaxHealthAfterCreated_returnTrue () {
+        int expected = 50;
+
+        Player player = new Player(gameMap.getCell(0,0));
+        int result = player.getMaxHealth();
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void getPlayerHealthAfterNegativEffect_returnTrue () {
+        int expected = 30;
+
+        Player player = new Player(gameMap.getCell(0,0));
+        player.setHealth(30);
+        int result = player.getHealth();
+
+        assertEquals(expected, result);
+
+    }
 }
