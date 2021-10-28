@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.Inventory;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.items.collectibles.Key;
 import com.codecool.dungeoncrawl.logic.items.consumables.Ammo;
 import com.codecool.dungeoncrawl.logic.items.consumables.Shield;
 import com.codecool.dungeoncrawl.logic.items.guns.Pistol;
@@ -16,20 +17,20 @@ import static org.junit.jupiter.api.Assertions.*;
 class ItemTest {
     GameMap map;
     Player player;
-    Shield currentItem;
 
     @BeforeEach
     void setUp(){
         this.map = new GameMap(10,10, CellType.FLOOR);
         this.player = new Player(map.getCell(1,2));
-        this.currentItem = new Shield(map.getCell(1,2));
     }
 
     @Test
     void getCellForItem_returnsTrue() {
         Cell expected = map.getCell(1,2);
 
-        Cell result = currentItem.getCell();
+        Shield shield = new Shield(map.getCell(1,2));
+        Cell result = shield.getCell();
+
         assertEquals(expected, result);
     }
 
@@ -37,8 +38,9 @@ class ItemTest {
     void setCellForItem_returnsTrue() {
         Cell expected = map.getCell(3,5);
 
-        currentItem.setCell(map.getCell(3,5));
-        Cell result = currentItem.getCell();
+        Ammo ammo = new Ammo(map.getCell(1,2));
+        ammo.setCell(map.getCell(3,5));
+        Cell result = ammo.getCell();
         assertEquals(expected, result);
     }
 
@@ -46,7 +48,8 @@ class ItemTest {
     void getXForItem_returnsTrue() {
         int expectedX = 1;
 
-        int result = currentItem.getX();
+        Pistol pistol = new Pistol(map.getCell(1,2));
+        int result = pistol.getX();
 
         assertEquals(expectedX, result);
     }
@@ -55,7 +58,8 @@ class ItemTest {
     void getYForItem_returnsTrue() {
         int expectedY = 2;
 
-        int result = currentItem.getY();
+        Key key = new Key(map.getCell(1,2));
+        int result = key.getY();
 
         assertEquals(expectedY, result);
     }
