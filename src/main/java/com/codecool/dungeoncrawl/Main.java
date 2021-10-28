@@ -4,24 +4,41 @@ import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Direction;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.collectibles.*;
 import com.codecool.dungeoncrawl.logic.items.collectibles.Crystal;
 import com.codecool.dungeoncrawl.logic.items.collectibles.Key;
+import com.codecool.dungeoncrawl.logic.items.consumables.Consumable;
 import com.codecool.dungeoncrawl.logic.items.guns.Gun;
+import com.codecool.dungeoncrawl.logic.util.PropertyBasedInterfaceMarshal;
+import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class Main extends Application {
     String currentMap = "/map.txt";
@@ -46,7 +63,9 @@ public class Main extends Application {
     GraphicsContext rocketContext = rocketCanvas.getGraphicsContext2D();
     AudioFilePlayer audioFilePlayer = new AudioFilePlayer();
     AutomaticMovement monsterMove;
+    PopUpWindow popUpWindow = new PopUpWindow();
     int gunCounter = 0;
+    Gson gson = generateGson();
 
     public static void main(String[] args) {
         launch(args);
@@ -113,7 +132,22 @@ public class Main extends Application {
         refreshFX();
     }
 
-    private void onKeyReleased(KeyEvent keyEvent) {
+    private Gson generateGson(){
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Collectible.class,
+                        new PropertyBasedInterfaceMarshal())
+                .registerTypeAdapter(Consumable.class,
+                        new PropertyBasedInterfaceMarshal())
+                .registerTypeAdapter(Gun.class,
+                        new PropertyBasedInterfaceMarshal())
+                .registerTypeAdapter(Actor.class,
+                        new PropertyBasedInterfaceMarshal())
+                .registerTypeAdapter(Item.class,
+                        new PropertyBasedInterfaceMarshal()).create();
+        return gson;
+    }
+
+    private void onKeyReleased(KeyEvent keyEvent){
         if (map.getPlayer().getInventory().getActiveGun() != null && gunCounter == 0){
             gunCounter ++;
             bulletMove(map.getPlayer());
@@ -124,6 +158,20 @@ public class Main extends Application {
             return;
         }
         switch (keyEvent.getCode()) {
+            case F6:
+                try {
+                    String filePath = "src/main/resources/saves/1234.json";
+                    String jsonData = new String(Files.readAllBytes(Paths.get(filePath)));
+                    System.out.println(jsonData);
+
+                    GameState gameState = gson.fromJson(jsonData, GameState.class);
+
+                    loadGame(gameState);
+
+                }catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                break;
             case UP:
                 if (monsterMove.isRunning()){
                     movePlayer(Direction.NORTH);
@@ -173,9 +221,52 @@ public class Main extends Application {
             case C:
                 monsterMove.setRunning(true);
                 break;
+            case V:
+                if (!monsterMove.isRunning()){
+                    if (keyEvent.isControlDown()){
+
+                        PlayerModel pm = new PlayerModel(map.getPlayer());
+                        GameState gameState = new GameState(map, new Date(System.currentTimeMillis()), pm);
+                        String serializedGameState = gson.toJson(gameState);
+                        System.out.println(serializedGameState);
+                        JsonObject serializedGameStateJSON = (JsonObject) JsonParser.parseString(serializedGameState);
+                        popUpWindow.display(serializedGameStateJSON);
+                    }
+                }
+                break;
         }
         refresh();
         refreshFX();
+    }
+
+    private void loadGame(GameState gameState) {
+        map = gameState.getCurrentMap();
+
+        PlayerModel playerModel = gameState.getPlayer();
+        Player loadedPlayer = new Player(map.getCell(playerModel.getX(),playerModel.getY()));
+        loadedPlayer.setMaxHealth(playerModel.getMaxHealth());
+        loadedPlayer.setInventory(playerModel.getInventory());
+        map.setPlayer(loadedPlayer);
+
+        LinkedList<Actor> monsters = new LinkedList<>();
+        for (Cell[] row:map.getCells()
+             ) {
+            for (Cell cell:row
+                 ) {
+                cell.setGameMap(map);
+                if (cell.hasActor()){
+                    cell.getActor().setCell(cell);
+                }
+                if (cell.hasItem()){
+                    cell.getItem().setCell(cell);
+                }
+                if (cell.getActor() != null && !Objects.equals(cell.getActor().getTileName(), "player")){
+                    monsters.add(cell.getActor());
+                }
+            }
+        }
+
+        monstersMove(monsters);
     }
 
     private void playerShoot(Direction direction) {

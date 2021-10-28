@@ -5,7 +5,7 @@ import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 
 public abstract class Item implements Drawable {
-    private Cell cell;
+    private transient Cell cell;
 
     public Item(Cell cell){
         cell.setItem(this);
