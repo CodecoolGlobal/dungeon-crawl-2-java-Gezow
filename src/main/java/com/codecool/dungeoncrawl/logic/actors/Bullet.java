@@ -43,6 +43,10 @@ public class Bullet extends Actor {
         }
     }
 
+    public int getDamage() {
+        return damage;
+    }
+
     @Override
     public void autoMove(int frag, Player player) {
         super.move(this.getDirection().getX(), this.getDirection().getY());

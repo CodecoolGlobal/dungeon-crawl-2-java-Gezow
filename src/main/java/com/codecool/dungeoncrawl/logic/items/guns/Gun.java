@@ -12,14 +12,14 @@ public abstract class Gun extends Item {
     public Gun(Cell cell) {
         super(cell);
     }
-    private LinkedList<Bullet> bullets = new LinkedList<>();
+    private final LinkedList<Bullet> bullets = new LinkedList<>();
 
     protected boolean isActive;
 
     @Override
     public void pickUp(Player player) {
         player.getInventory().setActiveGun(this);
-        player.getInventory().getGuns().put(this.getTileName(), this);
+        player.getInventory().getGuns().add(this);
         this.getCell().setItem(null);
     }
 
@@ -34,10 +34,6 @@ public abstract class Gun extends Item {
         return bullets;
     }
 
-    public void setBullets(LinkedList<Bullet> bullets) {
-        this.bullets = bullets;
-    }
-
     public boolean isActive() {
         return isActive;
     }
@@ -46,5 +42,5 @@ public abstract class Gun extends Item {
         isActive = active;
     }
 
-    public void sound(){}
+    public abstract void sound();
 }
