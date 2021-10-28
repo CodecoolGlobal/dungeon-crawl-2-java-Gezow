@@ -24,7 +24,13 @@ class CollectibleTest {
     @Test
     void constructorGetNoArgument_throwException(){
         assertThrows(NullPointerException.class, () -> {
-           Key key = new Key(null);
+            Key key = new Key(null);
+        });
+        assertThrows(NullPointerException.class, () -> {
+            Crystal crystal = new Crystal(null);
+        });
+        assertThrows(NullPointerException.class, () -> {
+            Rocket rocket = new Rocket(null);
         });
     }
 
