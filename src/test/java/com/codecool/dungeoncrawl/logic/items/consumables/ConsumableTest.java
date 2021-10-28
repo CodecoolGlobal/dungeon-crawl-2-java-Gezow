@@ -83,4 +83,44 @@ class ConsumableTest {
 
         assertEquals(expected, result);
     }
+
+    @Test
+    void getTileNameOfAmmo_returnTrue () {
+        String expected = "ammo";
+
+        Ammo ammo = new Ammo(map.getCell(0,0));
+        String result = ammo.getTileName();
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void getTileNameOfBigHP_returnTrue () {
+        String expected = "medkit50";
+
+        HealthPackBig healthPackBig = new HealthPackBig(map.getCell(0,0));
+        String result = healthPackBig.getTileName();
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void getTileNameOfSmallHP_returnTrue () {
+        String expected = "medkit10";
+
+        HealthPackSmall healthPackSmall = new HealthPackSmall(map.getCell(0,0));
+        String result = healthPackSmall.getTileName();
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void getTileNameOfShield_returnTrue () {
+        String expected = "shield";
+
+        Shield shield = new Shield(map.getCell(0,0));
+        String result = shield.getTileName();
+
+        assertEquals(expected, result);
+    }
 }
