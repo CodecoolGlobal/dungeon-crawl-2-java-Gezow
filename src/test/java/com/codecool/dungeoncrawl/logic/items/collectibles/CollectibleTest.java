@@ -22,6 +22,13 @@ class CollectibleTest {
     }
 
     @Test
+    void constructorGetNoArgument_throwException(){
+        assertThrows(NullPointerException.class, () -> {
+           Key key = new Key(null);
+        });
+    }
+
+    @Test
     void playerPicksUpKey_returnTrue() {
         Key key = new Key(map.getCell(1,2));
         expectedInventory.getCollectibles().add(key);
