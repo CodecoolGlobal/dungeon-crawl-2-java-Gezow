@@ -1,15 +1,13 @@
 package com.codecool.dungeoncrawl.logic.items.guns;
 
-import com.codecool.dungeoncrawl.logic.CellType;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.Inventory;
-import com.codecool.dungeoncrawl.logic.Settings;
+import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.actors.Bullet;
 import com.codecool.dungeoncrawl.logic.actors.Direction;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,7 +43,7 @@ class ShootTest {
         shotgun.pickUp(player);
         automaticRifle.pickUp(player);
         bfg.pickUp(player);
-        for(Gun gun: player.getInventory().getGuns().values()){
+        for(Gun gun: player.getInventory().getGuns()){
             expectedInventory.setAmmo(expectedInventory.getAmmo() - 1);
 
             player.shoot(Direction.EAST);
@@ -59,14 +57,20 @@ class ShootTest {
     void shoot_pistol_returns_true() {
         List<Direction> directions = new LinkedList<>();
         directions.add(Direction.EAST);
-        placeExpectedBullets(directions, Settings.PISTOL_DAMAGE.getValue());
+        List<Bullet> bullets = placeExpectedBullets(directions, Settings.PISTOL_DAMAGE.getValue());
 
         pistol.pickUp(map.getPlayer());
         shootGun(Direction.EAST);
 
-        Bullet expected = expectedMap.getPlayer().getCell().getNeighbor(Direction.EAST.getX(), Direction.EAST.getY()).getBullet();
-        Bullet result = map.getPlayer().getCell().getNeighbor(Direction.EAST.getX(), Direction.EAST.getY()).getBullet();
-        assertEquals(expected, result);
+        Cell expectedCell = bullets.get(0).getCell();
+        Cell resultCell = map.getPlayer().getCell().getNeighbor(directions.get(0).getX(), directions.get(0).getY()).getBullet().getCell();
+        Direction expectedDirection = bullets.get(0).getDirection();
+        Direction resultDirection = map.getPlayer().getCell().getNeighbor(directions.get(0).getX(), directions.get(0).getY()).getBullet().getDirection();
+        int expectedDamage = bullets.get(0).getDamage();
+        int resultDamage = map.getPlayer().getCell().getNeighbor(directions.get(0).getX(), directions.get(0).getY()).getBullet().getDamage();
+        assertEquals(expectedCell, resultCell);
+        assertEquals(expectedDirection, resultDirection);
+        assertEquals(expectedDamage, resultDamage);
     }
 
     @Test
@@ -75,33 +79,45 @@ class ShootTest {
         directions.add(Direction.SOUTHEAST);
         directions.add(Direction.SOUTH);
         directions.add(Direction.SOUTHWEST);
-        placeExpectedBullets(directions, Settings.SHOTGUN_DAMAGE.getValue());
+        List<Bullet> bullets = placeExpectedBullets(directions, Settings.SHOTGUN_DAMAGE.getValue());
 
         shotgun.pickUp(player);
         shootGun(Direction.SOUTH);
 
-        for(Direction direction:directions){
-            Bullet expected = expectedMap.getPlayer().getCell().getNeighbor(direction.getX(), direction.getY()).getBullet();
-            Bullet result = map.getPlayer().getCell().getNeighbor(direction.getX(), direction.getY()).getBullet();
-            assertEquals(expected, result);
+        for(int i = 0; i < directions.size(); i++){
+            Cell expectedCell = bullets.get(i).getCell();
+            Cell resultCell = map.getPlayer().getCell().getNeighbor(directions.get(i).getX(), directions.get(i).getY()).getBullet().getCell();
+            Direction expectedDirection = bullets.get(i).getDirection();
+            Direction resultDirection = map.getPlayer().getCell().getNeighbor(directions.get(i).getX(), directions.get(i).getY()).getBullet().getDirection();
+            int expectedDamage = bullets.get(i).getDamage();
+            int resultDamage = map.getPlayer().getCell().getNeighbor(directions.get(i).getX(), directions.get(i).getY()).getBullet().getDamage();
+            assertEquals(expectedCell, resultCell);
+            assertEquals(expectedDirection, resultDirection);
+            assertEquals(expectedDamage, resultDamage);
         }
     }
 
     @Test
     void shoot_automatic_rifle_returns_true(){
         List<Direction> directions = new LinkedList<>();
-        directions.add(Direction.SOUTHWEST);
         directions.add(Direction.WEST);
-        directions.add(Direction.NORTHWEST);
-        placeExpectedBullets(directions, Settings.A_RIFLE_DAMAGE.getValue());
+        directions.add(Direction.WEST);
+        directions.add(Direction.WEST);
+        List<Bullet> bullets = placeExpectedBullets(directions, Settings.A_RIFLE_DAMAGE.getValue());
 
         automaticRifle.pickUp(player);
         shootGun(Direction.WEST);
 
-        for(Direction direction:directions){
-            Bullet expected = expectedMap.getPlayer().getCell().getNeighbor(direction.getX(), direction.getY()).getBullet();
-            Bullet result = map.getPlayer().getCell().getNeighbor(direction.getX(), direction.getY()).getBullet();
-            assertEquals(expected, result);
+        for(int i = 0; i < directions.size(); i++){
+            Cell expectedCell = bullets.get(i).getCell();
+            Cell resultCell = map.getPlayer().getCell().getNeighbor(directions.get(i).getX(), directions.get(i).getY()).getBullet().getCell();
+            Direction expectedDirection = bullets.get(i).getDirection();
+            Direction resultDirection = map.getPlayer().getCell().getNeighbor(directions.get(i).getX(), directions.get(i).getY()).getBullet().getDirection();
+            int expectedDamage = bullets.get(i).getDamage();
+            int resultDamage = map.getPlayer().getCell().getNeighbor(directions.get(i).getX(), directions.get(i).getY()).getBullet().getDamage();
+            assertEquals(expectedCell, resultCell);
+            assertEquals(expectedDirection, resultDirection);
+            assertEquals(expectedDamage, resultDamage);
         }
     }
 
@@ -111,16 +127,62 @@ class ShootTest {
         directions.add(Direction.NORTHWEST);
         directions.add(Direction.NORTH);
         directions.add(Direction.NORTHEAST);
-        placeExpectedBullets(directions, Settings.BFG_DAMAGE.getValue());
+        List<Bullet> bullets = placeExpectedBullets(directions, Settings.BFG_DAMAGE.getValue());
 
         bfg.pickUp(player);
         shootGun(Direction.NORTH);
 
-        for(Direction direction:directions){
-            Bullet expected = expectedMap.getPlayer().getCell().getNeighbor(direction.getX(), direction.getY()).getBullet();
-            Bullet result = map.getPlayer().getCell().getNeighbor(direction.getX(), direction.getY()).getBullet();
-            assertEquals(expected, result);
+        for(int i = 0; i < directions.size(); i++){
+            Cell expectedCell = bullets.get(i).getCell();
+            Cell resultCell = map.getPlayer().getCell().getNeighbor(directions.get(i).getX(), directions.get(i).getY()).getBullet().getCell();
+            Direction expectedDirection = bullets.get(i).getDirection();
+            Direction resultDirection = map.getPlayer().getCell().getNeighbor(directions.get(i).getX(), directions.get(i).getY()).getBullet().getDirection();
+            int expectedDamage = bullets.get(i).getDamage();
+            int resultDamage = map.getPlayer().getCell().getNeighbor(directions.get(i).getX(), directions.get(i).getY()).getBullet().getDamage();
+            assertEquals(expectedCell, resultCell);
+            assertEquals(expectedDirection, resultDirection);
+            assertEquals(expectedDamage, resultDamage);
         }
+    }
+
+    @Test
+    void shooting_without_ammo_returns_false(){
+        pistol.pickUp(map.getPlayer());
+        map.getPlayer().getInventory().setAmmo(0);
+        shootGun(Direction.EAST);
+        
+        assertThrows(NullPointerException.class, () -> {
+            map.getPlayer().getCell().getNeighbor(Direction.EAST.getX(), Direction.EAST.getY()).getBullet().getCell();
+        });
+    }
+
+    @Test
+    void switching_weapons_up_goes_around_returns_true(){
+        pistol.pickUp(player);
+        shotgun.pickUp(player);
+        automaticRifle.pickUp(player);
+        bfg.pickUp(player);
+
+        for(int i=0; i < player.getInventory().getGuns().size(); i++){
+            player.changeGun(1);
+        }
+
+        assertEquals("bfg-active", player.getInventory().getActiveGun().getTileName());
+    }
+
+    @Test
+    void switching_weapons_down_goes_around_returns_true(){
+        automaticRifle.pickUp(player);
+        shotgun.pickUp(player);
+        pistol.pickUp(player);
+        bfg.pickUp(player);
+
+        for(int i=0; i < player.getInventory().getGuns().size(); i++){
+            player.changeGun(-1);
+            Gun activeGun = player.getInventory().getActiveGun();
+        }
+
+        assertEquals("bfg-active", player.getInventory().getActiveGun().getTileName());
     }
 
     void shootGun(Direction direction){
@@ -130,14 +192,16 @@ class ShootTest {
         }
     }
 
-    void placeExpectedBullets(List<Direction> directions, int damage){
+    List<Bullet> placeExpectedBullets(List<Direction> directions, int damage){
+        ArrayList<Bullet> bullets = new ArrayList<>();
         for(Direction direction:directions){
             Bullet bullet = new Bullet(
                     expectedMap.getPlayer().getCell().getNeighbor(direction.getX(), direction.getY()),
                     direction,
                     damage
             );
-            expectedMap.getPlayer().getCell().getNeighbor(direction.getX(), direction.getY()).setBullet(bullet);
+            bullets.add(bullet);
         }
+        return bullets;
     }
 }

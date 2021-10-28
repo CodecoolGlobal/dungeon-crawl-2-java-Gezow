@@ -24,7 +24,7 @@ class GunTest {
     @Test
     void playerPicksUpAutomaticRifle_returnsTrue() {
         AutomaticRifle ar = new AutomaticRifle(map.getCell(2,3));
-        expectedInventory.getGuns().put("automaticrifle-active", ar);
+        expectedInventory.getGuns().add(ar);
         String expected = expectedInventory.getGuns().toString();
 
         ar.pickUp(player);
@@ -36,7 +36,7 @@ class GunTest {
     @Test
     void playerPicksUpBfg_returnsTrue() {
         Bfg bfg = new Bfg(map.getCell(2,3));
-        expectedInventory.getGuns().put("bfg-active", bfg);
+        expectedInventory.getGuns().add(bfg);
         String expected = expectedInventory.getGuns().toString();
 
         bfg.pickUp(player);
@@ -48,7 +48,7 @@ class GunTest {
     @Test
     void playerPicksUpPistol_returnsTrue() {
         Pistol pistol = new Pistol(map.getCell(2,3));
-        expectedInventory.getGuns().put("pistol-active", pistol);
+        expectedInventory.getGuns().add(pistol);
         String expected = expectedInventory.getGuns().toString();
 
         pistol.pickUp(player);
@@ -60,7 +60,7 @@ class GunTest {
     @Test
     void playerPicksUpShotgun_returnsTrue() {
         Shotgun shotgun = new Shotgun(map.getCell(2,3));
-        expectedInventory.getGuns().put("shotgun-active", shotgun);
+        expectedInventory.getGuns().add(shotgun);
         String expected = expectedInventory.getGuns().toString();
 
         shotgun.pickUp(player);
@@ -73,8 +73,8 @@ class GunTest {
     void playerSelectGun_returnsTrue() {
         Bfg bfg = new Bfg(map.getCell(1,2));
         Pistol pistol = new Pistol(map.getCell(2,3));
-        expectedInventory.getGuns().put("bfg-active", bfg);
-        expectedInventory.getGuns().put("pistol-active", pistol);
+        expectedInventory.getGuns().add(bfg);
+        expectedInventory.getGuns().add(pistol);
         expectedInventory.setActiveGun(bfg);
         String expected = expectedInventory.getActiveGun().toString();
 
