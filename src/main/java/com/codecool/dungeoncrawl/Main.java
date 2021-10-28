@@ -223,7 +223,7 @@ public class Main extends Application {
         healthLabel.setText("Health: " + map.getPlayer().getHealth() + "/" + map.getPlayer().getMaxHealth());
         ammoLabel.setText("Ammo: " + map.getPlayer().getInventory().getAmmo() + "/" + map.getPlayer().getInventory().getMaxAmmo());
         for(int i = 0; i < map.getPlayer().getInventory().getGuns().size(); i++){
-            Gun gun = map.getPlayer().getInventory().getGuns().get(map.getPlayer().getInventory().getGuns().keySet().toArray()[i]);
+            Gun gun = map.getPlayer().getInventory().getGuns().get(i);
             Tiles.drawTile(gunContext, gun, i, 0);
         }
         for(int i = 0; i < map.getPlayer().getInventory().getCollectibles().size(); i++){

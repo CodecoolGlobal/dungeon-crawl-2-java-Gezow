@@ -10,7 +10,7 @@ public class Inventory {
     private int ammo;
     private int maxAmmo;
     private Gun activeGun;
-    private final HashMap<String, Gun> guns = new HashMap<>();
+    private final ArrayList<Gun> guns = new ArrayList<>();
     private final ArrayList<Collectible> collectibles = new ArrayList<>();
     private final ArrayList<Rocket> rockets = new ArrayList<>();
 
@@ -31,11 +31,7 @@ public class Inventory {
         return maxAmmo;
     }
 
-    public void setMaxAmmo(int maxAmmo) {
-        this.maxAmmo = maxAmmo;
-    }
-
-    public HashMap<String, Gun> getGuns() {
+    public ArrayList<Gun> getGuns() {
         return guns;
     }
 

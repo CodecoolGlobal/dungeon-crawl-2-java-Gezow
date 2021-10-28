@@ -8,6 +8,7 @@ import java.util.Objects;
 public class Bullet extends Actor {
     private Cell cell;
     private Direction direction;
+
     private int damage;
 
 
@@ -40,6 +41,10 @@ public class Bullet extends Actor {
             nextCell.setBullet(this);
             cell = nextCell;
         }
+    }
+
+    public int getDamage() {
+        return damage;
     }
 
     @Override
