@@ -16,50 +16,46 @@ import static org.junit.jupiter.api.Assertions.*;
 class ItemTest {
     GameMap map;
     Player player;
-    Inventory expectedInventory;
+    Shield currentItem;
 
     @BeforeEach
     void setUp(){
         this.map = new GameMap(10,10, CellType.FLOOR);
         this.player = new Player(map.getCell(1,2));
-        this.expectedInventory = new Inventory(10,50);
+        this.currentItem = new Shield(map.getCell(1,2));
     }
 
     @Test
-    void getCell() {
+    void getCellForItem_returnsTrue() {
         Cell expected = map.getCell(1,2);
 
-        Pistol pistol = new Pistol(map.getCell(1,2));
-        Cell result = pistol.getCell();
+        Cell result = currentItem.getCell();
         assertEquals(expected, result);
     }
 
     @Test
-    void setCell() {
+    void setCellForItem_returnsTrue() {
         Cell expected = map.getCell(3,5);
 
-        Ammo ammo = new Ammo(map.getCell(0,0));
-        ammo.setCell(map.getCell(3,5));
-        Cell result = ammo.getCell();
+        currentItem.setCell(map.getCell(3,5));
+        Cell result = currentItem.getCell();
         assertEquals(expected, result);
     }
 
     @Test
-    void getX() {
-        int expectedX = 3;
+    void getXForItem_returnsTrue() {
+        int expectedX = 1;
 
-        Shield shield = new Shield(map.getCell(3,2));
-        int result = shield.getX();
+        int result = currentItem.getX();
 
         assertEquals(expectedX, result);
     }
 
     @Test
-    void getY() {
+    void getYForItem_returnsTrue() {
         int expectedY = 2;
 
-        Shield shield = new Shield(map.getCell(3,2));
-        int result = shield.getY();
+        int result = currentItem.getY();
 
         assertEquals(expectedY, result);
     }
