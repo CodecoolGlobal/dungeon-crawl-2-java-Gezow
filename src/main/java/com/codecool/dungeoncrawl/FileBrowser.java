@@ -1,12 +1,8 @@
 package com.codecool.dungeoncrawl;
-import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.codecool.dungeoncrawl.model.GameState;
 import javafx.event.ActionEvent;
@@ -22,8 +18,6 @@ import javafx.stage.Stage;
 
 public final class FileBrowser {
     private String path;
-
-    private Desktop desktop = Desktop.getDesktop();
     private Main main;
 
     public FileBrowser(Main main) {
