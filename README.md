@@ -33,7 +33,7 @@ mvn compile
 mvn javafx:run
 ```
 
-##Controlls
+## Controlls
 
 - Movement - Arrow keys
 - Shooting - WASD
