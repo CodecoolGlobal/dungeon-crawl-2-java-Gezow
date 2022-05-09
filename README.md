@@ -35,7 +35,7 @@ mvn javafx:run
 
 ##Controlls
 
-Movement - Arrow keys
-Shooting - WASD
-Picking up items - E
-Switching weapons - Q or R
+- Movement - Arrow keys
+- Shooting - WASD
+- Picking up items - E
+- Switching weapons - Q or R
