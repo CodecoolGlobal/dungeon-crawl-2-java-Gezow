@@ -21,8 +21,8 @@ On the second sprint we had less creative tasks, like test coverage, game saving
 
 ## Prerequisites
 
-- Java 8 JDK
-- Java Runtime Environment
+- latest java
+- maven
 
 ## Install
 
